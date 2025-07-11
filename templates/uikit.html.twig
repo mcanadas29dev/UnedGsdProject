@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Mi Tienda{% endblock %}</title>
+    <!-- UIkit CSS CDN -->
+    <link 
+      rel="stylesheet" 
+      href="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/css/uikit.min.css" 
+    />
+</head>
+<body>
+
+<header>
+    <div class="uk-navbar-container uk-margin">
+        <nav class="uk-navbar-container" uk-navbar>
+            <div class="uk-navbar-left">
+                <a href="#" class="uk-navbar-item uk-logo">Mi Tienda</a>
+            </div>
+            <div class="uk-navbar-right">
+                <ul class="uk-navbar-nav">
+                    <li><a href="#">Login</a></li>
+                    <li>
+                        <a href="#">
+                            Carrito
+                            <span class="uk-badge">3</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<nav class="uk-navbar-container uk-margin" uk-navbar>
+    <div class="uk-container">
+        <ul class="uk-navbar-nav">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Tienda</a></li>
+            <li><a href="#">Ofertas</a></li>
+            <li><a href="#">Contacto</a></li>
+            <li><a href="#">Administración</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main class="uk-container uk-margin-large-top">
+    {% block body %}{% endblock %}
+</main>
+
+<footer class="uk-section uk-section-secondary uk-padding-small">
+    <div class="uk-container uk-text-center">
+        <ul class="uk-subnav uk-flex-center uk-margin-remove-bottom">
+            <li><a href="#">Privacidad</a></li>
+            <li><a href="#">Términos</a></li>
+            <li><a href="#">Ayuda</a></li>
+            <li><a href="#">Contacto</a></li>
+        </ul>
+        <p class="uk-text-muted uk-margin-small-top">© {{ "now"|date("Y") }} Mi Tienda. Todos los derechos reservados.</p>
+    </div>
+</footer>
+
+<!-- UIkit JS CDN -->
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/js/uikit.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/js/uikit-icons.min.js"></script>
+
+</body>
+</html>
