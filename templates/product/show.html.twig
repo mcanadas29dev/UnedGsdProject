@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Detalle del producto{% endblock %}
+
+{% block body %}
+<h1>Detalles del producto</h1>
+
+<ul class="list-group mb-3">
+    <li class="list-group-item"><strong>ID:</strong> {{ product.id }}</li>
+    <li class="list-group-item"><strong>Nombre:</strong> {{ product.name }}</li>
+    <li class="list-group-item"><strong>Precio:</strong> {{ product.price }} €</li>
+    <li class="list-group-item"><strong>Descripción:</strong> {{ product.description }}</li>
+    <li class="list-group-item"><strong>Categoría:</strong> {{ product.category.name }}</li>
+</ul>
+
+<a href="{{ path('product_edit', {'id': product.id}) }}" class="btn btn-warning">
+    <i class="bi bi-pencil-square"></i> Editar
+</a>
+<a href="{{ path('product_index') }}" class="btn btn-link">
+    <i class="bi bi-arrow-left"></i> Volver
+</a>
+
+{{ include('product/_delete_form.html.twig', {'product': product}) }}
+{% endblock %}

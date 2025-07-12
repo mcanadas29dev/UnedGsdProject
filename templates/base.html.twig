@@ -24,37 +24,46 @@
 
             <div class="collapse navbar-collapse" id="navbarMenu">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nva-item"><a class="nav-link text-secondary" href="{{ path('app_home') }}">Green Harvest</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="#">Tienda</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="#">Lo Mas Vendido</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_home') }}">Green Harvest</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('categories_list') }}">Tienda</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="#">Lo Más Vendido</a></li>
                     <li class="nav-item"><a class="nav-link text-secondary" href="#">Últimas novedades</a></li>
                     <li class="nav-item"><a class="nav-link text-secondary" href="#">Ofertas</a></li>
-                     {% if is_granted('ROLE_ADMIN') %}
-                        <li class="nav-item">
-                            <li class="nav-item"><a class="nav-link text-secondary" href="#">Administración</a></li>
+
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-secondary" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Administración
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                <li><a class="dropdown-item" href="{{ path('app_user_index') }}">Usuarios</a></li>
+                                <li><a class="dropdown-item" href="#">Pedidos</a></li>
+                                <li><a class="dropdown-item" href="{{ path('product_index') }}">Productos</a></li>
+                                <!-- Agrega más enlaces según necesites -->
+                            </ul>
                         </li>
                     {% endif %}
-                    
                 </ul>
             </div>
+
             <div class="d-flex ms-auto">
-            {% if app.user %}
-                <a href="{{ path('app_logout') }}" class="btn btn-outline-primary me-3" aria-label="Cerrar sesión">
-                    <i class="bi bi-box-arrow-right"></i>
-                    {{ app.user.email }}  {# o email, o el campo que uses #}
-                </a>
-            {% else %}
-                <a href="{{ path('app_login') }}" class="btn btn-outline-primary me-3" aria-label="Login">
-                    <i class="bi bi-box-arrow-in-right"></i>
-                    Login
-                </a>
-            {% endif %}
+                {% if app.user %}
+                    <a href="{{ path('app_logout') }}" class="btn btn-outline-primary me-3" aria-label="Cerrar sesión">
+                        <i class="bi bi-box-arrow-right"></i>
+                        {{ app.user.email }}  {# o email, o el campo que uses #}
+                    </a>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="btn btn-outline-primary me-3" aria-label="Login">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        Login
+                    </a>
+                {% endif %}
 
  
                     <a href="#" class="btn btn-outline-success position-relative" aria-label="Carrito de compras">
                         <i class="bi bi-cart"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            3
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill ">
+                            <!-- bg-danger -->
                             <span class="visually-hidden">productos en el carrito</span>
                         </span>
                     </a>
