@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Listado de Categorías{% endblock %}
+
+{% block body %}
+    <h1>Categorías</h1>
+
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Slug</th>
+                <th>Padre</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td>{{ category.id }}</td>
+                    <td>{{ category.name }}</td>
+                    <td>{{ category.slug }}</td>
+                    <td>{{ category.parent ? category.parent.name : '-' }}</td>
+    
+                </tr>
+            {% else %}
+                <tr><td colspan="5">No hay categorías.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

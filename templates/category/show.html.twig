@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categoría {{ category.name }}{% endblock %}
+
+{% block body %}
+<h1>Categoría "{{ category.name }}"</h1>
+
+<ul class="list-group mb-3">
+    <li class="list-group-item"><strong>Id:</strong> {{ category.id }}</li>
+    <li class="list-group-item"><strong>Nombre:</strong> {{ category.name }}</li>
+    <li class="list-group-item"><strong>Slug:</strong> {{ category.slug }}</li>
+    <li class="list-group-item"><strong>Padre:</strong> {{ category.parent ? category.parent.name : 'Ninguno' }}</li>
+</ul>
+
+<a href="{{ path('categories_edit', {id: category.id}) }}" class="btn btn-warning">Editar</a>
+<a href="{{ path('categories_list') }}" class="btn btn-secondary">Volver</a>
+{% endblock %}

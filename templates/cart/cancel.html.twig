@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pago cancelado{% endblock %}
+
+{% block body %}
+<div class="alert alert-warning mt-4">
+    <h2>⚠️ Pago cancelado</h2>
+    <p>Tu pago no se completó. Puedes volver a intentarlo.</p>
+    <a href="{{ path('cart_index') }}" class="btn btn-secondary mt-3">Volver al carrito</a>
+</div>
+{% endblock %}

@@ -13,4 +13,16 @@ class HomeController extends AbstractController
     {
         return $this->render('home/index.html.twig'); // plantilla que extiende base.html.twig
     }
+
+    #[Route('/categories', name: 'app_tienda')]
+    public function app_tienda(): Response
+    {
+          // Obtiene todas las categorías raíz (sin padre)
+        $categories = $categoryRepository->findBy(['parent' => null]);
+
+        return $this->render('category/tienda.html.twig', [
+            'categories' => $categories,
+        ]);
+        
+    }
 }
