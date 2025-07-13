@@ -13,7 +13,9 @@
 <body>
 
 
-{% block header %}{% endblock %}
+{% block header %}
+
+{% endblock %}
 
 {% block nav %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
@@ -38,7 +40,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="adminDropdown">
                                 <li><a class="dropdown-item" href="{{ path('app_user_index') }}">Usuarios</a></li>
-                                <li><a class="dropdown-item" href="#">Pedidos</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_order_index') }}">Pedidos</a></li>
                                 <li><a class="dropdown-item" href="{{ path('product_index') }}">Productos</a></li>
                                 <li><a class="dropdown-item" href="{{ path('categories_list') }}">Categorías</a></li>
                                 <!-- Agrega más enlaces según necesites -->

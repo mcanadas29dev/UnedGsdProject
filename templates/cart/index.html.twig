@@ -7,7 +7,8 @@
 
 {% if cartItems is empty %}
     <p>No tienes productos en el carrito.</p>
-    <a href="{{ path('product_index') }}" class="btn btn-primary mt-3">Seguir comprando</a>
+    <a href="{{ path('app_home') }}" class="btn btn-primary mt-3">Seguir comprando</a>
+  
 {% else %}
     <table class="table table-hover">
         <thead>

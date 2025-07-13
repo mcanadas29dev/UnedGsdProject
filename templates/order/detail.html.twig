@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pedido #{{ order.id }} - Mi Tienda{% endblock %}
+
+{% block body %}
+<h1>Pedido #{{ order.id }}</h1>
+<p><strong>Fecha:</strong> {{ order.createdAt|date('d/m/Y H:i') }}</p>
+<p><strong>Estado:</strong> {{ order.status.name }}</p>
+
+<h3>Productos</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in order.items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price|number_format(2, ',', '.') }} €</td>
+                <td>{{ (item.price * item.quantity)|number_format(2, ',', '.') }} €</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{{ path('app_order_index') }}" class="btn btn-secondary mt-3">Volver a pedidos</a>
+{% endblock %}

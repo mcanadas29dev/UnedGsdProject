@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mis Pedidos - Mi Tienda{% endblock %}
+
+{% block body %}
+<h1 class="mb-4">Mis Pedidos</h1>
+
+{% if orders is empty %}
+    <div class="alert alert-info">No tienes pedidos realizados.</div>
+{% else %}
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Items</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td>#{{ order.id }}</td>
+                        <td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
+                        <td>{{ order.status.name }}</td>
+                        <td>{{ order.items|length }}</td>
+                        <td>
+                            <a href="{{ path('app_order_show', {id: order.id}) }}" class="btn btn-sm btn-outline-primary">
+                                Ver detalle
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
+{% endblock %}

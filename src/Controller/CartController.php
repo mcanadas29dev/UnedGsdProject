@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+
+
 use App\Repository\ProductRepository;
+use App\Repository\OrderStatusRepository;
 use App\Service\CartService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,9 +16,16 @@ use Stripe\Checkout\Session;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+use App\Entity\Product;
+use App\Entity\Order;
+use App\Entity\OrderItem;
+use App\Entity\OrderStatus;
+use Doctrine\ORM\EntityManagerInterface;
+
 #[Route('/cart', name: 'cart_')]
 class CartController extends AbstractController
 {
+    
     #[Route('/', name: 'index')]
     public function index(CartService $cartService): Response
     {
@@ -31,6 +41,17 @@ class CartController extends AbstractController
         $cartService->add($id);
         return $this->redirectToRoute('cart_index');
     }
+
+    // Se añade de la Tienda
+    #[Route('/carrito/agregar/{id}', name: 'app_cart_add', methods: ['POST'])]
+        public function addToCart(Request $request, Product $product, CartService $cartService): Response
+        {
+            $quantity = $request->request->getInt('quantity', 1);
+            $cartService->add($product->getId(), $quantity);
+
+            return $this->redirectToRoute('app_tienda');
+        }
+
 
     #[Route('/remove/{id}', name: 'remove')]
     public function remove(int $id, CartService $cartService): Response
@@ -69,19 +90,72 @@ class CartController extends AbstractController
             'payment_method_types' => ['card'],
             'line_items' => [$lineItems],
             'mode' => 'payment',
-            'success_url' => $this->generateUrl('cart_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'success_url' => $this->generateUrl('cart_success', [], UrlGeneratorInterface::ABSOLUTE_URL) . '?session_id={CHECKOUT_SESSION_ID}',
+            //'success_url' => $this->generateUrl('cart_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
             'cancel_url' => $this->generateUrl('cart_cancel', [], UrlGeneratorInterface::ABSOLUTE_URL),
             'customer_email' => $this->getUser()->getEmail(),
         ]);
-
+        $stripeSessionIdFromStripe = $session->id;
         return $this->redirect($session->url, 303);
     }
 
     #[Route('/success', name: 'success')]
-    public function success(CartService $cartService): Response
+    public function success(Request $request, CartService $cartService, EntityManagerInterface $em, OrderStatusRepository $orderStatusRepo): Response
         {
-            $cartService->clear(); // vaciar el carrito al pagar
+            
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+            
+            $user = $this->getUser();
+            $cartItems = $cartService->getCart();
 
+            if (empty($cartItems)) {
+                $this->addFlash('warning', 'El carrito está vacío.');
+                return $this->redirectToRoute('cart_index');
+            }
+
+            // Buscar el estado "pagado"
+            $paidStatus = $orderStatusRepo->findOneBy(['name' => 'pagado']);
+
+            if (!$paidStatus) {
+                throw new \Exception('No existe el estado "pagado". Crea este estado en la base de datos.');
+            }
+
+            // Crear nuevo pedido
+            $order = new Order();
+            $order->setUser($user);
+            $order->setStatus($paidStatus);
+            $order->setCreatedAt(new \DateTimeImmutable());
+
+            $total = 0;
+
+            foreach ($cartItems as $item) {
+                $product = $item['product'];
+                $quantity = $item['quantity'];
+                $price = $product->getPrice();
+
+                $orderItem = new OrderItem();
+                $orderItem->setOrder($order);
+                $orderItem->setProduct($product);
+                $orderItem->setQuantity($quantity);
+                $orderItem->setPrice($price);
+                //$orderItem->setSubtotal($price * $quantity);
+
+                $em->persist($orderItem);
+
+                $total += $price * $quantity;
+            }
+
+            //$order->setTotal($total);
+            $sessionId = $request->query->get('session_id');
+            if (!$sessionId) {
+                throw $this->createNotFoundException('No session ID provided in URL');
+            }
+            $order->setStripeSessionId($sessionId);
+            //$order->setStripeSessionId($session->id);
+            $em->persist($order);
+            $em->flush();
+
+            $cartService->clear(); // vaciar el carrito al pagar
             return $this->render('cart/success.html.twig');
         }
 
