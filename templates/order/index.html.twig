@@ -9,24 +9,26 @@
     <div class="alert alert-info">No tienes pedidos realizados.</div>
 {% else %}
     <div class="table-responsive">
-        <table class="table table-striped align-middle">
-            <thead>
+        <table class="table table-hover table-bordered align-middle">
+        <thead class="table-light">
                 <tr>
                     <th>ID</th>
+                    <th>Usuario</th>
                     <th>Fecha</th>
                     <th>Estado</th>
                     <th>Items</th>
-                    <th>Acciones</th>
+                    <th class="text-center">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for order in orders %}
                     <tr>
-                        <td>#{{ order.id }}</td>
+                        <td>{{ order.id }}</td>
+                        <td>{{ order.user.email }}</td>
                         <td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
                         <td>{{ order.status.name }}</td>
                         <td>{{ order.items|length }}</td>
-                        <td>
+                        <td class="text-center">
                             <a href="{{ path('app_order_show', {id: order.id}) }}" class="btn btn-sm btn-outline-primary">
                                 Ver detalle
                             </a>

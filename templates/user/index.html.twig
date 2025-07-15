@@ -3,16 +3,17 @@
 {% block title %}Usuarios{% endblock %}
 
 {% block body %}
-    <h1>Usuarios</h1>
+    <h1 class="mb-4">Usuarios</h1>
+    <a href="{{ path('app_user_new') }}" class="btn btn-outline-primary btn-sm mb-3"><i class="bi bi-plus-circle"></i> Añadir nuevo Usuario</a>
 
-    <table class="table">
-        <thead>
+    <table class="table table-hover table-bordered align-middle">
+        <thead class="table-light">
             <tr>
                 <th>Id</th>
                 <th>Email</th>
                 <th>Roles</th>
                 <th>Password</th>
-                <th>Actions</th>
+                <th class="text-center">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -23,8 +24,8 @@
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
                 <td>{{ user.password }}</td>
                 <td>
-                    <a href="{{ path('app_user_show', {'id': user.id}) }}" class="btn btn-outline-primary btn-sm">show</a>
-                    <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-outline-primary btn-sm">edit</a>
+                    <a href="{{ path('app_user_show', {'id': user.id}) }}" class="btn btn-outline-primary btn-sm">Ver</a>
+                    <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-outline-primary btn-sm">Editar</a>
                 </td>
             </tr>
         {% else %}
@@ -35,5 +36,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_user_new') }}" class="btn btn-outline-primary btn-sm">Create new</a>
+
 {% endblock %}

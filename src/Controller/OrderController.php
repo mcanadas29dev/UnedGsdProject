@@ -19,10 +19,13 @@ class OrderController extends AbstractController
             $user = $this->getUser();
 
             //$orders = $orderRepository->findBy(['user' => $user], ['createdAt' => 'DESC']);
-            $orders = $orderRepository->findAll();
+            //$orders = $orderRepository->findAll();
+            $orders = $orderRepository->findAllWithUser();
             return $this->render('order/index.html.twig', [
                 'orders' => $orders,
             ]);
+
+            
         }
 
     // En OrderController.php

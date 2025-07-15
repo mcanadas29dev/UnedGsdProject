@@ -5,23 +5,23 @@
 {% block body %}
 <h1 class="mb-4">Categorías</h1>
 
-<form method="get" class="mb-3">
-    <div class="input-group">
+<a href="{{ path('categories_new') }}" class="btn btn-outline-primary btn-sm mb-3"><i class="bi bi-plus-circle"></i> Nueva Categoría</a>
+
+<form method="get" class="mb-3 d-flex justify-content-end">
+    <div class="input-group input-group-sm" style="max-width: 300px;">
         <input type="text" name="find_categorie" class="form-control" placeholder="Buscar categoría" value="{{ find_categorie }}">
         <button class="btn btn-outline-secondary" type="submit">Buscar</button>
     </div>
 </form>
 
-<a href="{{ path('categories_new') }}" class="btn btn-primary mb-3">Nueva Categoría</a>
-
-<table class="table table-striped">
-    <thead>
+<table class="table table-hover table-bordered align-middle">
+    <thead class="table-light">
         <tr>
             <th>Id</th>
             <th>Nombre</th>
             <th>Slug</th>
             <th>Padre</th>
-            <th>Acciones</th>
+            <th class="text-center">Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -31,14 +31,24 @@
                 <td>{{ category.name }}</td>
                 <td>{{ category.slug }}</td>
                 <td>{{ category.parent ? category.parent.name : '-' }}</td>
+                {#}
                 <td>
-                    <a href="{{ path('categories_show', {id: category.id}) }}" class="btn btn-sm btn-info">Ver</a>
-                    <a href="{{ path('categories_edit', {id: category.id}) }}" class="btn btn-sm btn-warning">Editar</a>
+                    <a href="{{ path('categories_show', {id: category.id}) }}" class="btn btn-sm btn-outline-info">Ver</a>
+                    <a href="{{ path('categories_edit', {id: category.id}) }}" class="btn btn-sm btn-outline-warning">Editar</a>
                     <form method="post" action="{{ path('categories_delete', {id: category.id}) }}" style="display:inline-block;" onsubmit="return confirm('¿Seguro que quieres eliminar esta categoría?');">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
-                        <button class="btn btn-sm btn-danger">Eliminar</button>
+                        <button class="btn btn-sm btn-outline-danger">Eliminar</button>
+                    </form>
+                </td> #}
+                <td class="text-center">
+                    <a href="{{ path('categories_show', {id: category.id}) }}" class="btn btn-sm btn-outline-primary">Ver</a>
+                    <a href="{{ path('categories_edit', {id: category.id}) }}" class="btn btn-sm btn-outline-primary">Editar</a>
+                    <form method="post" action="{{ path('categories_delete', {id: category.id}) }}" style="display:inline-block;" onsubmit="return confirm('¿Seguro que quieres eliminar esta categoría?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+                        <button class="btn btn-sm btn-outline-primary">Eliminar</button>
                     </form>
                 </td>
+
             </tr>
         {% else %}
             <tr>

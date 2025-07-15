@@ -7,7 +7,7 @@
 
 {% if cartItems is empty %}
     <p>No tienes productos en el carrito.</p>
-    <a href="{{ path('app_home') }}" class="btn btn-primary mt-3">Seguir comprando</a>
+    <a href="{{ path('app_home') }}" class="btn btn-warning mt-3">Seguir comprando</a>
   
 {% else %}
     <table class="table table-hover">
@@ -45,7 +45,7 @@
     <div class="d-flex justify-content-between">
         <a href="{{ path('cart_clear') }}" class="btn btn-outline-danger">Vaciar carrito</a>
 
-        <a href="{{ path('cart_checkout') }}" class="btn btn-success">Finalizar compra</a>
+        <a href="{{ path('cart_checkout') }}" class="btn btn-warning">Finalizar compra</a>
     </div>
 {% endif %}
 {% endblock %}

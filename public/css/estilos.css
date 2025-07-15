@@ -12,3 +12,27 @@
 .uk-parent > a {
     cursor: pointer;
 }
+
+
+/* nav  link */
+
+.nav-link {
+    position: relative;
+    display: inline-block;
+    transition: color 0.3s ease;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0.1em;
+    width: 0;
+    height: 1px;
+    background-color: currentColor;
+    transition: width 0.4s ease-in-out;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}

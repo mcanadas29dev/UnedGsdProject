@@ -16,6 +16,14 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
+    public function findAllWithUser(): array
+    {
+        return $this->createQueryBuilder('o')
+            ->leftJoin('o.user', 'u')
+            ->addSelect('u')
+            ->getQuery()
+            ->getResult();
+    }
     //    /**
     //     * @return Order[] Returns an array of Order objects
     //     */

@@ -5,7 +5,7 @@
 {% block body %}
 <h1 class="mb-4">Listado de Productos</h1>
 
-<a href="{{ path('product_new') }}" class="btn btn-success mb-3">
+<a href="{{ path('product_new') }}" class="btn btn-outline-primary btn-sm mb-3">
     <i class="bi bi-plus-circle"></i> Añadir nuevo producto
 </a>
 
@@ -27,14 +27,14 @@
             <td>{{ product.price }} €</td>
             <td>{{ product.category.name }}</td>
             <td class="text-center">
-                <a href="{{ path('product_show', {'id': product.id}) }}" class="btn btn-sm btn-primary">
+                <a href="{{ path('product_show', {'id': product.id}) }}" class="btn btn-sm btn-outline-info">
                     <i class="bi bi-eye"></i>
                 </a>
-                <a href="{{ path('product_edit', {'id': product.id}) }}" class="btn btn-sm btn-warning">
+                <a href="{{ path('product_edit', {'id': product.id}) }}" class="btn btn-sm btn-outline-warning">
                     <i class="bi bi-pencil-square"></i>
                 </a>
                 {{ include('product/_delete_form.html.twig', {'product': product}) }}
-                <a href="{{ path('cart_add', {id: product.id}) }}" class="btn btn-sm btn-primary">Añadir al carrito</a>
+                <a href="{{ path('cart_add', {id: product.id}) }}" class="btn btn-sm btn-warning">Añadir al carrito</a>
             </td>
         </tr>
     {% else %}
