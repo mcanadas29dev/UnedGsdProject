@@ -3,7 +3,10 @@
 {% block title %}Mis Pedidos - Mi Tienda{% endblock %}
 
 {% block body %}
-<h1 class="mb-4">Mis Pedidos</h1>
+
+{% block tituloAlmacen %}
+    <h1 class="mb-4">{{ tituloAlmacen }}</h1>
+{% endblock %}
 
 {% if orders is empty %}
     <div class="alert alert-info">No tienes pedidos realizados.</div>
@@ -29,9 +32,17 @@
                         <td>{{ order.status.name }}</td>
                         <td>{{ order.items|length }}</td>
                         <td class="text-center">
-                            <a href="{{ path('app_order_show', {id: order.id}) }}" class="btn btn-sm btn-outline-primary">
-                                Ver detalle
-                            </a>
+                            {% if is_granted('ROLE_PICKER') %}
+                                <a href="{{ path('app_order_show_store', {id: order.id}) }}" class="btn btn-sm btn-outline-primary">
+                                    Ver pedido
+                                </a>
+                            {% else %}
+                                <a href="{{ path('app_order_show', {id: order.id}) }}" class="btn btn-sm btn-outline-primary">
+                                    Ver detalle
+                                </a>
+                            {% endif %}
+
+
                         </td>
                     </tr>
                 {% endfor %}

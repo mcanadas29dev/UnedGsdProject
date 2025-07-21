@@ -1,9 +1,9 @@
 <?php
-// src/Controller/OrderController.php
 
 namespace App\Controller;
 
 use App\Repository\OrderRepository;
+use App\Entity\Order;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,35 +11,88 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class OrderController extends AbstractController
 {
-    #[Route('/orders', name: 'app_order_index')]
-    #[IsGranted('ROLE_USER')] // Solo usuarios logueados
-    public function index(OrderRepository $orderRepository): Response
-        {
-            // Obtener pedidos del usuario actual
-            $user = $this->getUser();
+    // Acceso para usuarios normales (NO admins)
+    #[Route('/orders', name: 'app_order_user')]
+    #[IsGranted('ROLE_USER')]
+    public function userOrders(OrderRepository $orderRepository): Response
+    {
+        $user = $this->getUser();
 
-            //$orders = $orderRepository->findBy(['user' => $user], ['createdAt' => 'DESC']);
-            //$orders = $orderRepository->findAll();
-            $orders = $orderRepository->findAllWithUser();
-            return $this->render('order/index.html.twig', [
-                'orders' => $orders,
-            ]);
+        if (!$user || $this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('Solo los usuarios pueden acceder a esta página.');
+        }
 
+        $orders = $orderRepository->findBy(
+            ['user' => $user],
+            ['createdAt' => 'DESC'],
             
+        );
+
+        return $this->render('order/index.html.twig', [
+            'orders' => $orders,
+            'tituloAlmacen' => 'Mis Pedidos',
+        ]);
+    }
+
+    // Acceso para admins para ver todos los pedidos
+    #[Route('/admin/orders', name: 'app_order_index')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function adminOrders(OrderRepository $orderRepository): Response
+    {
+        $orders = $orderRepository->findAll();
+
+        return $this->render('order/index.html.twig', [
+            'orders' => $orders,
+            'tituloAlmacen' => 'Listado de Pedidos',
+        ]);
+    }
+
+    // Acceso para Personal de almacén Pickers para ver los pedidos pagados que tienen que preparar.
+    #[Route('/almacen/orders', name: 'app_order_storage')]
+    #[IsGranted('ROLE_PICKER')]
+    public function pickerOrders(OrderRepository $orderRepository): Response
+    {
+        $orders = $orderRepository->findPaidOrders();
+
+        return $this->render('order/index.html.twig', [
+            'orders' => $orders,
+            'tituloAlmacen' => 'Pedidos Pendientes',
+        ]);
+       
+    }
+
+    // Acceso para Personal de almacén Pickers para ver los detalles de lospedidos pagados que tienen que preparar.
+    #[Route('/almacen/orders/{id}', name: 'app_order_show_store')]
+    #[IsGranted('ROLE_PICKER')]
+    public function pickerOrdersshow(Order $order): Response
+    {
+        $user = $this->getUser();
+
+        // Solo puede acceder el dueño del pedido o un admin
+        if ($order->getUser() !== $user && !$this->isGranted('ROLE_PICKER')) {
+            throw $this->createAccessDeniedException('No puedes ver este pedido.');
         }
 
-    // En OrderController.php
+        return $this->render('order/detail.html.twig', [
+            'order' => $order,
+        ]);
+       
+    }
 
+    // Detalle de pedido con control de acceso
     #[Route('/orders/{id}', name: 'app_order_show')]
-    //#[IsGranted('ROLE_USER')]
-    public function show(\App\Entity\Order $order): Response
-        {
-            // Verifica que el pedido pertenezca al usuario actual
-            //$this->denyAccessUnlessGranted('view', $order);
+    #[IsGranted('ROLE_USER')]
+    public function show(Order $order): Response
+    {
+        $user = $this->getUser();
 
-            return $this->render('order/detail.html.twig', [
-                'order' => $order,
-            ]);
+        // Solo puede acceder el dueño del pedido o un admin
+        if ($order->getUser() !== $user && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('No puedes ver este pedido.');
         }
 
+        return $this->render('order/detail.html.twig', [
+            'order' => $order,
+        ]);
+    }
 }

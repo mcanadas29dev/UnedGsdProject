@@ -19,6 +19,7 @@ class UserType extends AbstractType
                     'choices'  => [
                         'Usuario' => 'ROLE_USER',
                         'Administrador' => 'ROLE_ADMIN',
+                        'Picker' => 'ROLE_PICKER',
                     ],
                     'expanded' => true,   // muestra como checkboxes
                     'multiple' => true,   // permite seleccionar más de uno

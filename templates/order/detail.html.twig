@@ -28,6 +28,11 @@
         {% endfor %}
     </tbody>
 </table>
+{% if is_granted('ROLE_PICKER') %}
+     <a href="{{ path('app_order_storage') }}" class="btn btn-secondary mt-3">Volver</a>
+{% else %}
+    <a href="{{ path('app_order_user') }}" class="btn btn-secondary mt-3">Volver</a>
+{% endif %}
 
-<a href="{{ path('app_order_index') }}" class="btn btn-secondary mt-3">Volver a pedidos</a>
+
 {% endblock %}

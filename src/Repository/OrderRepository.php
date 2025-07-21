@@ -24,6 +24,17 @@ class OrderRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findPaidOrders(): array
+    {
+        return $this->createQueryBuilder('o')
+            ->join('o.status', 's')
+            ->andWhere('s.name = :status')
+            ->setParameter('status', 'Pagado')  // asegúrate que el nombre coincida exactamente
+            ->orderBy('o.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
     //    /**
     //     * @return Order[] Returns an array of Order objects
     //     */
