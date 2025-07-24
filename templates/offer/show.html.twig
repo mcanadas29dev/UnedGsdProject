@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Detalle de Oferta{% endblock %}
+
+{% block body %}
+<h1 class="mb-4">Detalle de Oferta</h1>
+
+<table class="table table-bordered">
+    <tr>
+        <th>ID</th>
+        <td>{{ offer.id }}</td>
+    </tr>
+    <tr>
+        <th>Producto</th>
+        <td>{{ offer.product.name }}</td>
+    </tr>
+    <tr>
+        <th>Precio Descuento</th>
+        <td>{{ offer.offerPrice }} €</td>
+    </tr>
+    <tr>
+        <th>Inicio</th>
+        <td>{{ offer.startDate|date('d/m/Y') }}</td>
+    </tr>
+    <tr>
+        <th>Fin</th>
+        <td>{{ offer.endDate|date('d/m/Y') }}</td>
+    </tr>
+</table>
+
+<a href="{{ path('offer_edit', {id: offer.id}) }}" class="btn btn-outline-primary">Editar</a>
+<form method="post" action="{{ path('offer_delete', {id: offer.id}) }}" style="display:inline-block" onsubmit="return confirm('¿Seguro que quieres eliminar esta oferta?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ offer.id) }}">
+    <button class="btn btn-outline-danger">Eliminar</button>
+</form>
+<a href="{{ path('offer_index_admin') }}" class="btn btn-link">Volver al listado</a>
+{% endblock %}

@@ -32,19 +32,21 @@ function mostrarAside(ele){
 
 document.addEventListener("DOMContentLoaded", function () {
     // Usa querySelectorAll para obtener todos los elementos con clase 'abc'
+    //let elementoDiv1 = document.getElementById("abc1");
+    
     let elementosDiv = document.querySelectorAll('.abc');
 
     // Recorre todos los elementos
     elementosDiv.forEach(function (elemento) {
         elemento.addEventListener('mouseover', function () {
-            elemento.classList.remove('abc');
+            
             elemento.classList.add('hover-activo');
            
         });
 
         elemento.addEventListener('mouseout', function () {
             elemento.classList.remove('hover-activo');
-            elemento.classList.add('abc');
+            
         });
     });
 });

@@ -27,6 +27,10 @@ class Product
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageName = null;
+
+    // Getters y Setters ********************************
     public function getId(): ?int
     {
         return $this->id;
@@ -77,6 +81,17 @@ class Product
     {
         $this->category = $category;
 
+        return $this;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
+
+    public function setImageName(?string $imageName): static
+    {
+        $this->imageName = $imageName;
         return $this;
     }
 }

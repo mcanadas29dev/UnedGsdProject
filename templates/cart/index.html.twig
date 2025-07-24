@@ -24,6 +24,23 @@
             {% for item in cartItems %}
                 <tr>
                     <td>{{ item.product.name }}</td>
+                    <td>
+                        {% if item.originalPrice is defined %}
+                            <span class="text-muted text-decoration-line-through">{{ item.originalPrice }} €</span>
+                            <span class="text-danger fw-bold">{{ item.price }} €</span>
+                        {% else %}
+                            {{ item.price }} €
+                        {% endif %}
+                    </td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.price * item.quantity }} €</td>
+                </tr>
+            {% endfor %}
+
+            {#
+            {% for item in cartItems %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
                     <td>{{ item.product.price|number_format(2, ',', '.') }} €</td>
                     <td>{{ item.quantity }}</td>
                     <td>{{ item.total|number_format(2, ',', '.') }} €</td>
@@ -31,7 +48,7 @@
                         <a href="{{ path('cart_remove', {id: item.product.id}) }}" class="btn btn-sm btn-danger">Eliminar</a>
                     </td>
                 </tr>
-            {% endfor %}
+            {% endfor %} #}
         </tbody>
         <tfoot>
             <tr>

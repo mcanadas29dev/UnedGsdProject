@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Repository\ProductRepository;
 use App\Repository\OrderStatusRepository;
+use App\Repository\OfferRepository;
 use App\Service\CartService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +21,7 @@ use App\Entity\Product;
 use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Entity\OrderStatus;
+use App\Entity\Offer;
 use Doctrine\ORM\EntityManagerInterface;
 
 #[Route('/cart', name: 'cart_')]
@@ -27,11 +29,29 @@ class CartController extends AbstractController
 {
     
     #[Route('/', name: 'index')]
-    public function index(CartService $cartService): Response
+    public function index(CartService $cartService, OfferRepository $offerRepository): Response
     {
+        $cartItems = $cartService->getCart();
+        $now = new \DateTimeImmutable();
+
+        foreach ($cartItems as &$item) {
+            $product = $item['product'];
+            $offer = $offerRepository->findActiveForProduct($product, $now);
+
+            if ($offer) {
+                $item['originalPrice'] = $product->getPrice();
+                $item['price'] = $offer->getOfferPrice();
+            } else {
+                $item['price'] = $product->getPrice();
+            }
+        }
+
         return $this->render('cart/index.html.twig', [
-            'cartItems' => $cartService->getCart(),
-            'total' => $cartService->getTotal(),
+            //'cartItems' => $cartService->getCart(),
+            //'total' => $cartService->getTotal(),
+            'cartItems' => $cartItems,
+            'total' => array_reduce($cartItems, fn($total, $item) => $total + ($item['price'] * $item['quantity']), 0),
+            
         ]);
     }
 
@@ -44,8 +64,9 @@ class CartController extends AbstractController
 
     // Se añade de la Tienda
     #[Route('/carrito/agregar/{id}', name: 'app_cart_add', methods: ['POST'])]
-        public function addToCart(Request $request, Product $product, CartService $cartService): Response
+    public function addToCart(Request $request, Product $product, CartService $cartService): Response
         {
+            
             $quantity = $request->request->getInt('quantity', 1);
             $cartService->add($product->getId(), $quantity);
 
@@ -68,12 +89,14 @@ class CartController extends AbstractController
     }
 
     #[Route('/checkout', name: 'checkout')]
-    public function checkout(Request $request, CartService $cartService): Response
+    public function checkout(Request $request, CartService $cartService, OfferRepository $offerRepository): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
         $cartItems = $cartService->getCart();
         $lineItems = [];
+        $now = new \DateTimeImmutable(); 
+        /*
         foreach ($cartItems as $item) {
             $lineItems[] = [
                 'price_data' => [
@@ -84,6 +107,26 @@ class CartController extends AbstractController
                     ],
                 ],
                 'quantity' => $item['quantity'],
+            ];
+        } */
+        foreach ($cartItems as $item) {
+            $product = $item['product'];
+            $quantity = $item['quantity'];
+
+            // Usa el método del repositorio
+            $offer = $offerRepository->findActiveForProduct($product, $now);
+
+            $price = $offer ? $offer->getOfferPrice() : $product->getPrice();
+
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'eur',
+                    'unit_amount' => (int)($price * 100),
+                    'product_data' => [
+                        'name' => $product->getName(),
+                    ],
+                ],
+                'quantity' => $quantity,
             ];
         }
         $session = Session::create([
@@ -100,7 +143,12 @@ class CartController extends AbstractController
     }
 
     #[Route('/success', name: 'success')]
-    public function success(Request $request, CartService $cartService, EntityManagerInterface $em, OrderStatusRepository $orderStatusRepo): Response
+    public function success(
+        Request $request, 
+        CartService $cartService, 
+        EntityManagerInterface $em, 
+        OrderStatusRepository $orderStatusRepo,
+        OfferRepository $offerRepository): Response
         {
             
             $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -127,11 +175,16 @@ class CartController extends AbstractController
             $order->setCreatedAt(new \DateTimeImmutable());
 
             $total = 0;
-
+            $now = new \DateTimeImmutable();
             foreach ($cartItems as $item) {
+
                 $product = $item['product'];
                 $quantity = $item['quantity'];
-                $price = $product->getPrice();
+
+                $offer = $offerRepository->findActiveForProduct($product, $now);
+                $price = $offer ? $offer->getOfferPrice() : $product->getPrice();
+
+                //$price = $product->getPrice();
 
                 $orderItem = new OrderItem();
                 $orderItem->setOrder($order);

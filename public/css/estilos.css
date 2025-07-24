@@ -11,17 +11,24 @@
 /* Ajustes adicionales para sidebar y layout */
 .uk-parent > a {
     cursor: pointer;
+     
 }
 
 
 /* nav  link */
 
+
 .nav-link {
     position: relative;
     display: inline-block;
     transition: color 0.3s ease;
+    color: grey !important;
+    
 }
 
+.nav-link:hover {
+    color:green !important;
+}
 .nav-link::after {
     content: '';
     position: absolute;
@@ -31,20 +38,35 @@
     height: 1px;
     background-color: currentColor;
     transition: width 0.4s ease-in-out;
+    color: green !important;
 }
 
 .nav-link:hover::after {
     width: 100%;
+    
 }
 div > aside> .abc {
         transition: transform 0.3s ease, box-shadow 0.3s ease ;
         transform: scale(1);
         box-shadow: none;
         cursor: default;
+        
     }
 
 div > aside> .abc.hover-activo {
-        transform: scale(1.05);
+        
+        transform: scale(1.03);
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         cursor: pointer;
+}
+
+.carousel-img {
+    height: 350px !important;      /* Altura fija recomendada */
+    object-fit: cover !important;  /* Rellenar el contenedor sin deformar */
+   
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(1) !important ; /* Cambia blanco por negro */
 }

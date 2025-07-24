@@ -30,7 +30,7 @@
                     <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_tienda') }}">Tienda</a></li>
                     <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_best_selling') }}">Lo Más Vendido</a></li>
                     <li class="nav-item"><a class="nav-link text-secondary" href="#">Últimas novedades</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="#">Ofertas</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('offer_index') }}">Ofertas</a></li>
                     {% if is_granted('ROLE_USER') and not is_granted('ROLE_ADMIN') and not is_granted('ROLE_PICKER') %}
                         <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_order_user') }}">Pedidos</a></li>
                     {% endif %}
@@ -49,6 +49,7 @@
                                 <li><a class="dropdown-item" href="{{ path('app_order_index') }}">Pedidos</a></li>
                                 <li><a class="dropdown-item" href="{{ path('product_index') }}">Productos</a></li>
                                 <li><a class="dropdown-item" href="{{ path('categories_list') }}">Categorías</a></li>
+                                <li><a class="dropdown-item" href="{{ path('offer_index_admin') }}">Ofertas</a></li>
                                 <!-- Agrega más enlaces según necesites -->
                             </ul>
                         </li>

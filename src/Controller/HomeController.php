@@ -2,6 +2,7 @@
 // src/Controller/HomeController.php
 namespace App\Controller;
 
+use Symfony\Component\Finder\Finder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpClient\HttpClient;
@@ -32,7 +33,19 @@ class HomeController extends AbstractController
             'faostat_items' => $faostatItems
         ]);
             */
-        return $this->render('home/index.html.twig'); // plantilla que extiende base.html.twig
+        
+        //return $this->render('home/index.html.twig'); // plantilla que extiende base.html.twig 
+        $finder = new Finder();
+        $finder->files()->in($this->getParameter('kernel.project_dir') . '/public/images/productos');
+
+        $images = [];
+        foreach ($finder as $file) {
+            $images[] = 'productos/' . $file->getFilename();
+        }
+
+        return $this->render('home/index.html.twig', [
+            'images' => $images,
+        ]);
     }
 
     #[Route('/categories', name: 'app_tienda')]

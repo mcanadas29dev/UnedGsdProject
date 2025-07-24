@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar Oferta{% endblock %}
+
+{% block body %}
+<h1 class="mb-4">Editar Oferta</h1>
+
+{{ form_start(form) }}
+    {{ form_row(form.product) }}
+    {{ form_row(form.offerPrice) }}
+    {{ form_row(form.startDate) }}
+    {{ form_row(form.endDate) }}
+    <button class="btn btn-outline-primary mt-3">Actualizar</button>
+{{ form_end(form) }}
+
+<a href="{{ path('offer_index_admin') }}" class="btn btn-link mt-3">Volver al listado</a>
+{% endblock %}
