@@ -12,8 +12,14 @@ class StoreController extends AbstractController
     #[Route('/tienda', name: 'app_tienda')]
     public function index(ProductRepository $productRepository): Response
     {
+        /*
         $products = $productRepository->findAll();
 
+        return $this->render('store/index.html.twig', [
+            'products' => $products,
+        ]);
+        */
+        $products = $productRepository->findProductsNotInOffer();
         return $this->render('store/index.html.twig', [
             'products' => $products,
         ]);

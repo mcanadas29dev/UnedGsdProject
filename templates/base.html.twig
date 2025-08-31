@@ -59,9 +59,10 @@
 
             <div class="d-flex ms-auto">
                 {% if app.user %}
-                    <a href="{{ path('app_logout') }}" class="btn btn-outline-success me-3" aria-label="Cerrar sesión" title="Salir">
+                    <a href="{{ path('app_logout') }}" class="btn btn-outline-success me-3" aria-label="Cerrar sesión" title={{ app.user.email }} class="small">
                         <i class="bi bi-box-arrow-right"></i>
-                        {{ app.user.email }} {# o email, o el campo que uses #}
+                        Salir
+                        {#{{ app.user.email }} #} {# o email, o el campo que uses #}
                     </a>
                 {% else %}
                     <a href="{{ path('app_login') }}" class="btn btn-outline-success me-3" aria-label="Login" title="Entrar">

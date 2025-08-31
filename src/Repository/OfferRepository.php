@@ -33,7 +33,7 @@ class OfferRepository extends ServiceEntityRepository
             ->andWhere('o.startDate <= :now')
             ->andWhere('o.endDate >= :now')
             ->setParameter('now', $now)
-            ->orderBy('o.startDate', 'DESC')
+            ->orderBy('o.startDate', 'ASC')
             ->getQuery()
             ->getResult();
     }

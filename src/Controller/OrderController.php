@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use Knp\Component\Pager\PaginatorInterface;
 use App\Repository\OrderRepository;
 use App\Entity\Order;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -35,6 +37,7 @@ class OrderController extends AbstractController
     }
 
     // Acceso para admins para ver todos los pedidos
+    /*
     #[Route('/admin/orders', name: 'app_order_index')]
     #[IsGranted('ROLE_ADMIN')]
     public function adminOrders(OrderRepository $orderRepository): Response
@@ -44,6 +47,35 @@ class OrderController extends AbstractController
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
             'tituloAlmacen' => 'Listado de Pedidos',
+        ]);
+    } */
+
+    // Pedidos con paginación 
+
+    #[Route('/admin/orders', name: 'app_order_index')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function adminOrders(OrderRepository $orderRepository, PaginatorInterface $paginator, Request $request): Response
+    {
+        $query = $request->query->get('find_order');
+        $qb = $orderRepository->createQueryBuilder('o')
+            ->where('o.id IS NOT NULL')
+            ->orderBy('o.createdAt', 'DESC'); // Ordenar por fecha más reciente
+        
+        if ($query) {
+            $qb->andWhere('o.id LIKE :search OR o.user.email LIKE :search OR o.status LIKE :search')
+                ->setParameter('search', '%' . $query . '%');
+        }
+        
+        $pagination = $paginator->paginate(
+            $qb, // QueryBuilder
+            $request->query->getInt('page', 1), // Página actual, por defecto 1
+            10 // Elementos por página
+        );
+        
+        return $this->render('order/index.html.twig', [
+            'orders' => $pagination,
+            'tituloAlmacen' => 'Listado de Pedidos',
+            'find_order' => $query
         ]);
     }
 
