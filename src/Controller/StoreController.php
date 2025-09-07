@@ -24,4 +24,8 @@ class StoreController extends AbstractController
             'products' => $products,
         ]);
     }
+
+    ## INCLUIR EL /tienda para que muestre las categorias como tarjeta y con paginacion
+    ## y haciendo click en la tarjeta de una categoria muestren los articulos tal como 
+    ## estan ahora 
 }

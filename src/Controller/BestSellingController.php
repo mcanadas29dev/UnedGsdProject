@@ -24,9 +24,20 @@ class BestSellingController extends AbstractController
             $results = $query->getResult();
 
             // Cada elemento de $results es un array con índice 0 => Product, 'totalSold' => cantidad vendida
-
+            /*
             return $this->render('store/best_selling.html.twig', [
                 'topProducts' => $results,
+            ]);
+            */
+            // Extraer datos para el gráfico
+            $labels = array_column($results, 'name');
+            $data = array_column($results, 'totalSold');
+            $total = array_sum($data);
+            return $this->render('store/best_selling.html.twig', [
+                'topProducts' => $results,
+                'labels' => $labels,
+                'data' => $data,
+                'total' => $total,
             ]);
         }
 

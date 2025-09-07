@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Novedades - GreenHarvest{% endblock %}
+
+{% block body %}
+<div class="mb-5">
+    <h2 class="mb-4">Novedades</h2>
+
+    {% if articles is defined and articles is not empty %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for article in articles %}
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm rounded-3">
+                        {% if article.urlToImage is defined and article.urlToImage %}
+                            <img src="{{ article.urlToImage }}" class="card-img-top rounded-top" alt="Imagen de {{ article.title }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{{ article.url }}" target="_blank" class="text-decoration-none text-dark fw-bold">
+                                    {{ article.title }}
+                                </a>
+                            </h5>
+                            {% if article.publishedAt is defined %}
+                                <p class="text-muted small mb-2">
+                                    {{ article.publishedAt|date("d/m/Y") }}
+                                </p>
+                            {% endif %}
+                            {% if article.description is defined %}
+                                <p class="card-text text-muted">
+                                    {{ article.description|slice(0, 120) ~ '...' }}
+                                </p>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <a href="{{ article.url }}" target="_blank" class="btn btn-sm btn-outline-success rounded-pill">
+                                Leer más
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">No hay novedades disponibles en este momento.</p>
+    {% endif %}
+</div>
+{% endblock %}

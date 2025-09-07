@@ -5,14 +5,25 @@
 {% block body %}
 <h1 class="mb-4">Productos más vendidos</h1>
 
+{# ✅ Contador global animado #}
+<div class="text-center my-5">
+    <h5>Total de unidades vendidas</h5>
+    <p id="total-counter" class="display-4 fw-bold text-success">0</p>
+</div>
+
+<div class="mb-5">
+    <canvas id="bestSellingChart"></canvas>
+</div>
+
 <div class="row row-cols-1 row-cols-md-4 g-4">
     {% for product in topProducts %}
         <div class="col">
             <div class="card h-100">
-                {#<img src="{{ asset(product.imagePath) }}" class="card-img-top" alt="{{ product.name }}"> #}
                 <div class="card-body">
                     <h5 class="card-title">{{ product.name }}</h5>
-                    <p class="card-text fw-bold text-success">{{ product.totalSold|number_format(2, '.', ',') }} €</p>
+                    <p class="card-text fw-bold text-success">
+                        <span class="product-counter" data-target="{{ product.totalSold }}">0</span> Uds
+                    </p>
                 </div>
                 <div class="card-footer text-center">
                     <a href="#" class="btn btn-sm btn-outline-primary">
@@ -25,4 +36,63 @@
         <p>No hay productos vendidos aún.</p>
     {% endfor %}
 </div>
+
+{# Script del gráfico #}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script> 
+    // ✅ Gráfico
+    const ctx = document.getElementById('bestSellingChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ labels|json_encode|raw }},
+            datasets: [{
+                label: 'Unidades Vendidas',
+                data: {{ data|json_encode|raw }},
+                borderWidth: 1,
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 }
+                }
+            }
+        }
+    });
+
+    // ✅ Función de animación
+    function animateCounter(element, target) {
+        let count = 0;
+        let speed = Math.ceil(target / 100);
+        let interval = setInterval(() => {
+            count += speed;
+            if(count >= target) {
+                count = target;
+                clearInterval(interval);
+            }
+            element.textContent = count.toLocaleString();
+        }, 5);
+    }
+
+    // ✅ Contador global
+    document.addEventListener("DOMContentLoaded", function() {
+        let totalCounter = document.getElementById("total-counter");
+        let targetTotal = {{ total|default(0) }};
+        animateCounter(totalCounter, targetTotal);
+
+        // ✅ Contadores por producto
+        document.querySelectorAll(".product-counter").forEach(counter => {
+            let target = parseInt(counter.dataset.target);
+            animateCounter(counter, target);
+        });
+    });
+</script>
 {% endblock %}

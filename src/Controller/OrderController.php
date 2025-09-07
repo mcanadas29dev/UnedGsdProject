@@ -16,7 +16,39 @@ class OrderController extends AbstractController
     // Acceso para usuarios normales (NO admins)
     #[Route('/orders', name: 'app_order_user')]
     #[IsGranted('ROLE_USER')]
-    public function userOrders(OrderRepository $orderRepository): Response
+    public function userOrders(OrderRepository $orderRepository, PaginatorInterface $paginator, Request $request): Response
+    {
+        $user = $this->getUser();
+        $query = $request->query->get('find_order');
+        // Construimos un QueryBuilder en lugar de usar findBy()
+        $qb = $orderRepository->createQueryBuilder('o')
+        ->andWhere('o.user = :user')
+        ->setParameter('user', $user)
+        ->orderBy('o.createdAt', 'DESC');
+        
+        if ($query) {
+            $qb->andWhere('o.id LIKE :search OR o.user.email LIKE :search OR o.status LIKE :search')
+                ->setParameter('search', '%' . $query . '%');
+        }
+        
+        $pagination = $paginator->paginate(
+            $qb, // QueryBuilder
+            $request->query->getInt('page', 1), // Página actual, por defecto 1
+            10 // Elementos por página
+        );
+        
+        return $this->render('order/index.html.twig', [
+            'orders' => $pagination,
+            'tituloAlmacen' => 'Listado de Pedidos de ' . $user->getUserIdentifier(),
+            'find_order' => $query
+        ]);
+    }
+    
+
+    // Acceso para usuarios normales (NO admins)
+    #[Route('/orders_original', name: 'app_order_user_original')]
+    #[IsGranted('ROLE_USER')]
+    public function userOrders_original(OrderRepository $orderRepository): Response
     {
         $user = $this->getUser();
 
@@ -82,15 +114,29 @@ class OrderController extends AbstractController
     // Acceso para Personal de almacén Pickers para ver los pedidos pagados que tienen que preparar.
     #[Route('/almacen/orders', name: 'app_order_storage')]
     #[IsGranted('ROLE_PICKER')]
-    public function pickerOrders(OrderRepository $orderRepository): Response
-    {
-        $orders = $orderRepository->findPaidOrders();
-
+    public function pickerOrders(OrderRepository $orderRepository, PaginatorInterface $paginator, Request $request): Response
+    { 
+        $query = $request->query->get('find_order');
+        $qb = $orderRepository->createQueryBuilder('o')
+            ->where('o.id IS NOT NULL')
+            ->orderBy('o.createdAt', 'DESC'); // Ordenar por fecha más reciente
+        
+        if ($query) {
+            $qb->andWhere('o.id LIKE :search OR o.user.email LIKE :search OR o.status LIKE :search')
+                ->setParameter('search', '%' . $query . '%');
+        }
+        
+        $pagination = $paginator->paginate(
+            $qb, // QueryBuilder
+            $request->query->getInt('page', 1), // Página actual, por defecto 1
+            10 // Elementos por página
+        );
+        
         return $this->render('order/index.html.twig', [
-            'orders' => $orders,
-            'tituloAlmacen' => 'Pedidos Pendientes',
+            'orders' => $pagination,
+            'tituloAlmacen' => 'Storage - Listado de Pedidos',
+            'find_order' => $query
         ]);
-       
     }
 
     // Acceso para Personal de almacén Pickers para ver los detalles de lospedidos pagados que tienen que preparar.
