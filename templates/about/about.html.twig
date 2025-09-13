@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sobre Nosotros - Mi Tienda{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+  <!-- Encabezado -->
+  <div class="text-center mb-5">
+    <h1 class="fw-bold text-success">🌱 Sobre Nosotros</h1>
+    <p class="lead text-muted">Conoce más sobre nuestra misión, visión y valores</p>
+  </div>
+
+  <!-- Sección historia -->
+  <div class="row align-items-center mb-5">
+    <div class="col-md-6">
+      <!-- <img src="https://source.unsplash.com/600x400/?farm,organic" class="img-fluid rounded-4 shadow" alt="Nuestra historia"> -->
+      <img src="{{ asset('images/cover.png') }}" class="img-fluid rounded-4 shadow" alt="Nuestra historia"/>
+    </div>
+    <div class="col-md-6">
+      <h3 class="text-success">Nuestra historia</h3>
+      <p>
+        Nacimos con la misión de llevar productos frescos, ecológicos y sostenibles 
+        directamente del campo a tu mesa. Creemos en una agricultura que respeta la tierra, 
+        cuida la biodiversidad y garantiza alimentos de calidad para todos.
+      </p>
+    </div>
+  </div>
+
+  <!-- Sección misión / visión -->
+  <div class="row text-center mb-5">
+    <div class="col-md-4">
+      <div class="card border-0 shadow h-100 rounded-4">
+        <div class="card-body p-4">
+          <i class="bi bi-bullseye text-success display-5 mb-3"></i>
+          <h4 class="fw-bold">Misión</h4>
+          <p class="text-muted">
+            Producir y distribuir alimentos ecológicos de la más alta calidad, fomentando una alimentación saludable.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card border-0 shadow h-100 rounded-4">
+        <div class="card-body p-4">
+          <i class="bi bi-eye text-success display-5 mb-3"></i>
+          <h4 class="fw-bold">Visión</h4>
+          <p class="text-muted">
+            Ser referentes en agricultura sostenible, impulsando un modelo responsable con las personas y el medio ambiente.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card border-0 shadow h-100 rounded-4">
+        <div class="card-body p-4">
+          <i class="bi bi-heart text-success display-5 mb-3"></i>
+          <h4 class="fw-bold">Valores</h4>
+          <p class="text-muted">
+            Transparencia, compromiso, respeto por la naturaleza y cercanía con nuestros clientes y productores.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Equipo -->
+  <div class="text-center mb-5">
+    <h3 class="text-success">Nuestro equipo</h3>
+    <p class="text-muted">Personas apasionadas por la tierra y la sostenibilidad</p>
+  </div>
+  <div class="row text-center">
+    <div class="col-md-4 mb-4">
+      <img src="https://source.unsplash.com/200x200/?farmer,portrait" class="rounded-circle shadow mb-3" alt="Miembro equipo">
+      <h5 class="fw-bold">Ana López</h5>
+      <p class="text-muted">Fundadora & Agricultora</p>
+    </div>
+    <div class="col-md-4 mb-4">
+      <img src="https://source.unsplash.com/200x200/?team,portrait" class="rounded-circle shadow mb-3" alt="Miembro equipo">
+      <h5 class="fw-bold">Carlos Pérez</h5>
+      <p class="text-muted">Gestor de Producción</p>
+    </div>
+    <div class="col-md-4 mb-4">
+      <img src="https://source.unsplash.com/200x200/?woman,portrait" class="rounded-circle shadow mb-3" alt="Miembro equipo">
+      <h5 class="fw-bold">Lucía Fernández</h5>
+      <p class="text-muted">Atención al Cliente</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

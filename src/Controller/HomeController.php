@@ -7,11 +7,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\ProductRepository;
 
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(): Response
+    public function index(ProductRepository $productRepository): Response
 
     {   /*
         $httpClient = HttpClient::create();
@@ -35,6 +36,7 @@ class HomeController extends AbstractController
             */
         
         //return $this->render('home/index.html.twig'); // plantilla que extiende base.html.twig 
+        /*
         $finder = new Finder();
         $finder->files()->in($this->getParameter('kernel.project_dir') . '/public/images/productos');
 
@@ -45,6 +47,12 @@ class HomeController extends AbstractController
 
         return $this->render('home/index.html.twig', [
             'images' => $images,
+        ]);
+        */
+        $products = $productRepository->findAll();
+
+        return $this->render('home/index.html.twig', [
+            'products' => $products,
         ]);
     }
 

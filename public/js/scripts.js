@@ -31,8 +31,7 @@ function mostrarAside(ele){
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Usa querySelectorAll para obtener todos los elementos con clase 'abc'
-    //let elementoDiv1 = document.getElementById("abc1");
+    console.log("Empezamos");
     
     let elementosDiv = document.querySelectorAll('.abc');
 

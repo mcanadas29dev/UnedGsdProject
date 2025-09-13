@@ -71,3 +71,60 @@ div > aside> .abc.hover-activo {
     filter: invert(1) !important ; /* Cambia blanco por negro */
 }
 
+
+
+/**************************************/
+    h1,h2,h3 {
+            color: pink !important;
+        }
+        /* Sidebar lateral */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px; /* oculto al inicio */
+            width: 250px;
+            height: 100%;
+            background-color: #212529;
+            color: white;
+            transition: left 0.3s ease;
+            z-index: 1051; /* encima del overlay */
+            padding-top: 60px;
+        }
+        .sidebar.open {
+            left: 0;
+        }
+        .sidebar a {
+            color: #adb5bd;
+            display: block;
+            padding: 12px 20px;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            background-color: #343a40;
+            color: #fff;
+        }
+        .sidebar-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Overlay */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 1050; /* debajo del sidebar */
+        }
+        .sidebar-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }

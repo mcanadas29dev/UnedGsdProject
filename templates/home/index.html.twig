@@ -1,48 +1,97 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inicio - GreenHarvest{% endblock %}
+{% block title %}Inicio - Green Harvest{% endblock %}
 
 {% block body %}
+<div class="container py-5">
 
+  <!-- Hero -->
+  <div class="text-center mb-5">
+    <h1 class="fw-bold text-success">🌿 Bienvenido a Green Harvest</h1>
+    <p class="lead text-muted">
+      Agricultura ecológica y productos frescos, directos del campo a tu mesa
+    </p>
+    <a href="{{ path('app_tienda') }}" class="btn btn-success btn-lg mt-3">
+      <i class="bi bi-cart"></i> Comprar ahora
+    </a>
+  </div>
 
+  <!-- Banner con imagen -->
+  <div class="row align-items-center mb-5">
+    <div class="col-md-6">
+      <img src="{{ asset('images/cover.png') }}" class="img-fluid rounded-4 shadow" alt="Productos Ecológicos"/>
+     
+    </div>
+    <div class="col-md-6">
+      <h3 class="text-success">Nuestra promesa</h3>
+      <p>
+        Te ofrecemos productos 100% ecológicos, cultivados de forma sostenible y respetando la naturaleza. 
+        Cada pedido es preparado con cariño y cuidado para garantizarte frescura y calidad en tu mesa.
+      </p>
+    </div>
+  </div>
 
-        <div class="row">
-            <div class="col-lg-8">
-                <article class="mb-5">
-                <h1 class="mb-3">Título del artículo </h1>
-                <img src="{{ asset('images/cover.png') }}" alt="Imagen destacada" class="img-fluid mb-4 rounded">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec facilisis erat. Vivamus rhoncus, magna at dapibus convallis, libero elit condimentum erat, non condimentum neque purus a urna.</p>
-                <p>Phasellus vulputate nisi nec metus convallis, et commodo urna tincidunt. Donec eu lacus nec lorem hendrerit dignissim.</p>
-                <h2>Subtítulo de sección</h2>
-                <p>Aliquam erat volutpat. Praesent pulvinar varius leo, sed congue tortor bibendum a. Morbi dapibus lacus in felis facilisis, ut malesuada leo efficitur.</p>
-                <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;</p>
-                </article>
-            </div>
-
-            <aside class="col-lg-4">
-                <div class="p-4 mb-4 bg-light rounded abc" id="abc1">
-    
-                    <h4 class="mb-3">Acerca del autor</h4>
-                    <p>Este es un ejemplo de sección “Acerca del autor”, típica en blogs de WordPress.</p>
-                </div>
-                <div class="p-4 mb-4 bg-light rounded abc">
-                    <h4 class="mb-3">Entradas recientes</h4>
-                    <ul class="list-unstyled mb-0">
-                        <li><a href="#">Cómo usar Bootstrap con Symfony</a></li>
-                        <li><a href="#">10 consejos para mejorar tu tienda online</a></li>
-                        <li><a href="#">Qué es Twig y cómo usarlo</a></li>
-                    </ul>
-                </div>
-                <div class="p-4 mb-4 bg-light rounded abc">
-                    <h4 class="mb-3" id="click-fooddata">Alimentos recientes (FoodData Central)</h4>
-                    
-                    <ul id="fooddata-list" class="list-unstyled mb-0">
-                        <li>Cargando datos...</li>
-                    </ul>
-                    
-                    </div>
-
-
-            </aside>
+  <!-- Sección de categorías -->
+  <div class="text-center mb-5">
+    <h3 class="text-success">Explora nuestras categorías</h3>
+    <p class="text-muted">Encuentra todo lo que necesitas de manera fácil</p>
+  </div>
+  <div class="row text-center mb-5">
+    <div class="col-md-4 mb-4">
+      <div class="card border-0 shadow h-100 rounded-4">
+        <div class="card-body p-4">
+          <i class="bi bi-basket text-success display-5 mb-3"></i>
+          <h4 class="fw-bold">Frutas</h4>
+          <p class="text-muted">Frescas, de temporada y directas del productor.</p>
         </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card border-0 shadow h-100 rounded-4">
+        <div class="card-body p-4">
+          <i class="bi bi-egg-fried text-success display-5 mb-3"></i>
+          <h4 class="fw-bold">Verduras</h4>
+          <p class="text-muted">De huertos ecológicos que respetan la tierra.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card border-0 shadow h-100 rounded-4">
+        <div class="card-body p-4">
+          <i class="bi bi-flower1 text-success display-5 mb-3"></i>
+          <h4 class="fw-bold">Otros productos</h4>
+          <p class="text-muted">Mermeladas, miel, cosmética natural y más.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Productos destacados -->
+  <div class="text-center mb-5">
+    <h3 class="text-success">Productos destacados</h3>
+    <p class="text-muted">Algunos de los más populares entre nuestros clientes</p>
+  </div>
+  <div class="row text-center">
+    {% for product in products|slice(0,3) %}
+      <div class="col-md-4 mb-4">
+        <div class="card border-0 shadow h-100 rounded-4">
+          <img src="{{ asset('images/productos/' ~ product.imageName) }}" class="card-img-top rounded-top-4" alt="{{ product.imageName }}">
+          <div class="card-body">
+            <h5 class="card-title fw-bold">{{ product.name }}</h5>
+            <p class="card-text text-muted">{{ product.description|slice(0,60) ~ '...' }}</p>
+            <p class="card-text text-center">
+              <strong class="h5 text-primary">{{ product.price }} €</strong>
+            </p>
+            <a href="{{ path('cart_add', {id: product.id}) }}" class="btn btn-success">
+              <i class="bi bi-cart-plus"></i> Añadir al carrito
+            </a>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <p class="text-muted">No hay productos disponibles en este momento.</p>
+    {% endfor %}
+  </div>
+
+</div>
 {% endblock %}
