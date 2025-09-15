@@ -66,3 +66,4 @@ BUG al actualizar usuario (update) cuando p.ej le incluyo en otro ROL
     Warning: Undefined variable $passwordHasher (Revisar) OK
 
 Unificar el diseño del menú de Administracion con el mismo estilo que tiene usuarios. 
+Repasar la gestión del carrito (aumentar / disminuir uds)
