@@ -1,149 +1,94 @@
-{# 
-{% extends 'base.html.twig' %}
-
-{% block title %}Mis Pedidos - Mi Tienda{% endblock %}
-
-{% block body %}
-
-{% block tituloAlmacen %}
-    <h1 class="mb-4">{{ tituloAlmacen }}</h1>
-{% endblock %}
-
-{% if orders is empty %}
-    <div class="alert alert-info">No tienes pedidos realizados.</div>
-{% else %}
-    <div class="table-responsive">
-        <table class="table table-hover table-bordered align-middle">
-        <thead class="table-light">
-                <tr>
-                    <th>ID</th>
-                    <th>Usuario</th>
-                    <th>Fecha</th>
-                    <th>Estado</th>
-                    <th>Items</th>
-                    <th class="text-center">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for order in orders %}
-                    <tr>
-                        <td>{{ order.id }}</td>
-                        <td>{{ order.user.email }}</td>
-                        <td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
-                        <td>{{ order.status.name }}</td>
-                        <td>{{ order.items|length }}</td>
-                        <td class="text-center">
-                            {% if is_granted('ROLE_PICKER') %}
-                                <a href="{{ path('app_order_show_store', {id: order.id}) }}" class="btn btn-sm btn-outline-primary">
-                                    Ver pedido
-                                </a>
-                            {% else %}
-                                <a href="{{ path('app_order_show', {id: order.id}) }}" class="btn btn-sm btn-outline-primary">
-                                    Ver detalle
-                                </a>
-                            {% endif %}
-
-
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-{% endif %}
-{% endblock %}
-
-#}
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ tituloAlmacen }} - GreenHarvest{% endblock %}
 
 {% block body %}
-    {% block tituloAlmacen %}
-        <h1 class="mb-4">{{ tituloAlmacen }}</h1>
-    {% endblock %}
-    
-    {# Formulario de búsqueda 
-    <form method="get" class="mb-3 d-flex justify-content-end">
-        <div class="input-group input-group-sm" style="max-width: 400px;">
-            <input type="text" name="find_order" class="form-control" 
-                   placeholder="Buscar por ID, email o estado" 
-                    value="{{ find_order }}" >
-            <button class="btn btn-outline-secondary" type="submit">
-                <i class="bi bi-search"></i> Buscar
-            </button>
-        </div>
-    </form> #}
+<div class="container py-5">
+  <!-- Encabezado -->
+  <div class="text-center mb-5">
+    <h1 class="fw-bold text-success">{{ tituloAlmacen }}</h1>
+    <p class="text-muted">Gestión y control de los pedidos en GreenHarvest</p>
+  </div>
 
-    {% if orders is empty %}
-        <div class="alert alert-info">
-            {% if find_order %}
-                No se encontraron pedidos que coincidan con "{{ find_order }}".
-                <a href="{{ path('app_order_index') }}" class="alert-link">Ver todos los pedidos</a>
-            {% else %}
-                No hay pedidos realizados.
-            {% endif %}
-        </div>
-    {% else %}
+  {% if orders is empty %}
+    <div class="alert alert-info shadow-sm rounded-4">
+      {% if find_order %}
+        No se encontraron pedidos que coincidan con 
+        <strong>"{{ find_order }}"</strong>.
+        <a href="{{ path('app_order_index') }}" class="alert-link">Ver todos los pedidos</a>
+      {% else %}
+        No hay pedidos realizados todavía.
+      {% endif %}
+    </div>
+  {% else %}
+    <div class="card border-0 shadow rounded-4">
+      <div class="card-body p-4">
         <div class="table-responsive">
-            <table class="table table-hover table-bordered align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>Usuario</th>
-                        <th>Fecha</th>
-                        <th>Estado</th>
-                        <th>Items</th>
-                        <th class="text-center">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for order in orders %}
-                        <tr>
-                            <td><strong>#{{ order.id }}</strong></td>
-                            <td>{{ order.user.email }}</td>
-                            <td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
-                            <td>
-                                <span class="badge bg-primary">{{ order.status.name }}</span>
-                            </td>
-                            <td>{{ order.items|length }}</td>
-                            <td class="text-center">
-                                {% if is_granted('ROLE_PICKER') %}
-                                    <a href="{{ path('app_order_show_store', {id: order.id}) }}" 
-                                       class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-eye"></i> Ver
-                                    </a>
-                                    <a href="{{ path('app_order_show_store', {id: order.id}) }}" 
-                                       class="btn btn-sm btn-outline-primary">
-                                         Preparar
-                                    </a>
-                                {% else %}
-                                    <a href="{{ path('app_order_show', {id: order.id}) }}" 
-                                       class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-info-circle"></i> Ver detalle
-                                    </a>
-                                {% endif %}
-                            </td>
-                        </tr>
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-success">
+              <tr>
+                <th scope="col">📦 N.º Pedido</th>
+                <th scope="col">👤 Usuario</th>
+                <th scope="col">📅 Fecha</th>
+                <th scope="col">🚦 Estado</th>
+                <th scope="col">🛒 Items</th>
+                <th scope="col" class="text-center">⚙️ Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in orders %}
+                <tr>
+                  <td class="fw-bold text-success">{{ order.id }}</td>
+                  <td>{{ order.user.email }}</td>
+                  <td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
+                  <td>
+                    <span class="badge bg-primary px-3 py-2">
+                      {{ order.status.name }}
+                    </span>
+                  </td>
+                  <td class="text-center">{{ order.items|length }}</td>
+                  <td class="text-center">
+                    {% if is_granted('ROLE_PICKER') %}
+                      <a href="{{ path('app_order_show_store', {id: order.id}) }}"
+                         class="btn btn-sm btn-outline-success me-2">
+                        <i class="bi bi-eye"></i> Ver
+                      </a>
+                      <a href="{{ path('app_order_show_store', {id: order.id}) }}"
+                         class="btn btn-sm btn-success">
+                        <i class="bi bi-box-seam"></i> Preparar
+                      </a>
                     {% else %}
-                        <tr>
-                            <td colspan="6" class="text-center">No hay pedidos.</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                      <a href="{{ path('app_order_show', {id: order.id}) }}"
+                         class="btn btn-sm btn-outline-success">
+                        <i class="bi bi-info-circle"></i> Detalle
+                      </a>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% else %}
+                <tr>
+                  <td colspan="6" class="text-center text-muted">
+                    No hay pedidos en este momento.
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
+      </div>
+    </div>
 
-        {# Paginación #}
-        {% if orders is not empty %}
-            <nav aria-label="Page navigation" class="mt-4">
-                <div class="d-flex justify-content-center">
-                    {{ knp_pagination_render(orders, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig', {
-                        'prev_message': '<i class="bi bi-arrow-left"></i> Anterior',
-                        'next_message': 'Siguiente <i class="bi bi-arrow-right"></i>'
-                    }) }}
-                </div>
-            </nav>
-        {% endif %}
-    {% endif %}
+    <!-- Paginación -->
+    <div class="mt-4">
+      <nav aria-label="Page navigation">
+        <div class="d-flex justify-content-center">
+          {{ knp_pagination_render(orders, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig', {
+            'prev_message': '<i class="bi bi-arrow-left"></i> Anterior',
+            'next_message': 'Siguiente <i class="bi bi-arrow-right"></i>'
+          }) }}
+        </div>
+      </nav>
+    </div>
+  {% endif %}
+</div>
 {% endblock %}

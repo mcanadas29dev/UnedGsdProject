@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Crear Categoría{% endblock %}
+
+{% block body %}
+<h1>Crear Categoría</h1>
+
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-success mt-3">Guardar</button>
+    <a href="{{ path('categories_list') }}" class="btn btn-secondary mt-3">Volver</a>
+{{ form_end(form) }}
+{% endblock %}

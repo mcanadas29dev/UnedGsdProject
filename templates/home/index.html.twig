@@ -1,18 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inicio - Green Harvest{% endblock %}
+{% block title %}{{ 'home.title'|trans }}{% endblock %}
 
 {% block body %}
 <div class="container py-5">
 
   <!-- Hero -->
   <div class="text-center mb-5">
-    <h1 class="fw-bold text-success">🌿 Bienvenido a Green Harvest</h1>
+    <h1 class="fw-bold text-success">🌿 {{ 'home.hero.title'|trans }}</h1>
     <p class="lead text-muted">
-      Agricultura ecológica y productos frescos, directos del campo a tu mesa
+      {{ 'home.hero.subtitle'|trans }}
     </p>
     <a href="{{ path('app_tienda') }}" class="btn btn-success btn-lg mt-3">
-      <i class="bi bi-cart"></i> Comprar ahora
+      <i class="bi bi-cart"></i> {{ 'home.hero.button'|trans }}
     </a>
   </div>
 
@@ -20,29 +20,25 @@
   <div class="row align-items-center mb-5">
     <div class="col-md-6">
       <img src="{{ asset('images/cover.png') }}" class="img-fluid rounded-4 shadow" alt="Productos Ecológicos"/>
-     
     </div>
     <div class="col-md-6">
-      <h3 class="text-success">Nuestra promesa</h3>
-      <p>
-        Te ofrecemos productos 100% ecológicos, cultivados de forma sostenible y respetando la naturaleza. 
-        Cada pedido es preparado con cariño y cuidado para garantizarte frescura y calidad en tu mesa.
-      </p>
+      <h3 class="text-success">{{ 'home.promise.title'|trans }}</h3>
+      <p>{{ 'home.promise.text'|trans }}</p>
     </div>
   </div>
 
   <!-- Sección de categorías -->
   <div class="text-center mb-5">
-    <h3 class="text-success">Explora nuestras categorías</h3>
-    <p class="text-muted">Encuentra todo lo que necesitas de manera fácil</p>
+    <h3 class="text-success">{{ 'home.categories.title'|trans }}</h3>
+    <p class="text-muted">{{ 'home.categories.subtitle'|trans }}</p>
   </div>
   <div class="row text-center mb-5">
     <div class="col-md-4 mb-4">
       <div class="card border-0 shadow h-100 rounded-4">
         <div class="card-body p-4">
           <i class="bi bi-basket text-success display-5 mb-3"></i>
-          <h4 class="fw-bold">Frutas</h4>
-          <p class="text-muted">Frescas, de temporada y directas del productor.</p>
+          <h4 class="fw-bold">{{ 'home.categories.fruits'|trans }}</h4>
+          <p class="text-muted">{{ 'home.categories.fruits_text'|trans }}</p>
         </div>
       </div>
     </div>
@@ -50,8 +46,8 @@
       <div class="card border-0 shadow h-100 rounded-4">
         <div class="card-body p-4">
           <i class="bi bi-egg-fried text-success display-5 mb-3"></i>
-          <h4 class="fw-bold">Verduras</h4>
-          <p class="text-muted">De huertos ecológicos que respetan la tierra.</p>
+          <h4 class="fw-bold">{{ 'home.categories.vegetables'|trans }}</h4>
+          <p class="text-muted">{{ 'home.categories.vegetables_text'|trans }}</p>
         </div>
       </div>
     </div>
@@ -59,39 +55,55 @@
       <div class="card border-0 shadow h-100 rounded-4">
         <div class="card-body p-4">
           <i class="bi bi-flower1 text-success display-5 mb-3"></i>
-          <h4 class="fw-bold">Otros productos</h4>
-          <p class="text-muted">Mermeladas, miel, cosmética natural y más.</p>
+          <h4 class="fw-bold">{{ 'home.categories.others'|trans }}</h4>
+          <p class="text-muted">{{ 'home.categories.others_text'|trans }}</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Productos destacados -->
-  <div class="text-center mb-5">
-    <h3 class="text-success">Productos destacados</h3>
-    <p class="text-muted">Algunos de los más populares entre nuestros clientes</p>
-  </div>
-  <div class="row text-center">
-    {% for product in products|slice(0,3) %}
-      <div class="col-md-4 mb-4">
-        <div class="card border-0 shadow h-100 rounded-4">
-          <img src="{{ asset('images/productos/' ~ product.imageName) }}" class="card-img-top rounded-top-4" alt="{{ product.imageName }}">
-          <div class="card-body">
-            <h5 class="card-title fw-bold">{{ product.name }}</h5>
+
+
+    <!-- Productos destacados -->
+<div class="text-center mb-5">
+  <h3 class="text-success">{{ 'home.featured.title'|trans }}</h3>
+  <p class="text-muted">{{ 'home.featured.subtitle'|trans }}</p>
+</div>
+
+<div class="row text-center">
+  {% for product in products|slice(0,3) %}
+    <div class="col-md-4 mb-4 d-flex">
+      <div class="card border-0 shadow h-100 rounded-4 w-100 d-flex flex-column">
+        
+        <!-- Imagen con tamaño uniforme -->
+        <div class="ratio ratio-4x3">
+          <img src="{{ asset('images/productos/' ~ product.imageName) }}" 
+               class="card-img-top rounded-top-4" 
+               alt="{{ product.imageName }}"
+               style="object-fit: cover; height: 100%; width: 100%;">
+        </div>
+
+        <!-- Contenido -->
+        <div class="card-body d-flex flex-column justify-content-between text-center">
+          <div>
+            <h5 class="card-title fw-bold mb-2">{{ product.name }}</h5>
             <p class="card-text text-muted">{{ product.description|slice(0,60) ~ '...' }}</p>
-            <p class="card-text text-center">
-              <strong class="h5 text-primary">{{ product.price }} €</strong>
-            </p>
-            <a href="{{ path('cart_add', {id: product.id}) }}" class="btn btn-success">
-              <i class="bi bi-cart-plus"></i> Añadir al carrito
+          </div>
+
+          <!-- Precio y botón alineados -->
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <strong class="h5 text-primary mb-0">{{ product.price }} €</strong>
+            <a href="{{ path('cart_add', {id: product.id}) }}" class="btn btn-outline-success rounded-1">
+              <i class="bi bi-cart-plus"></i> {{ 'home.featured.add_to_cart'|trans }}
             </a>
           </div>
         </div>
       </div>
-    {% else %}
-      <p class="text-muted">No hay productos disponibles en este momento.</p>
-    {% endfor %}
-  </div>
+    </div>
+  {% else %}
+    <p class="text-muted">{{ 'home.featured.empty'|trans }}</p>
+  {% endfor %}
+</div>
 
 </div>
 {% endblock %}

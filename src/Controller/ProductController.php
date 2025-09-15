@@ -12,17 +12,39 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 
 #[Route('/product')]
 class ProductController extends AbstractController
 {
     #[Route('/', name: 'product_index', methods: ['GET'])]
-    public function index(ProductRepository $productRepository): Response
-    {
+    public function index(
+            ProductRepository $productRepository,
+            PaginatorInterface $paginator,
+            Request $request ): Response {
+        /*
         return $this->render('product/index.html.twig', [
             'products' => $productRepository->findAll(),
         ]);
+        */
+
+        // Usamos un QueryBuilder en lugar de findAll()
+        $query = $productRepository->createQueryBuilder('p')
+            ->orderBy('p.id', 'DESC')
+            ->getQuery();
+
+        // Aplicamos paginación (10 productos por página)
+        $products = $paginator->paginate(
+            $query, // Query o QueryBuilder
+            $request->query->getInt('page', 1), // Página actual
+            10 // Límite por página
+        );
+
+        return $this->render('product/index.html.twig', [
+            'products' => $products,
+        ]);
+
     }
 
     #[Route('/new', name: 'product_new', methods: ['GET', 'POST'])]

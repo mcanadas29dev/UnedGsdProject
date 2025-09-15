@@ -3,7 +3,13 @@
 {% block title %}Lo más vendido{% endblock %}
 
 {% block body %}
-<h1 class="mb-4">Productos más vendidos</h1>
+
+  <!-- Encabezado -->
+<div class="text-center mb-5">
+    <h1 class="fw-bold text-success">Productos más vendidos</h1>
+    <p class="lead text-muted">Conoce la tendencia de nuestros clientes</p>
+</div>
+
 
 {# ✅ Contador global animado #}
 <div class="text-center my-5">
@@ -15,27 +21,6 @@
     <canvas id="bestSellingChart"></canvas>
 </div>
 
-<div class="row row-cols-1 row-cols-md-4 g-4">
-    {% for product in topProducts %}
-        <div class="col">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">{{ product.name }}</h5>
-                    <p class="card-text fw-bold text-success">
-                        <span class="product-counter" data-target="{{ product.totalSold }}">0</span> Uds
-                    </p>
-                </div>
-                <div class="card-footer text-center">
-                    <a href="#" class="btn btn-sm btn-outline-primary">
-                        Ver Producto
-                    </a>
-                </div>
-            </div>
-        </div>
-    {% else %}
-        <p>No hay productos vendidos aún.</p>
-    {% endfor %}
-</div>
 
 {# Script del gráfico #}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

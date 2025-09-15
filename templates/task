@@ -61,3 +61,8 @@ Menu Administracion
     - Decidir si los botones de accion son como Productos
 Una vez realizada la compra 
     - Que muestre el mensaje el pedido está pagado (nº operacion) y en preparación.
+BUG en el registro de un nuevo usuario, cuando existe que avise que no se puede (ahora esta dando error) OK
+BUG al actualizar usuario (update) cuando p.ej le incluyo en otro ROL 
+    Warning: Undefined variable $passwordHasher (Revisar) OK
+
+Unificar el diseño del menú de Administracion con el mismo estilo que tiene usuarios. 

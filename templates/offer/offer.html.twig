@@ -1,88 +1,58 @@
-{#
 {% extends 'base.html.twig' %}
 
-{% block title %}Ofertas{% endblock %}
+{% block title %}Ofertas avanzadas{% endblock %}
 
 {% block body %}
-<h1 class="mb-4">Listado de Ofertas</h1>
+<div class="container">
+    <h1 class="mb-5 text-center fw-bold text-success">Ofertas destacadas</h1>
 
-
-<table class="table table-hover table-bordered align-middle">
-    <thead class="table-light">
-        <tr>
-            <th>ID</th>
-            <th>Producto</th>
-            <th>Precio Oferta</th>
-            <th>Inicio</th>
-            <th>Fin</th>
-
-        </tr>
-    </thead>
-    <tbody>
+    {% if offers|length == 0 %}
+        <div class="alert alert-info text-center">No hay ofertas activas en este momento.</div>
+    {% else %}
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         {% for offer in offers %}
-            <tr>
-                <td>{{ offer.id }}</td>
-                <td>{{ offer.product.name }}</td>
-                <td>{{ offer.offerPrice }} €</td>
-                <td>{{ offer.startDate|date('d/m/Y') }}</td>
-                <td>{{ offer.endDate|date('d/m/Y') }}</td>
+            <div class="col">
+                <div class="card h-100 shadow-sm rounded-3 border-0 offer-card position-relative overflow-hidden">
+                    
+                    <!-- Etiqueta Oferta -->
+                    <span class="badge bg-danger position-absolute top-0 start-0 m-2 fw-bold">Oferta</span>
+                    
+                    <div class="text-center bg-light p-3">
+                        {% if offer.product.imageName %}
+                            <img src="{{ asset('images/productos/' ~ offer.product.imageName) }}" 
+                                 class="img-fluid offer-image" 
+                                 alt="{{ offer.product.name }}">
+                        {% else %}
+                            <img src="{{ asset('images/default-product.jpg') }}" 
+                                 class="img-fluid offer-image" 
+                                 alt="Sin imagen">
+                        {% endif %}
+                    </div>
 
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">No hay ofertas registradas.</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endblock %}
-
-#}
-
-{% extends 'base.html.twig' %}
-
-{% block title %}Ofertas activas{% endblock %}
-
-{% block body %}
-<h1 class="mb-4 text-center">Ofertas destacadas</h1>
-
-{% if offers|length == 0 %}
-    <div class="alert alert-info text-center">No hay ofertas activas en este momento.</div>
-{% else %}
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-    {% for offer in offers %}
-        <div class="col">
-            <div class="card h-100 shadow-sm border-success">
-                {% if offer.product.imageName %}
-                    <img src="{{ asset('images/productos/' ~ offer.product.imageName) }}" class="card-img-top" alt="{{ offer.product.name }}">
-                {% else %}
-                    <img src="{{ asset('images/default-product.jpg') }}" class="card-img-top" alt="Sin imagen">
-                {% endif %}
-
-                <div class="card-body d-flex flex-column">
-                    <h4 class="card-title text-center">{{ offer.product.name }}</h4>
-                    <p class="card-text text-muted mb-1 text-center"><h4 class="text-center">
-                        <del>{{ offer.product.price|number_format(2) }} €</del>
-                        <strong class="text-success">{{ offer.offerPrice|number_format(2) }} €</h4></strong>
-                    </p>
-                    <p class="text-secondary small mt-auto">
-                        <i class="bi bi-clock-history"></i>
-                        Hasta el {{ offer.endDate|date('d/m/Y H:i') }}
-                    </p>
-                    <a href="{{ path('product_show', {'id': offer.product.id}) }}" class="btn btn-outline-success mt-2">
-                        Ver producto
-                    </a>
-                     <form action="{{ path('cart_app_cart_add', {id: offer.product.id}) }}" method="post" class="mt-2">
+                    <!-- Overlay -->
+                    <div class="offer-overlay d-flex flex-column justify-content-center align-items-center">
+                        <h5 class="text-light fw-bold text-center">{{ offer.product.name }}</h5>
+                        <p class="text-center mb-2">
+                            <del class="text-light opacity-75 fs-6">{{ offer.product.price|number_format(2, '.', ',') }} €</del>
+                            <strong class="text-warning fs-5 ms-2">{{ offer.offerPrice|number_format(2, '.', ',') }} €</strong>
+                        </p>
+                        <a href="{{ path('product_show', {'id': offer.product.id}) }}" class="btn btn-outline-light mb-2 w-75 fw-bold">
+                            Ver producto
+                        </a>
+                        <form action="{{ path('cart_app_cart_add', {id: offer.product.id}) }}" method="post" class="w-75">
                             <input type="hidden" name="quantity" value="1" />
-                            <button class="btn btn-sm btn-warning w-100" type="submit">
-                                <i class="bi bi-cart-plus"></i> Añadir al carrito
+                            <button class="btn btn-warning w-100 fw-bold add-cart-btn">
+                                <i class="bi bi-cart-plus me-1"></i> Añadir al carrito
                             </button>
-                    </form>
+                        </form>
+                    </div>
+
                 </div>
             </div>
-        </div>
-    {% endfor %}
- 
+        {% endfor %}
+    </div>
+    {% endif %}
 </div>
-{% endif %}
+
+
 {% endblock %}

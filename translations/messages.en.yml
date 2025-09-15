@@ -1,0 +1,23 @@
+home:
+  title: "Home - Green Harvest"
+  hero:
+    title: "Welcome to Green Harvest"
+    subtitle: "Organic farming and fresh products, from the field to your table"
+    button: "Shop now"
+  promise:
+    title: "Our promise"
+    text: "We offer you 100% organic products, grown sustainably and with respect for nature. Each order is carefully prepared to guarantee freshness and quality on your table."
+  categories:
+    title: "Explore our categories"
+    subtitle: "Find everything you need easily"
+    fruits: "Fruits"
+    fruits_text: "Fresh, seasonal, and directly from the producer."
+    vegetables: "Vegetables"
+    vegetables_text: "From organic gardens that respect the soil."
+    others: "Other products"
+    others_text: "Jams, honey, natural cosmetics and more."
+  featured:
+    title: "Featured products"
+    subtitle: "Some of the most popular among our customers"
+    add_to_cart: "Add to cart"
+    empty: "No products available at the moment."

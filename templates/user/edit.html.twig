@@ -1,13 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit User{% endblock %}
+{% block title %}Editar Usuario - GreenHarvest{% endblock %}
 
 {% block body %}
-    <h1>Edit User</h1>
+<div class="container py-5">
+    <!-- Encabezado -->
+    <div class="text-center mb-4">
+        <h1 class="fw-bold text-success">✏️ Editar Usuario</h1>
+        <p class="text-muted">Modifica los datos del usuario en la plataforma</p>
+    </div>
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+    <!-- Formulario -->
+    <div class="card shadow rounded-4 mb-4">
+        <div class="card-body">
+            {{ include('user/_form.html.twig', {'button_label': 'Actualizar'}) }}
+        </div>
+    </div>
 
-    <a href="{{ path('app_user_index') }}">back to list</a>
-
-    {{ include('user/_delete_form.html.twig') }}
+    <!-- Acciones -->
+    <div class="d-flex gap-2">
+        <a href="{{ path('app_user_index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Volver a la lista
+        </a>
+        {{ include('user/_delete_form.html.twig') }}
+    </div>
+</div>
 {% endblock %}

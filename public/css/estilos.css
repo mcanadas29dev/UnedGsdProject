@@ -1,130 +1,52 @@
-/* Sidebar oculto en móvil */
-#sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
+/* Tarjeta hover */
+.offer-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.offer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
 }
 
-.uk-offcanvas-content.uk-open #sidebar {
-    transform: translateX(0);
+/* Imagen zoom */
+.offer-image {
+    transition: transform 0.3s;
+}
+.offer-card:hover .offer-image {
+    transform: scale(1.05);
 }
 
-/* Ajustes adicionales para sidebar y layout */
-.uk-parent > a {
-    cursor: pointer;
-     
-}
-
-
-/* nav  link */
-
-
-.nav-link {
-    position: relative;
-    display: inline-block;
-    transition: color 0.3s ease;
-    color: grey !important;
-    
-}
-
-.nav-link:hover {
-    color:green !important;
-}
-.nav-link::after {
-    content: '';
+/* Overlay oculto por defecto */
+.offer-overlay {
     position: absolute;
+    top: 0;
     left: 0;
-    bottom: 0.1em;
-    width: 0;
-    height: 1px;
-    background-color: currentColor;
-    transition: width 0.4s ease-in-out;
-    color: green !important;
-}
-
-.nav-link:hover::after {
     width: 100%;
-    
+    height: 100%;
+    background: rgba(25, 135, 84, 0.85); /* verde oscuro semi-transparente */
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.3s;
+    padding: 1rem;
+    text-align: center;
 }
-div > aside> .abc {
-        transition: transform 0.3s ease, box-shadow 0.3s ease ;
-        transform: scale(1);
-        box-shadow: none;
-        cursor: default;
-        
-    }
-
-div > aside> .abc.hover-activo {
-        
-        transform: scale(1.03);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        cursor: pointer;
+.offer-card:hover .offer-overlay {
+    opacity: 1;
 }
 
-.carousel-img {
-    height: 350px !important;      /* Altura fija recomendada */
-    object-fit: cover !important;  /* Rellenar el contenedor sin deformar */
-   
+/* Botón añadir al carrito animado */
+.add-cart-btn {
+    transition: background-color 0.3s, transform 0.2s;
+}
+.add-cart-btn:hover {
+    background-color: #ffc107;
+    color: #212529;
+    transform: translateY(-2px);
 }
 
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    filter: invert(1) !important ; /* Cambia blanco por negro */
+/* Texto responsive */
+.offer-overlay h5 {
+    font-size: 1.1rem;
 }
-
-
-
-/**************************************/
-    h1,h2,h3 {
-            color: pink !important;
-        }
-        /* Sidebar lateral */
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: -250px; /* oculto al inicio */
-            width: 250px;
-            height: 100%;
-            background-color: #212529;
-            color: white;
-            transition: left 0.3s ease;
-            z-index: 1051; /* encima del overlay */
-            padding-top: 60px;
-        }
-        .sidebar.open {
-            left: 0;
-        }
-        .sidebar a {
-            color: #adb5bd;
-            display: block;
-            padding: 12px 20px;
-            text-decoration: none;
-        }
-        .sidebar a:hover {
-            background-color: #343a40;
-            color: #fff;
-        }
-        .sidebar-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* Overlay */
-        .sidebar-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            z-index: 1050; /* debajo del sidebar */
-        }
-        .sidebar-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
+.offer-overlay p {
+    font-size: 0.95rem;
+}

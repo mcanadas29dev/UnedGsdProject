@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 
 
@@ -27,13 +29,25 @@ final class UserController extends AbstractController
     }
 
     #[Route(name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        /*
         if (!$this->isGranted('ROLE_ADMIN')) {
             throw new AccessDeniedException('Acceso denegado: necesitas permisos de administrador.');
         }
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
+        ]);
+        */
+        $query = $userRepository->createQueryBuilder('u')->getQuery();
+        $users = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            10 // Número de usuarios por página
+        );
+
+        return $this->render('user/index.html.twig', [
+            'users' => $users,
         ]);
     }
 
@@ -73,7 +87,7 @@ final class UserController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, User $user, UserPasswordHasherInterface $passwordHasher,EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);

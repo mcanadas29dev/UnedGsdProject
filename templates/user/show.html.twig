@@ -1,34 +1,64 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User{% endblock %}
+{% block title %}Usuario #{{ user.id }} - GreenHarvest{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
+<div class="container py-5">
+    <!-- Encabezado -->
+    <div class="text-center mb-4">
+        <h1 class="fw-bold text-success">👤 Usuario #{{ user.id }}</h1>
+        <p class="text-muted">Detalles del usuario en la plataforma</p>
+    </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            <tr>
-                <th>Roles</th>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ user.password }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <!-- Tarjeta con la información -->
+    <div class="card shadow rounded-4 mb-4">
+        <div class="card-body">
+            <table class="table table-borderless align-middle mb-0">
+                <tbody>
+                    <tr>
+                        <th class="text-success" style="width: 150px;">📌 ID</th>
+                        <td>{{ user.id }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-success">📧 Email</th>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-success">🔑 Roles</th>
+                        <td>
+                            {% if user.roles %}
+                                <ul class="list-inline mb-0">
+                                    {% for role in user.roles %}
+                                        <li class="list-inline-item">
+                                            <span class="badge bg-success">{{ role }}</span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <span class="text-muted">Sin roles asignados</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-success">🔒 Password</th>
+                        <td><code class="text-muted">{{ user.password }}</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    <a href="{{ path('app_user_index') }}">back to list</a>
+    <!-- Botones de acciones -->
+    <div class="d-flex gap-2">
+        <a href="{{ path('app_user_index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Volver a la lista
+        </a>
 
-    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+        <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-outline-primary">
+            <i class="bi bi-pencil-square"></i> Editar
+        </a>
 
-    {{ include('user/_delete_form.html.twig') }}
+        {{ include('user/_delete_form.html.twig', { button_label: 'Eliminar' }) }}
+    </div>
+</div>
 {% endblock %}
