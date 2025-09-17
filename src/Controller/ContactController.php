@@ -25,8 +25,10 @@ class ContactController extends AbstractController
 
             // Componer el email
             $emailMessage = (new Email())
-                ->from($email)
-                ->to('tu-correo@dominio.com') // 📌 cámbialo por tu correo real
+                #->from($email)
+                ->from('no-reply@greenharvest.internal') // remitente válido
+                ->to('mcanadas29dev@gmail.com') // 📌 cámbialo por tu correo real
+                ->replyTo($email) // aquí el correo del usuario
                 ->subject('Nuevo mensaje de contacto: ' . $subject)
                 ->text("Has recibido un nuevo mensaje de contacto:\n\n".
                        "Nombre: $name\n".

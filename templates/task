@@ -67,3 +67,4 @@ BUG al actualizar usuario (update) cuando p.ej le incluyo en otro ROL
 
 Unificar el diseño del menú de Administracion con el mismo estilo que tiene usuarios. 
 Repasar la gestión del carrito (aumentar / disminuir uds)
+Añadir campo de búsqueda en todos las opciones de administrador (salvo en las que tenga o no se pueda)

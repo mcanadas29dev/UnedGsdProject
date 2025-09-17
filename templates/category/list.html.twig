@@ -3,14 +3,15 @@
 {% block title %}Listado de Categorías - GreenHarvest{% endblock %}
 
 {% block body %}
-<div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="fw-bold text-success">Categorías</h1>
-        <a href="{{ path('categories_new') }}" class="btn btn-outline-primary rounded-1">
-            <i class="bi bi-plus-circle"></i> Añadir Nueva Categoría
+<div class="container py-5">
+    <!-- Encabezado -->
+    <div class="d-flex justify-content-between align-items-center mb-4 ">
+        <h1 class="fw-bold text-success mb-0">Categorías</h1>
+        <a href="{{ path('categories_new') }}" class="btn btn-outline-success rounded-1 shadow-sm px-3">
+            <i class="bi bi-plus-circle"></i> Añadir Categoría
         </a>
     </div>
-
+    <!-- Formulario de búsqueda -->
     <form method="get" class="mb-4 d-flex justify-content-end">
         <div class="input-group input-group-sm" style="max-width: 300px;">
             <input type="text" name="find_categorie" class="form-control rounded-1 shadow-sm" placeholder="Buscar categoría" value="{{ find_categorie }}"> 
@@ -19,53 +20,76 @@
             </button>
         </div>
     </form>
+    <!-- Tabla de categorias -->
+    <div class="card border-0 shadow rounded-4">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0 align-middle">
+                <thead class="table-success">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Slug</th>
+                        <th>Padre</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category in categories %}
+                        <tr>
+                            <td>{{ category.id }}</td>
+                            <td>{{ category.name }}</td>
+                            <td>{{ category.slug }}</td>
+                            <td>{{ category.parent ? category.parent.name : '-' }}</td>
+                            <td class="text-center">
+                                <!-- <div class="btn-group" role="group"> -->
+                                    <!--
+                                    <a href="{{ path('categories_show', {id: category.id}) }}" 
+                                    class="btn btn-outline-secondary btn-sm rounded-1">
+                                    <i class="bi bi-eye"></i> Ver
+                                    </a>
 
-    <div class="table-responsive">
-        <table class="table table-hover table-bordered align-middle">
-            <thead class="table-light">
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Slug</th>
-                    <th>Padre</th>
-                    <th class="text-center">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for category in categories %}
-                    <tr>
-                        <td>{{ category.id }}</td>
-                        <td>{{ category.name }}</td>
-                        <td>{{ category.slug }}</td>
-                        <td>{{ category.parent ? category.parent.name : '-' }}</td>
-                        <td class="text-center">
-                            <div class="btn-group" role="group">
-                                <a href="{{ path('categories_show', {id: category.id}) }}" 
-                                   class="btn btn-outline-success btn-sm rounded-1">
-                                   <i class="bi bi-eye"></i>
-                                </a>
-                                <a href="{{ path('categories_edit', {id: category.id}) }}" 
-                                   class="btn btn-outline-primary btn-sm rounded-1">
-                                   <i class="bi bi-pencil-square"></i>
-                                </a>
-                                <form method="post" action="{{ path('categories_delete', {id: category.id}) }}" style="display:inline-block;" onsubmit="return confirm('¿Seguro que quieres eliminar esta categoría?');">
-                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
-                                    <button class="btn btn-outline-danger btn-sm rounded-1">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="5" class="text-center">No hay categorías.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                                    <a href="{{ path('categories_edit', {id: category.id}) }}" 
+                                    class="btn btn-outline-secondary btn-sm rounded-1">
+                                    <i class="bi bi-pencil-square"></i> Editar
+                                    </a>
+
+                                    <form method="post" action="{{ path('categories_delete', {id: category.id}) }}" style="display:inline-block;" onsubmit="return confirm('¿Seguro que quieres eliminar esta categoría?');">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+                                        <button class="btn btn-outline-danger btn-sm rounded-1">
+                                            <i class="bi bi-trash"></i> Borrar
+                                        </button>
+                                    </form>
+                                    -->
+                                    <div class="btn-group dropup" role="group">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        +
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                      
+                                        <li><a class="dropdown-item text-muted" href="{{ path('categories_show', {id: category.id}) }}" ><i class="bi bi-eye"></i> Ver</a></li>
+                                        <li><a class="dropdown-item text-muted" href="{{ path('categories_show', {id: category.id}) }}"> <i class="bi bi-pencil-square"></i> Editar</a></li>
+                                        <form method="post" action="{{ path('categories_delete', {id: category.id}) }}" style="display:inline-block;" onsubmit="return confirm('¿Seguro que quieres eliminar esta categoría?');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+                                            <li><button class="dropdown-item text-muted">
+                                            <i class="bi bi-trash"></i> Borrar
+                                        </button></li>
+                                        </form>
+                                        </ul>
+                                    </div>
+                                <!-- </div> -->
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center">No hay categorías.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-
+    </div>
     {# Paginación centrada con Bootstrap #}
     {% if categories is not empty %}
         <nav aria-label="Page navigation" class="mt-4">

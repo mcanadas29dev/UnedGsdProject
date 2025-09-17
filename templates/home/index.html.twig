@@ -37,7 +37,9 @@
       <div class="card border-0 shadow h-100 rounded-4">
         <div class="card-body p-4">
           <i class="bi bi-basket text-success display-5 mb-3"></i>
-          <h4 class="fw-bold">{{ 'home.categories.fruits'|trans }}</h4>
+          <h4 class="fw-bold text-muted">
+          <a href="{{ path('secciones_index') }}" class="text-muted"> {{ 'home.categories.fruits'|trans }}</a>
+         </h4>
           <p class="text-muted">{{ 'home.categories.fruits_text'|trans }}</p>
         </div>
       </div>
@@ -62,9 +64,7 @@
     </div>
   </div>
 
-
-
-    <!-- Productos destacados -->
+  <!-- Productos destacados -->
 <div class="text-center mb-5">
   <h3 class="text-success">{{ 'home.featured.title'|trans }}</h3>
   <p class="text-muted">{{ 'home.featured.subtitle'|trans }}</p>
