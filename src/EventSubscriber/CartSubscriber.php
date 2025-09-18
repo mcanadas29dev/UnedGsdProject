@@ -21,13 +21,14 @@ class CartSubscriber implements EventSubscriberInterface
     public function onKernelController(ControllerEvent $event)
     {
         $cartItems = $this->cartService->getCart();
+        $cartProduct = $this->cartService->getItemCount();
         $totalQuantity = 0;
 
         foreach ($cartItems as $item) {
             $totalQuantity += $item['quantity'];
         }
 
-        $this->twig->addGlobal('cart_quantity', $totalQuantity);
+        $this->twig->addGlobal('cart_quantity', $cartProduct);
     }
 
     public static function getSubscribedEvents(): array

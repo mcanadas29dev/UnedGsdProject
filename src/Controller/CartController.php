@@ -48,9 +48,10 @@ class CartController extends AbstractController
 
         return $this->render('cart/index.html.twig', [
             //'cartItems' => $cartService->getCart(),
-            //'total' => $cartService->getTotal(),
+            'total' => $cartService->getTotal(),
             'cartItems' => $cartItems,
-            'total' => array_reduce($cartItems, fn($total, $item) => $total + ($item['price'] * $item['quantity']), 0),
+            'cart_quantity' => $cartService->getItemCount(), // 🔹 productos distintos
+            //'total' => array_reduce($cartItems, fn($total, $item) => $total + ($item['price'] * $item['quantity']), 0),
             
         ]);
     }
@@ -72,7 +73,6 @@ class CartController extends AbstractController
 
             return $this->redirectToRoute('app_tienda');
         }
-
 
     #[Route('/remove/{id}', name: 'remove')]
     public function remove(int $id, CartService $cartService): Response
@@ -136,7 +136,7 @@ class CartController extends AbstractController
             'success_url' => $this->generateUrl('cart_success', [], UrlGeneratorInterface::ABSOLUTE_URL) . '?session_id={CHECKOUT_SESSION_ID}',
             //'success_url' => $this->generateUrl('cart_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
             'cancel_url' => $this->generateUrl('cart_cancel', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            'customer_email' => $this->getUser()->getEmail(),
+            'customer_email' => $this->getUser()->getUserIdentifier(),
         ]);
         $stripeSessionIdFromStripe = $session->id;
         return $this->redirect($session->url, 303);
@@ -217,6 +217,49 @@ class CartController extends AbstractController
         {
             return $this->render('cart/cancel.html.twig');
         }
+    #[Route('/increment/{id}', name: 'increment')]
+    public function increment(int $id, CartService $cartService): Response
+        {
+            $cartService->add($id, 1);
+            return $this->redirectToRoute('cart_index');
+        }
+
+    #[Route('/decrement/{id}', name: 'decrement')]
+    public function decrement(int $id, CartService $cartService): Response
+        {
+            $cartService->add($id, -1);
+            return $this->redirectToRoute('cart_index');
+        }
+    
+    #[Route('/update/{id}', name: 'update', methods: ['POST'])]
+    public function update(int $id, Request $request, CartService $cartService): Response
+        {
+            $quantity = max(1, $request->request->getInt('quantity', 1));
+            $cartService->set($id, $quantity);
+            return $this->redirectToRoute('cart_index');
+        }
+    
+    #[Route('/update/{id}', name: 'update_ajax', methods: ['POST'])]
+    public function updateAjax(int $id, Request $request, CartService $cartService, OfferRepository $offerRepository): Response
+    {
+        $quantity = max(1, $request->request->getInt('quantity', 1));
+        $cartService->set($id, $quantity);
+
+        $cartItems = $cartService->getCart();
+        $now = new \DateTimeImmutable();
+        foreach ($cartItems as &$item) {
+            $product = $item['product'];
+            $offer = $offerRepository->findActiveForProduct($product, $now);
+            $item['price'] = $offer ? $offer->getOfferPrice() : $product->getPrice();
+        }
+
+        $total = array_reduce($cartItems, fn($t, $item) => $t + ($item['price'] * $item['quantity']), 0);
+
+        return $this->json([
+            'subtotal' => number_format($cartItems[$id]['price'] * $cartItems[$id]['quantity'], 2, ',', '.') . ' €',
+            'total' => number_format($total, 2, ',', '.') . ' €'
+        ]);
+    }
 
         
 }

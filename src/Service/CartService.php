@@ -14,7 +14,7 @@ class CartService
             $this->session = $requestStack->getSession();
             $this->productRepository = $productRepository;
         }
-
+    /*
     public function add(int $id): void
         {
             $cart = $this->session->get('cart', []);
@@ -25,6 +25,35 @@ class CartService
                 $cart[$id] = 1;
             }
 
+            $this->session->set('cart', $cart);
+        }
+    */
+    public function add(int $id, int $quantity = 1): void
+        {
+            $cart = $this->session->get('cart', []);
+
+            if (!empty($cart[$id])) {
+                $cart[$id] += $quantity;
+            } else {
+                $cart[$id] = $quantity;
+            }
+
+            // Si la cantidad baja a 0 o menos, eliminamos el producto
+            if ($cart[$id] <= 0) {
+                unset($cart[$id]);
+            }
+
+            $this->session->set('cart', $cart);
+        }
+
+    public function set(int $id, int $quantity): void
+        {
+            $cart = $this->session->get('cart', []);
+            if ($quantity <= 0) {
+                unset($cart[$id]);
+            } else {
+                $cart[$id] = $quantity;
+            }
             $this->session->set('cart', $cart);
         }
 
@@ -72,5 +101,11 @@ class CartService
             }
 
             return $total;
+        }
+
+    public function getItemCount(): int
+        {
+            $cart = $this->session->get('cart', []);
+            return count($cart); // número de productos distintos
         }
 }

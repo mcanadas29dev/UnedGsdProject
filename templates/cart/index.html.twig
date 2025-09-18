@@ -1,68 +1,144 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Tu carrito{% endblock %}
+{% block title %}Tu carrito - GreenHarvest{% endblock %}
 
 {% block body %}
-<h1 class="mb-4">Carrito de compra</h1>
+<div class="container py-5">
+    <h1 class="fw-bold text-success mb-4">🛒 Carrito de compra</h1>
 
-{% if cartItems is empty %}
-    <p>No tienes productos en el carrito.</p>
-    <a href="{{ path('app_home') }}" class="btn btn-warning mt-3">Seguir comprando</a>
+    {% if cartItems is empty %}
+        <div class="alert alert-info text-center">
+            <p class="mb-2">No tienes productos en el carrito.</p>
+            <a href="{{ path('app_home') }}" class="btn btn-outline-success rounded-1">
+                <i class="bi bi-arrow-left"></i> Seguir comprando
+            </a>
+        </div>
+    {% else %}
+        <div class="table-responsive shadow-sm rounded-3">
+            <table class="table align-middle mb-0">
+                <thead class="table-success">
+                    <tr>
+                        <th>Producto</th>
+                        <th class="text-center">Precio</th>
+                        <th class="text-center">Cantidad</th>
+                        <th class="text-center">Subtotal</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cartItems %}
+                        <tr>
+                            <td>
+                                <span class="fw-bold">{{ item.product.name }}</span>
+                            </td>
+                            <td class="text-center">
+                                {% if item.originalPrice is defined %}
+                                    <span class="text-muted text-decoration-line-through">
+                                        {{ item.originalPrice|number_format(2, ',', '.') }} €
+                                    </span>
+                                    <span class="text-danger fw-bold">
+                                        {{ item.price|number_format(2, ',', '.') }} €
+                                    </span>
+                                {% else %}
+                                    {{ item.price|number_format(2, ',', '.') }} €
+                                {% endif %}
+                            </td>
   
-{% else %}
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Producto</th>
-                <th>Precio</th>
-                <th>Cantidad</th>
-                <th>Total</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in cartItems %}
-                <tr>
-                    <td>{{ item.product.name }}</td>
-                    <td>
-                        {% if item.originalPrice is defined %}
-                            <span class="text-muted text-decoration-line-through">{{ item.originalPrice }} €</span>
-                            <span class="text-danger fw-bold">{{ item.price }} €</span>
-                        {% else %}
-                            {{ item.price }} €
-                        {% endif %}
-                    </td>
-                    <td>{{ item.quantity }}</td>
-                    <td>{{ item.price * item.quantity }} €</td>
-                </tr>
-            {% endfor %}
+                            
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center align-items-center gap-2">
+                                    <!-- Botón disminuir -->
+                                    <a href="{{ path('cart_decrement', {id: item.product.id}) }}"
+                                       class="btn btn-sm btn-outline-danger rounded-1">−</a>
 
-            {#
-            {% for item in cartItems %}
-                <tr>
-                    <td>{{ item.product.name }}</td>
-                    <td>{{ item.product.price|number_format(2, ',', '.') }} €</td>
-                    <td>{{ item.quantity }}</td>
-                    <td>{{ item.total|number_format(2, ',', '.') }} €</td>
-                    <td>
-                        <a href="{{ path('cart_remove', {id: item.product.id}) }}" class="btn btn-sm btn-danger">Eliminar</a>
-                    </td>
-                </tr>
-            {% endfor %} #}
-        </tbody>
-        <tfoot>
-            <tr>
-                <th colspan="3" class="text-end">Total:</th>
-                <th>{{ total|number_format(2, ',', '.') }} €</th>
-                <th></th>
-            </tr>
-        </tfoot>
-    </table>
+                                    <!-- Campo editable  -->
+                                    
+                                    <form method="post" action="{{ path('cart_update', {id: item.product.id}) }} " class="d-inline">
+                                        <input type="number" name="quantity" value="{{ item.quantity }}" 
+                                               min="1" class="form-control form-control-sm text-center d-inline-block" style="width: 70px;">
+                                        
+                                    </form>
+                                    
+                                    <!-- Botón aumentar -->
+                                    <a href="{{ path('cart_increment', {id: item.product.id}) }}"
+                                       class="btn btn-sm btn-outline-success rounded-1">+</a>
+                                </div>
+                            </td>
+                            <td class="text-center fw-bold">
+                                {{ (item.price * item.quantity)|number_format(2, ',', '.') }} €
+                            </td>
+                            <td class="text-center">
+                                <a href="{{ path('cart_remove', {id: item.product.id}) }}" 
+                                   class="btn btn-sm btn-outline-danger rounded-1">
+                                    <i class="bi bi-trash"></i> Quitar
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot class="table-light">
+                    <tr>
+                        <th colspan="3" class="text-end">Total:</th>
+                        <th class="text-success h5">{{ total|number_format(2, ',', '.') }} €</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
 
-    <div class="d-flex justify-content-between">
-        <a href="{{ path('cart_clear') }}" class="btn btn-outline-danger">Vaciar carrito</a>
-
-        <a href="{{ path('cart_checkout') }}" class="btn btn-warning">Finalizar compra</a>
-    </div>
-{% endif %}
+        <!-- Botones globales -->
+        <div class="d-flex justify-content-between mt-4">
+            <a href="{{ path('cart_clear') }}" class="btn btn-outline-danger rounded-1">
+                <i class="bi bi-trash"></i> Vaciar carrito
+            </a>
+            <a href="{{ path('cart_checkout') }}" class="btn btn-outline-success rounded-1">
+                <i class="bi bi-credit-card"></i> Finalizar compra
+            </a>
+        </div>
+    {% endif %}
+</div>
 {% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Botones + y -
+    document.querySelectorAll('.update-qty').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault();
+            const id = btn.dataset.id;
+            const delta = parseInt(btn.dataset.delta);
+            const input = document.querySelector(`.qty-input[data-id="${id}"]`);
+            let newQty = Math.max(1, parseInt(input.value) + delta);
+            input.value = newQty;
+            updateCart(id, newQty);
+        });
+    });
+
+    // Cambio manual del input
+    document.querySelectorAll('.qty-input').forEach(input => {
+        input.addEventListener('change', () => {
+            const id = input.dataset.id;
+            const newQty = Math.max(1, parseInt(input.value));
+            input.value = newQty;
+            updateCart(id, newQty);
+        });
+    });
+
+    function updateCart(id, qty) {
+        fetch(`/cart/update/${id}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: `quantity=${qty}`
+        })
+        .then(res => res.json())
+        .then(data => {
+            document.querySelector(`.subtotal-${id}`).innerText = data.subtotal;
+            document.querySelector('tfoot th.text-success').innerText = data.total;
+        })
+        .catch(err => console.error(err));
+    }
+});
+</script>
+{% endblock %}
+
