@@ -33,22 +33,21 @@
                         <td>{{ product.price|number_format(2, ',', '.') }} €</td>
                         <td>{{ product.category.name }}</td>
                       
+  
                         <td class="text-center">
-                            <a href="{{ path('product_show', {'id': product.id}) }}" 
-                               class="btn btn-outline-success rounded-1 me-1" title="Ver">
-                                <i class="bi bi-eye"></i>
-                            </a>
-                            <a href="{{ path('product_edit', {'id': product.id}) }}" 
-                               class="btn btn-outline-primary rounded-1 me-1" title="Editar">
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-                            {{ include('product/_delete_form.html.twig', {'product': product}) }}
-                            <a href="{{ path('cart_add', {id: product.id}) }}" 
-                               class="btn btn-outline-warning rounded-1 ms-1" title="Añadir al carrito">
-                                <i class="bi bi-cart-plus"></i>
-                            </a>
+    
+                                    <div class="btn-group dropup" role="group">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        +
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                      
+                                        <li><a class="dropdown-item text-muted" href="{{ path('product_show', {'id': product.id}) }}" ><i class="bi bi-eye"></i> Ver</a></li>
+                                        <li><a class="dropdown-item text-muted" href="{{ path('product_edit', {'id': product.id}) }}"> <i class="bi bi-pencil-square"></i> Editar</a></li>
+                                        {{ include('product/_delete_form.html.twig', {'product': product}) }}
+                                        </ul>
+                                    </div>
                         </td>
-
 
                     </tr>
                 {% else %}
