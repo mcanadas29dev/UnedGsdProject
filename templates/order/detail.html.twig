@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pedido #{{ order.id }} - GreenHarvest{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+
+  <!-- Encabezado -->
+  <div class="text-center mb-5">
+    <h1 class="fw-bold text-success">📦 Pedido #{{ order.id }}</h1>
+    <p class="text-muted">Detalles completos de tu pedido en GreenHarvest</p>
+  </div>
+
+  <!-- Información general -->
+  <div class="card border-0 shadow rounded-4 mb-4">
+    <div class="card-body">
+      <p><strong>📅 Fecha:</strong> {{ order.createdAt|date('d/m/Y H:i') }}</p>
+      <p>
+        <strong>🚦 Estado:</strong> 
+        <span class="badge bg-primary px-3 py-2">
+          {{ order.status.name }}
+        </span>
+      </p>
+    </div>
+  </div>
+
+  <!-- Productos -->
+  <div class="card border-0 shadow rounded-4 mb-4">
+    <div class="card-body">
+      <h3 class="text-success mb-4">🛒 Productos</h3>
+      <div class="table-responsive">
+        <table class="table align-middle table-hover mb-0">
+          <thead class="table-success">
+            <tr>
+              <th>Producto</th>
+              <th class="text-center">Cantidad</th>
+              <th class="text-center">Precio Unitario</th>
+              <th class="text-end">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% set total = 0 %}
+            {% for item in order.items %}
+              {% set subtotal = item.price * item.quantity %}
+              {% set total = total + subtotal %}
+              <tr>
+                <td>{{ item.product.name }}</td>
+                <td class="text-center">{{ item.quantity }}</td>
+                <td class="text-center">
+                  {{ item.price|number_format(2, ',', '.') }} €
+                </td>
+                <td class="text-end fw-bold text-success">
+                  {{ subtotal|number_format(2, ',', '.') }} €
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="4" class="text-center text-muted">No hay productos en este pedido.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+          {% if order.items|length > 0 %}
+          <tfoot class="table-light">
+            <tr>
+              <td colspan="3" class="text-end fw-bold">Total (IVA incluido)</td>
+              <td class="text-end fw-bold text-success h5">
+                {{ total|number_format(2, ',', '.') }} €
+              </td>
+            </tr>
+          </tfoot>
+          {% endif %}
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón volver -->
+  <div class="text-center mt-4">
+    {% if is_granted('ROLE_ADMIN') %}
+      <a href="{{ path('app_order_index') }}" class="btn btn-outline-success px-4">
+        <i class="bi bi-arrow-left"></i> Volver a Pedidos
+      </a>
+    {% elseif is_granted('ROLE_PICKER') %}
+      <a href="{{ path('app_order_storage') }}" class="btn btn-outline-success px-4">
+        <i class="bi bi-arrow-left"></i> Volver a Gestión
+      </a>
+    {% else %}
+      <a href="{{ path('app_order_user') }}" class="btn btn-outline-success px-4">
+        <i class="bi bi-arrow-left"></i> Volver a Mis Pedidos
+      </a>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

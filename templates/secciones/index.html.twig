@@ -1,0 +1,65 @@
+{# templates/secciones/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Categorias{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+     <h1 class="mb-5 text-center fw-bold text-success">Categorias</h1>
+    
+    <div class="row">
+        {% for category in categories %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ category.name }}</h5>
+                        
+                        {% if category.children|length > 0 %}
+                            <p class="card-text text-muted">
+                                {{ category.children|length }} subcategoría{{ category.children|length > 1 ? 's' : '' }}
+                            </p>
+                            
+                            <div class="mb-3">
+                                <h6>Subcategorías:</h6>
+                                <ul class="list-unstyled">
+                                    {% for child in category.children %}
+                                        <li class="mb-1">
+                                            <a href="{{ path('secciones_show', {'slug': child.slug}) }}" 
+                                               class="text-decoration-none text-success">
+                                                <i class="fas fa-folder me-1"></i>{{ child.name }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% else %}
+                            <p class="card-text text-muted">Sin subcategorías</p>
+                        {% endif %}
+                        
+                        <div class="mt-auto">
+                            <a href="{{ path('secciones_show', {'slug': category.slug}) }}" 
+                               class="btn btn-outline-success">
+                                Ver Sección
+                            </a>
+                            
+                            {% if category.children|length > 0 %}
+                                <a href="{{ path('secciones_productos', {'slug': category.slug}) }}" 
+                                   class="btn btn-outline-secondary">
+                                    Ver Todos los Productos
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>
+                    No hay secciones disponibles.
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+Estructura sugerida
+
+Header / Top Navigation
+    Logo: tu marca, estilo natural (colores verdes, terracota, beige, etc.)
+    Menú: Inicio / Tienda / Sobre nosotros / Blog / Contacto
+    Iconos de carrito, búsqueda
+
+Hero Banner
+    Imagen grande de tu granja o productos ecológicos frescos
+    Texto principal: Ej: “Agricultura ecológica y productos frescos de nuestra tierra”
+    Subtexto: “Directo del productor a tu mesa” + CTA: “Ver productos”
+
+Sección de productos destacados
+    Cuadros con productos “más vendidos” / “recién cosechados”
+    Imagen, nombre, precio, botón “Añadir al carrito” o “Ver más”
+
+Sección de categorías
+    Vegetales / Frutas / Productos transformados / Cosmética natural etc.
+    Imágenes representativas + botón para explorar cada categoría
+
+Sobre nosotros / Filosofía ecológica
+    Texto breve + imágenes
+    Qué significa para ti “ecológico” / certificación / proceso de cultivo
+
+Testimonios / valoraciones de clientes
+    Citas cortas con foto pequeña si es posible
+
+Blog / Recetas / Noticias ecológicas
+    Últimos artículos: “Cómo conservar vegetales”, “Recetas con productos de temporada”, etc.
+
+Suscripción al boletín (Newsletter)
+    “Recibe ofertas y novedades ecológicas” + campo email + botón suscribir
+
+Footer
+    Enlaces importantes: políticas, envío/devoluciones, contacto, redes sociales
+    Certificaciones ecológicas si tienes
+    Mapa de localización si aplicable
+
+
+
+Decidir estilo general de la app
+    botones, cabeceras, Texto
+
+Footer - incluir iconos de redes sociales
+Carrito 
+    - Añadir funcionalidad de aumentar uds o disminuir
+    - Añadir botón Seguir comprando 
+Categorias 
+    - Secciones, el titulo cambiar de nombre a Categorías
+Sobre nosotros
+    - Hacer pagina para mostrar info
+Noticias
+    - Título cambiar a Noticias 
+    - Revisar estilo de los botones que sea el unificado de la app
+Contacto 
+    - Hacer formulario de contacto 
+Menu Administracion
+    - Unificar formularios con el mismo estilo 
+    - deben de tener un campo buscar 
+    - deben de tener todos paginación 
+    - Decidir si los botones de accion son como Productos
+Una vez realizada la compra 
+    - Que muestre el mensaje el pedido está pagado (nº operacion) y en preparación.
+BUG en el registro de un nuevo usuario, cuando existe que avise que no se puede (ahora esta dando error) OK
+BUG al actualizar usuario (update) cuando p.ej le incluyo en otro ROL 
+    Warning: Undefined variable $passwordHasher (Revisar) OK
+
+Unificar el diseño del menú de Administracion con el mismo estilo que tiene usuarios. 
+Repasar la gestión del carrito (aumentar / disminuir uds)
+Añadir campo de búsqueda en todos las opciones de administrador (salvo en las que tenga o no se pueda)

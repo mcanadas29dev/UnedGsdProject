@@ -1,0 +1,23 @@
+home:
+  title: "Home - Green Harvest"
+  hero:
+    title: "Benvenuto su Green Harvest"
+    subtitle: "Agricoltura biologica e prodotti freschi, dal campo alla tua tavola"
+    button: "Acquista ora"
+  promise:
+    title: "La nostra promessa"
+    text: "Ti offriamo prodotti 100% biologici, coltivati in modo sostenibile e rispettando la natura. Ogni ordine è preparato con cura per garantirti freschezza e qualità."
+  categories:
+    title: "Esplora le nostre categorie"
+    subtitle: "Trova facilmente tutto ciò di cui hai bisogno"
+    fruits: "Frutta"
+    fruits_text: "Fresca, di stagione e direttamente dal produttore."
+    vegetables: "Verdura"
+    vegetables_text: "Da orti biologici che rispettano la terra."
+    others: "Altri prodotti"
+    others_text: "Marmellate, miele, cosmetici naturali e altro."
+  featured:
+    title: "Prodotti in evidenza"
+    subtitle: "Alcuni dei più popolari tra i nostri clienti"
+    add_to_cart: "Aggiungi al carrello"
+    empty: "Nessun prodotto disponibile al momento."

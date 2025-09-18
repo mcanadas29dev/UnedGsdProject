@@ -1,3 +1,9 @@
 body {
     background-color: skyblue;
+
 }
+
+div , #sidebar , .sidebar , .open {
+    background-color: aqua;
+}
+

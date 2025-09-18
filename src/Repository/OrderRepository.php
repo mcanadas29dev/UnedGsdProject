@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Repository;
+
+use App\Entity\Order;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+
+/**
+ * @extends ServiceEntityRepository<Order>
+ */
+class OrderRepository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Order::class);
+    }
+
+    public function findAllWithUser(): array
+    {
+        return $this->createQueryBuilder('o')
+            ->leftJoin('o.user', 'u')
+            ->addSelect('u')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findPaidOrders(): array
+    {
+        return $this->createQueryBuilder('o')
+            ->join('o.status', 's')
+            ->andWhere('s.name = :status')
+            ->setParameter('status', 'Pagado')  // asegúrate que el nombre coincida exactamente
+            ->orderBy('o.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+    //    /**
+    //     * @return Order[] Returns an array of Order objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('o')
+    //            ->andWhere('o.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('o.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Order
+    //    {
+    //        return $this->createQueryBuilder('o')
+    //            ->andWhere('o.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
+}

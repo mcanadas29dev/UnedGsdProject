@@ -1,0 +1,52 @@
+/* Tarjeta hover */
+.offer-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.offer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+/* Imagen zoom */
+.offer-image {
+    transition: transform 0.3s;
+}
+.offer-card:hover .offer-image {
+    transform: scale(1.05);
+}
+
+/* Overlay oculto por defecto */
+.offer-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(25, 135, 84, 0.85); /* verde oscuro semi-transparente */
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.3s;
+    padding: 1rem;
+    text-align: center;
+}
+.offer-card:hover .offer-overlay {
+    opacity: 1;
+}
+
+/* Botón añadir al carrito animado */
+.add-cart-btn {
+    transition: background-color 0.3s, transform 0.2s;
+}
+.add-cart-btn:hover {
+    background-color: #ffc107;
+    color: #212529;
+    transform: translateY(-2px);
+}
+
+/* Texto responsive */
+.offer-overlay h5 {
+    font-size: 1.1rem;
+}
+.offer-overlay p {
+    font-size: 0.95rem;
+}

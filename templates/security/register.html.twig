@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Registro - Green Harvest{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card border-0 shadow rounded-4">
+                <div class="card-body p-4">
+
+                    <!-- Encabezado -->
+                    <div class="text-center mb-4">
+                        <h1 class="fw-bold text-success">🌱 Crear cuenta</h1>
+                        <p class="text-muted">Regístrate para disfrutar de nuestros productos ecológicos</p>
+                    </div>
+
+                    <!-- Formulario -->
+                    {{ form_start(registrationForm) }}
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            {{ form_label(registrationForm.email, 'Correo electrónico', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control rounded-3'}}) }}
+                            {% if registrationForm.email.vars.errors|length > 0 %}
+                                <div class="mt-2 alert alert-danger py-1 px-2 rounded-3">
+                                    {{ registrationForm.email.vars.errors[0].message }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Contraseña -->
+                        <div class="mb-3">
+                            {{ form_label(registrationForm.plainPassword, 'Contraseña', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control rounded-3'}}) }}
+                            {% if registrationForm.plainPassword.vars.errors|length > 0 %}
+                                <div class="mt-2 alert alert-danger py-1 px-2 rounded-3">
+                                    {{ registrationForm.plainPassword.vars.errors[0].message }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Botón -->
+                        <div class="d-grid">
+                            <button class="btn btn-success btn-lg rounded-3" type="submit">
+                                <i class="bi bi-person-plus"></i> Registrarse
+                            </button>
+                        </div>
+
+                    {{ form_end(registrationForm) }}
+
+                    <!-- Ir a login -->
+                    <div class="mt-4 text-center">
+                        <small class="text-muted">¿Ya tienes cuenta?</small><br>
+                        <a href="{{ path('app_login') }}" class="btn btn-outline-success btn-sm rounded-3 mt-2">
+                            <i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

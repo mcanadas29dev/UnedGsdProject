@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Usuarios - GreenHarvest{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+
+  <!-- Encabezado -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="fw-bold text-success mb-0">👥 Usuarios</h1>
+    <a href="{{ path('app_user_new') }}" class="btn btn-outline-success rounded-1 shadow-sm px-3">
+      <i class="bi bi-plus-circle"></i> Añadir Usuario
+    </a>
+  </div>
+
+  <!-- Tabla de usuarios -->
+  <div class="card border-0 shadow rounded-4">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table align-middle table-hover mb-0">
+          <thead class="table-success ">
+            <tr>
+              <th>ID</th>
+              <th>Email</th>
+              <th>Roles</th>
+              <th>Password (hash)</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in users %}
+              <tr>
+                <td class="fw-bold">{{ user.id }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                  {% for role in user.roles %}
+                    <span class="badge bg-success-subtle text-success border">{{ role }}</span>
+                  {% else %}
+                    <span class="text-muted">Sin roles</span>
+                  {% endfor %}
+                </td>
+                <td>
+                  <code class="text-muted small">{{ user.password|slice(0,20) ~ '...' }}</code>
+                </td>
+                <td class="text-center">
+                  <a href="{{ path('app_user_show', {'id': user.id}) }}" 
+                     class="btn btn-sm btn-outline-success  me-1">
+                    <i class="bi bi-eye"></i> Ver
+                  </a>
+                  <a href="{{ path('app_user_edit', {'id': user.id}) }}" 
+                     class="btn btn-sm btn-outline-primary rounded-1">
+                    <i class="bi bi-pencil-square"></i> Editar
+                  </a>
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="5" class="text-center text-muted py-4">
+                  No hay usuarios registrados.
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Paginación -->
+  {% if users is not empty %}
+    <nav aria-label="Page navigation" class="mt-4">
+      <div class="d-flex justify-content-center">
+        {{ knp_pagination_render(users, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig', {
+          'prev_message': '<i class="bi bi-arrow-left"></i> Anterior',
+          'next_message': 'Siguiente <i class="bi bi-arrow-right"></i>'
+        }) }}
+      </div>
+    </nav>
+  {% endif %}
+
+</div>
+{% endblock %}

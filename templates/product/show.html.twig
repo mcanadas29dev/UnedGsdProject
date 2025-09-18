@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Detalle del producto - GreenHarvest{% endblock %}
+
+{% block body %}
+<div class="container my-4">
+    <h1 class="mb-4 text-success fw-bold">Detalles del producto</h1>
+
+    <div class="card shadow-sm border-0 rounded-1">
+        <div class="card-body">
+            <h4 class="card-title text-success">{{ product.name }}</h4>
+            <h6 class="card-subtitle mb-3 text-muted">ID: {{ product.id }}</h6>
+
+            <div class="row">
+                <div class="col-md-6">
+                    {% if product.imageName %}
+                        <img src="{{ asset('images/productos/' ~ product.imageName) }}" 
+                             alt="Imagen de {{ product.name }}" 
+                             class="img-fluid rounded-1 shadow-sm mb-3" />
+                    {% else %}
+                        <div class="p-4 bg-light text-center rounded-1 border">
+                            <em class="text-muted">Sin imagen disponible</em>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6">
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item">
+                            <strong class="text-success">Nombre:</strong> {{ product.name }}
+                        </li>
+                        <li class="list-group-item">
+                            <strong class="text-success">Precio:</strong> {{ product.price }} € <span class="text-muted">(IVA incluido)</span>
+                        </li>
+                        <li class="list-group-item">
+                            <strong class="text-success">Descripción:</strong><br>
+                            <span class="text-muted">{{ product.description }}</span>
+                        </li>
+                        <li class="list-group-item">
+                            <strong class="text-success">Categoría:</strong> {{ product.category.name }}
+                        </li>
+                    </ul>
+
+                    <div class="d-flex gap-2 mt-3">
+                        <a href="{{ path('product_edit', {'id': product.id}) }}" 
+                           class="btn btn-outline-primary rounded-1 shadow-sm">
+                            <i class="bi bi-pencil-square"></i> Editar
+                        </a>
+                        <a href="{{ path('product_index') }}" 
+                           class="btn btn-outline-secondary rounded-1 shadow-sm">
+                            <i class="bi bi-arrow-left"></i> Volver
+                        </a>
+                        {{ include('product/_delete_form.html.twig', {'product': product}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

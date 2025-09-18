@@ -1,0 +1,23 @@
+{{ form_start(form) }}
+    <div class="mb-3">
+        {{ form_label(form.email, 'Correo electrónico', {'label_attr': {'class': 'form-label fw-bold text-success'}}) }}
+        {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.email) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.roles, 'Roles', {'label_attr': {'class': 'form-label fw-bold text-success'}}) }}
+        {{ form_widget(form.roles, {'attr': {'class': 'form-select'}}) }}
+        {{ form_errors(form.roles) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.password, 'Contraseña', {'label_attr': {'class': 'form-label fw-bold text-success'}}) }}
+        {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.password) }}
+    </div>
+
+    <button class="btn btn-success">
+        <i class="bi bi-check-circle"></i> {{ button_label|default('Guardar') }}
+    </button>
+{{ form_end(form) }}

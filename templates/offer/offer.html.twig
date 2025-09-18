@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ofertas avanzadas{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="mb-5 text-center fw-bold text-success">Ofertas destacadas</h1>
+
+    {% if offers|length == 0 %}
+        <div class="alert alert-info text-center">No hay ofertas activas en este momento.</div>
+    {% else %}
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        {% for offer in offers %}
+            <div class="col">
+                <div class="card h-100 shadow-sm rounded-3 border-0 offer-card position-relative overflow-hidden">
+                    
+                    <!-- Etiqueta Oferta -->
+                    <span class="badge bg-danger position-absolute top-0 start-0 m-2 fw-bold">Oferta</span>
+                    
+                    <div class="text-center bg-light p-3">
+                        {% if offer.product.imageName %}
+                            <img src="{{ asset('images/productos/' ~ offer.product.imageName) }}" 
+                                 class="img-fluid offer-image" 
+                                 alt="{{ offer.product.name }}">
+                        {% else %}
+                            <img src="{{ asset('images/default-product.jpg') }}" 
+                                 class="img-fluid offer-image" 
+                                 alt="Sin imagen">
+                        {% endif %}
+                    </div>
+
+                    <!-- Overlay -->
+                    <div class="offer-overlay d-flex flex-column justify-content-center align-items-center">
+                        <h5 class="text-light fw-bold text-center">{{ offer.product.name }}</h5>
+                        <p class="text-center mb-2">
+                            <del class="text-light opacity-75 fs-6">{{ offer.product.price|number_format(2, '.', ',') }} €</del>
+                            <strong class="text-warning fs-5 ms-2">{{ offer.offerPrice|number_format(2, '.', ',') }} €</strong>
+                        </p>
+                        <a href="{{ path('product_show', {'id': offer.product.id}) }}" class="btn btn-outline-light mb-2 w-75 fw-bold">
+                            Ver producto
+                        </a>
+                        <form action="{{ path('cart_app_cart_add', {id: offer.product.id}) }}" method="post" class="w-75">
+                            <input type="hidden" name="quantity" value="1" />
+                            <button class="btn btn-warning w-100 fw-bold add-cart-btn">
+                                <i class="bi bi-cart-plus me-1"></i> Añadir al carrito
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+
+
+{% endblock %}

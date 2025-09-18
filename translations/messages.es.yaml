@@ -1,0 +1,23 @@
+home:
+  title: "Inicio - Green Harvest"
+  hero:
+    title: "Bienvenido a Green Harvest"
+    subtitle: "Agricultura ecológica y productos frescos, directos del campo a tu mesa"
+    button: "Comprar ahora"
+  promise:
+    title: "Nuestra promesa"
+    text: "Te ofrecemos productos 100% ecológicos, cultivados de forma sostenible y respetando la naturaleza. Cada pedido es preparado con cariño y cuidado para garantizarte frescura y calidad en tu mesa."
+  categories:
+    title: "Explora nuestras categorías"
+    subtitle: "Encuentra todo lo que necesitas de manera fácil"
+    fruits: "Frutas"
+    fruits_text: "Frescas, de temporada y directas del productor."
+    vegetables: "Verduras"
+    vegetables_text: "De huertos ecológicos que respetan la tierra."
+    others: "Otros productos"
+    others_text: "Mermeladas, miel, cosmética natural y más."
+  featured:
+    title: "Productos destacados"
+    subtitle: "Algunos de los más populares entre nuestros clientes"
+    add_to_cart: "Añadir al carrito"
+    empty: "No hay productos disponibles en este momento."

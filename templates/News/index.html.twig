@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Noticias - Green Harvest{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+
+  <!-- Hero -->
+  <div class="text-center mb-5">
+    <h1 class="fw-bold text-success"> Noticias de Salud y Agricultura</h1>
+    <p class="lead text-muted">
+      Mantente al día con las últimas noticias relacionadas con el bienestar, la ecología y la agricultura sostenible.
+    </p>
+  </div>
+
+  <!-- Categorías -->
+  <div class="text-center mb-5">
+    <div class="btn-group" role="group" aria-label="Categorías de noticias">
+      <a href="{{ path('app_news', {'category': 'health'}) }}" 
+         class="btn btn-outline-success {% if app.request.get('category') == 'health' %}active{% endif %}">
+        Salud
+      </a>
+      <a href="{{ path('app_news', {'category': 'science'}) }}" 
+         class="btn btn-outline-success {% if app.request.get('category') == 'science' %}active{% endif %}">
+        Ciencia
+      </a>
+      <a href="{{ path('app_news', {'category': 'entertainment'}) }}" 
+         class="btn btn-outline-success {% if app.request.get('category') == 'entertainment' %}active{% endif %}">
+        Medio Ambiente
+      </a>
+      <a href="{{ path('app_news', {'category': 'general'}) }}" 
+         class="btn btn-outline-success {% if app.request.get('category') == 'general' %}active{% endif %}">
+        Agricultura
+      </a>
+    </div>
+  </div>
+
+  <!-- Noticias -->
+  <div class="row">
+    {% for article in articles %}
+      <div class="col-md-4 mb-4">
+        <div class="card border-0 shadow h-100 rounded-4">
+          {% if article.urlToImage %}
+            <img src="{{ article.urlToImage }}" class="card-img-top rounded-top-4" alt="{{ article.title }}">
+          {% else %}
+            <img src="https://source.unsplash.com/600x400/?nature,eco" class="card-img-top rounded-top-4" alt="Imagen por defecto">
+          {% endif %}
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title fw-bold">{{ article.title }}</h5>
+            <p class="card-text text-muted">
+              {{ article.description|default('Sin descripción disponible') }}
+            </p>
+            <div class="mt-auto">
+              <a href="{{ article.url }}" target="_blank" class="btn btn-success w-100">
+                Leer más <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+          <div class="card-footer bg-light text-muted small">
+            {% if article.author %}
+              <span><i class="bi bi-person"></i> {{ article.author }}</span>
+            {% endif %}
+            {% if article.publishedAt %}
+              <span class="float-end"><i class="bi bi-calendar"></i> {{ article.publishedAt|date('d/m/Y') }}</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <p class="text-center text-muted">No se encontraron noticias en esta categoría.</p>
+    {% endfor %}
+  </div>
+
+</div>
+{% endblock %}

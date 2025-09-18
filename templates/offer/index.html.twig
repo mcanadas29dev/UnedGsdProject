@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ofertas - GreenHarvest{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <!-- Encabezado -->
+    <div class="text-center mb-4">
+        <h1 class="fw-bold text-success">🌿 Listado de Ofertas</h1>
+        <p class="text-muted">Consulta, gestiona y administra las ofertas disponibles en el sistema</p>
+    </div>
+
+    <!-- Botón de nueva oferta -->
+    <div class="d-flex justify-content-end mb-3">
+        <a href="{{ path('offer_new') }}" class="btn btn-outline-success rounded-1">
+            <i class="bi bi-plus-circle"></i> Nueva Oferta
+        </a>
+    </div>
+
+    <!-- Tabla de ofertas -->
+    <div class="table-responsive shadow-sm rounded-4">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-success text-success">
+                <tr>
+                    <th>ID</th>
+                    <th>Producto</th>
+                    <th>Precio Oferta</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for offer in offers %}
+                    <tr>
+                        <td>{{ offer.id }}</td>
+                        <td>{{ offer.product.name }}</td>
+                        <td><span class="fw-bold text-success">{{ offer.offerPrice }} €</span></td>
+                        <td>{{ offer.startDate|date('d/m/Y') }}</td>
+                        <td>{{ offer.endDate|date('d/m/Y') }}</td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group">
+                                <a href="{{ path('offer_show', {id: offer.id}) }}" 
+                                   class="btn btn-sm btn-outline-success rounded-start" 
+                                   title="Ver">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{{ path('offer_edit', {id: offer.id}) }}" 
+                                   class="btn btn-sm btn-outline-primary" 
+                                   title="Editar">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <form method="post" 
+                                      action="{{ path('offer_delete', {id: offer.id}) }}" 
+                                      onsubmit="return confirm('¿Seguro que quieres eliminar esta oferta?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ offer.id) }}">
+                                    <button class="btn btn-sm btn-outline-danger rounded-end" title="Eliminar">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">No hay ofertas registradas.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
