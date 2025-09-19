@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Form\FormError;
 use Knp\Component\Pager\PaginatorInterface;
 
 
@@ -52,7 +53,7 @@ final class UserController extends AbstractController
     }
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -66,10 +67,17 @@ final class UserController extends AbstractController
                     $this->passwordHasher->hashPassword($user, $plainPassword)
                 );
             }
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $existingUser = $userRepository->findByEmail($user->getEmail());
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            if ($existingUser) {
+                $form->get('email')->addError(new FormError('El email ya existe. Por favor, usa otro'));
+                $this->addFlash('danger', 'El correo ya existe. Por favor, usa otro.');
+            } else {
+                $entityManager->persist($user);
+                $entityManager->flush();
+                return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            }
+            
         }
 
         return $this->render('user/new.html.twig', [
@@ -114,7 +122,8 @@ final class UserController extends AbstractController
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($user);
+            //$entityManager->remove($user);
+            $user->setIsActive(false); // Soft delete
             $entityManager->flush();
         }
 

@@ -2,20 +2,32 @@
     <div class="mb-3">
         {{ form_label(form.email, 'Correo electrónico', {'label_attr': {'class': 'form-label fw-bold text-success'}}) }}
         {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
-        {{ form_errors(form.email) }}
+        {% if form_errors(form.email) %}
+            <div class="text-danger small mt-1 alert alert-danger" role="alert">
+                {{ form_errors(form.email) }}
+            </div>
+        {% endif %}
+        
     </div>
-
+    
     <div class="mb-3">
         {{ form_label(form.roles, 'Roles', {'label_attr': {'class': 'form-label fw-bold text-success'}}) }}
         {{ form_widget(form.roles, {'attr': {'class': 'form-select'}}) }}
         {{ form_errors(form.roles) }}
     </div>
-
+    
     <div class="mb-3">
         {{ form_label(form.password, 'Contraseña', {'label_attr': {'class': 'form-label fw-bold text-success'}}) }}
         {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
         {{ form_errors(form.password) }}
     </div>
+
+    <div class="mb-3 form-check">
+        {{ form_widget(form.isActive, {'attr': {'class': 'form-check-input'}}) }}
+        {{ form_label(form.isActive, 'Usuario activo', {'label_attr': {'class': 'form-check-label fw-bold text-success'}}) }}
+        {{ form_errors(form.isActive) }}
+    </div>
+
 
     <button class="btn btn-success">
         <i class="bi bi-check-circle"></i> {{ button_label|default('Guardar') }}
