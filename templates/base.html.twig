@@ -15,7 +15,7 @@
     <link rel="icon" type="image/png" sizes="16pxx16px" href="{{ asset('images/naturaleza.png') }}">
 </head>
 <body>
-
+   
 {% block header %}{% endblock %}
 
 {% block nav %}
@@ -144,10 +144,14 @@
 <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
 <main class="container my-5">
-    {% block body %}{% endblock %}
+
+    {% block body %}
+
+    {% endblock %}
 </main>
 
 {% block footer %}
+
 <footer class="bg-success text-light py-4">
     <div class="container">
         <div class="row align-items-center">

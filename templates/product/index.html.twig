@@ -66,10 +66,8 @@
     {% if products is not empty %}
         <nav aria-label="Page navigation" class="mt-4">
             <div class="d-flex justify-content-center">
-                {{ knp_pagination_render(products, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig', {
-                    'prev_message': '<i class="bi bi-arrow-left"></i> Anterior',
-                    'next_message': 'Siguiente <i class="bi bi-arrow-right"></i>'
-                }) }}
+                
+                {{ knp_pagination_render(products, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig' )}}
             </div>
         </nav>
     {% endif %}

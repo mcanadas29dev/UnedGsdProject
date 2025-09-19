@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/offer')]
 class OfferController extends AbstractController
@@ -17,18 +18,37 @@ class OfferController extends AbstractController
     #[Route('/', name: 'offer_index', methods: ['GET'])]
     public function index(OfferRepository $offerRepository): Response
     {
+        
         return $this->render('offer/offer.html.twig', [
             'offers' => $offerRepository->findActive(),
             // 'offers' => $offerRepository->findActive(), para ofertas activas
         ]);
+        
+
     }
+
     #[Route('/admin', name: 'offer_index_admin', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function index_admin(OfferRepository $offerRepository): Response
+    public function index_admin(OfferRepository $offerRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        /*
         return $this->render('offer/index.html.twig', [
             // 'offers' => $offerRepository->findAll(),
             'offers' => $offerRepository->findAll(),
+        ]);
+        */
+         $query = $offerRepository->createQueryBuilder('o')
+        ->orderBy('o.startDate', 'DESC')
+        ->getQuery();
+
+        $pagination = $paginator->paginate(
+            $query, /* consulta */
+            $request->query->getInt('page', 1), /* página actual */
+            10 /* nº resultados por página */
+        );
+
+        return $this->render('offer/index.html.twig', [
+            'offers' => $pagination,
         ]);
     }
 
