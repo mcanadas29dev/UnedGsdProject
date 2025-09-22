@@ -29,8 +29,8 @@ final class UserController extends AbstractController
         $this->passwordHasher = $passwordHasher;
     }
 
-    #[Route(name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository, PaginatorInterface $paginator, Request $request): Response
+    #[Route(name: 'app_user_index1', methods: ['GET'])]
+    public function index1(UserRepository $userRepository, PaginatorInterface $paginator, Request $request): Response
     {
         /*
         if (!$this->isGranted('ROLE_ADMIN')) {
@@ -40,15 +40,90 @@ final class UserController extends AbstractController
             'users' => $userRepository->findAll(),
         ]);
         */
-        $query = $userRepository->createQueryBuilder('u')->getQuery();
-        $users = $paginator->paginate(
+        /*
+            $query = $userRepository->createQueryBuilder('u')->getQuery();
+            $users = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            10 // Número de usuarios por página
-        );
+            10 );
+            return $this->render('user/index.html.twig', [
+            'users' => $users,
+        ]);
 
         return $this->render('user/index.html.twig', [
             'users' => $users,
+        ]);
+        */
+        try {
+        $query = $userRepository->createQueryBuilder('u')->getQuery();
+
+        $users = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            10
+        );
+        } catch (\Doctrine\DBAL\Exception $e) {
+            // Error típico de conexión (BD caída, credenciales, etc.)
+            $this->addFlash('error', 'No se pudo conectar a la base de datos. Verifica que el servicio esté iniciado.');
+            $users = [];
+        } catch (\Exception $e) {
+            // Otros errores inesperados
+            $this->addFlash('error', 'Ocurrió un error al cargar los usuarios.');
+            $users = [];
+        }
+
+        return $this->render('user/index.html.twig', [
+            'users' => $users,
+        ]);
+            /*
+            return $this->render('user/index.html.twig', [
+                'users' => $users,
+            ]);
+            */
+
+    }
+    #[Route(name: 'app_user_index', methods: ['GET'])]
+    public function index(
+        UserRepository $userRepository, 
+        PaginatorInterface $paginator, 
+        Request $request
+    ): Response {
+    
+        $users = [];
+        $hasError = false;
+        
+        try {
+            // Verificar conexión a base de datos
+            $query = $userRepository->createQueryBuilder('u')
+                ->orderBy('u.id', 'ASC')
+                ->getQuery();
+                
+            $users = $paginator->paginate(
+                $query,
+                $request->query->getInt('page', 1),
+                10
+            );
+            
+        } catch (\Doctrine\DBAL\Exception\ConnectionException $e) {
+            // Error específico de conexión a BD
+            $this->addFlash('error', '❌ No se puede conectar a la base de datos. Verifique que el servicio esté iniciado.');
+            $hasError = true;
+            
+        } catch (\Doctrine\DBAL\Exception $e) {
+            // Otros errores de base de datos
+            $this->addFlash('error', '❌ Error en la base de datos: ' . $e->getMessage());
+            $hasError = true;
+            
+        } catch (\Exception $e) {
+            // Error general
+            $this->addFlash('error', '❌ Ocurrió un problema al cargar los usuarios: ' . $e->getMessage());
+            $hasError = true;
+        }
+        
+        return $this->render('user/index.html.twig', [
+            'users' => $users,
+            'hasError' => $hasError,
+            'databaseStatus' => !$hasError
         ]);
     }
 

@@ -42,10 +42,19 @@
                     </ul>
 
                     <div class="d-flex gap-2 mt-3">
+                        <!--
                         <a href="{{ path('product_edit', {'id': product.id}) }}" 
                            class="btn btn-outline-primary rounded-1 shadow-sm">
                             <i class="bi bi-pencil-square"></i> Editar
-                        </a>
+                        </a> -->
+                         {{ include('components/_btnEditar.html.twig', {
+                            route: 'product_edit',
+                            routeParams: {'id': product.id},
+                            label: 'Editar',
+                            icon: 'bi-pencil-square',
+                            
+                            }) 
+                        }}
                         <a href="{{ path('product_index') }}" 
                            class="btn btn-outline-secondary rounded-1 shadow-sm">
                             <i class="bi bi-arrow-left"></i> Volver

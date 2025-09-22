@@ -1,37 +1,66 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Detalle de Oferta{% endblock %}
+{% block title %}Oferta #{{ offer.id }} - GreenHarvest{% endblock %}
 
 {% block body %}
-<h1 class="mb-4">Detalle de Oferta</h1>
+<div class="container py-5">
+    <!-- Encabezado -->
+    <div class="text-center mb-4">
+        <h1 class="fw-bold text-success">💲 Oferta #{{ offer.id }}</h1>
+        <p class="text-muted">Detalles de la oferta disponible</p>
+    </div>
 
-<table class="table table-bordered">
-    <tr>
-        <th>ID</th>
-        <td>{{ offer.id }}</td>
-    </tr>
-    <tr>
-        <th>Producto</th>
-        <td>{{ offer.product.name }}</td>
-    </tr>
-    <tr>
-        <th>Precio Descuento</th>
-        <td>{{ offer.offerPrice }} €</td>
-    </tr>
-    <tr>
-        <th>Inicio</th>
-        <td>{{ offer.startDate|date('d/m/Y') }}</td>
-    </tr>
-    <tr>
-        <th>Fin</th>
-        <td>{{ offer.endDate|date('d/m/Y') }}</td>
-    </tr>
-</table>
+    <!-- Tarjeta con la información -->
+    <div class="card shadow rounded-4 mb-4">
+        <div class="card-body">
+            <table class="table table-borderless align-middle mb-0">
+                <tbody>
+                    <tr>
+                        <th class="text-success" style="width: 180px;">📌 ID</th>
+                        <td>{{ offer.id }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-success">🥬 Producto</th>
+                        <td>{{ offer.product.name }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-success">💰 Precio Descuento</th>
+                        <td>{{ offer.offerPrice }} €</td>
+                    </tr>
+                    <tr>
+                        <th class="text-success">📅 Inicio</th>
+                        <td>{{ offer.startDate|date('d/m/Y') }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-success">⏳ Fin</th>
+                        <td>{{ offer.endDate|date('d/m/Y') }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-<a href="{{ path('offer_edit', {id: offer.id}) }}" class="btn btn-outline-primary">Editar</a>
-<form method="post" action="{{ path('offer_delete', {id: offer.id}) }}" style="display:inline-block" onsubmit="return confirm('¿Seguro que quieres eliminar esta oferta?');">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ offer.id) }}">
-    <button class="btn btn-outline-danger">Eliminar</button>
-</form>
-<a href="{{ path('offer_index_admin') }}" class="btn btn-link">Volver al listado</a>
+    <!-- Botones de acciones -->
+    <div class="d-flex gap-2">
+        <a href="{{ path('offer_index_admin') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Volver al listado
+        </a>
+
+        {{ include('components/_btnEditar.html.twig', {
+            route: 'offer_edit',
+            routeParams: {'id': offer.id},
+            label: 'Editar',
+            icon: 'bi-pencil-square'
+        }) }}
+
+       
+        <form method="post" action="{{ path('offer_delete', {id: offer.id}) }}" 
+              onsubmit="return confirm('¿Seguro que quieres eliminar esta oferta?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ offer.id) }}">
+            <button class="btn btn-outline-danger">
+                <i class="bi bi-trash"></i> Eliminar
+            </button>
+        </form>
+    </div>
+</div>
 {% endblock %}
