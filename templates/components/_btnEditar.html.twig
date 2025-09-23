@@ -1,0 +1,15 @@
+{# templates/components/_button.html.twig 
+<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-outline-primary">
+            <i class="bi bi-pencil-square"></i> Editar1
+</a>
+#}
+
+{# templates/components/_button.html.twig #}
+<a href="{{ path(route, routeParams|default({})) }}" 
+   class="btn {{ class|default('btn-outline-primary') }}">
+    {% if icon is defined %}
+        <i class="bi {{ icon }}"></i>
+    {% endif %}
+    {{ label }}
+</a>
+

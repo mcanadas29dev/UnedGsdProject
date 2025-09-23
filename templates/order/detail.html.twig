@@ -7,16 +7,16 @@
 
   <!-- Encabezado -->
   <div class="text-center mb-5">
-    <h1 class="fw-bold text-success">📦 Pedido #{{ order.id }}</h1>
+    <h1 class="fw-bold text-success">Pedido Nº {{ order.id }}</h1>
     <p class="text-muted">Detalles completos de tu pedido en GreenHarvest</p>
   </div>
 
   <!-- Información general -->
   <div class="card border-0 shadow rounded-4 mb-4">
     <div class="card-body">
-      <p><strong>📅 Fecha:</strong> {{ order.createdAt|date('d/m/Y H:i') }}</p>
+      <p><strong>Fecha:</strong> {{ order.createdAt|date('d/m/Y H:i') }}</p>
       <p>
-        <strong>🚦 Estado:</strong> 
+        <strong>Estado:</strong> 
         <span class="badge bg-primary px-3 py-2">
           {{ order.status.name }}
         </span>

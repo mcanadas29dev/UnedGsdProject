@@ -1,17 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Editar Oferta{% endblock %}
+{% block title %}Editar Oferta - GreenHarvest{% endblock %}
 
 {% block body %}
-<h1 class="mb-4">Editar Oferta</h1>
+<div class="container py-5">
+    <!-- Encabezado -->
+    <div class="text-center mb-4">
+        <h1 class="fw-bold text-success">✏️ Editar Oferta</h1>
+        <p class="text-muted">Modifica los datos de la oferta en la plataforma</p>
+    </div>
 
-{{ form_start(form) }}
-    {{ form_row(form.product) }}
-    {{ form_row(form.offerPrice) }}
-    {{ form_row(form.startDate) }}
-    {{ form_row(form.endDate) }}
-    <button class="btn btn-outline-primary mt-3">Actualizar</button>
-{{ form_end(form) }}
+    <!-- Formulario -->
+    <div class="card shadow rounded-4 mb-4">
+        <div class="card-body">
+            {{ form_start(form) }}
+                {{ form_row(form.product , { row_attr: { class: 'mb-3' } }) }}
+                {{ form_row(form.offerPrice,  { row_attr: { class: 'mb-3' } }) }}
+                {{ form_row(form.startDate, { row_attr: { class: 'mb-3' } }) }}
+                {{ form_row(form.endDate, { row_attr: { class: 'mb-3' } }) }}
+                <button class="btn btn-outline-primary mt-3">
+                    <i class="bi bi-check-circle"></i> Actualizar
+                </button>
+            {{ form_end(form) }}
+        </div>
+    </div>
 
-<a href="{{ path('offer_index_admin') }}" class="btn btn-link mt-3">Volver al listado</a>
+    <!-- Acciones -->
+    <div class="d-flex gap-2">
+        <a href="{{ path('offer_index_admin') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Volver al listado
+        </a>
+
+        <form method="post" action="{{ path('offer_delete', {id: offer.id}) }}" 
+              onsubmit="return confirm('¿Seguro que quieres eliminar esta oferta?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ offer.id) }}">
+            <button class="btn btn-outline-danger">
+                <i class="bi bi-trash"></i> Eliminar
+            </button>
+        </form>
+    </div>
+</div>
 {% endblock %}

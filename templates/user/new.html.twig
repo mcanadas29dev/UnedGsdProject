@@ -9,10 +9,9 @@
             <div class="card shadow-lg border-0 rounded-1">
                 <div class="card-body p-4">
                     <h1 class="h4 text-success fw-bold mb-4">➕ Crear nuevo Usuario</h1>
-
-                    {{ include('user/_form.html.twig', {'button_label': 'Crear'}) }}
-
-                    <div class="d-flex justify-content-between mt-4">
+                     {{ include('user/_form.html.twig', {'button_label': 'Nuevo Usuario'}) }}
+                    <div class="d-flex justify-content-center mt-4">
+                        
                         <a href="{{ path('app_user_index') }}" class="btn btn-outline-secondary rounded-1">
                             <i class="bi bi-arrow-left"></i> Volver a la lista
                         </a>

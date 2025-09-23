@@ -53,10 +53,17 @@
         <a href="{{ path('app_user_index') }}" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left"></i> Volver a la lista
         </a>
-
+        <!--
         <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-outline-primary">
             <i class="bi bi-pencil-square"></i> Editar
-        </a>
+        </a> -->
+            {{ include('components/_btnEditar.html.twig', {
+            route: 'app_user_edit',
+            routeParams: {'id': user.id},
+            label: 'Editar',
+            icon: 'bi-pencil-square',
+            
+            }) }}
 
         {{ include('user/_delete_form.html.twig', { button_label: 'Eliminar' }) }}
     </div>
