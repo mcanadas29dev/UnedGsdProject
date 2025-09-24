@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\User;
+//use Doctrine\DBAL\Types\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -43,7 +45,26 @@ class UserType extends AbstractType
                     ])
             ->add('isActive', CheckboxType::class, [
                 'label'    => '¿Usuario activo?',
-                'required' => false,     ]);
+                'required' => false,     ])
+            ->add('isGoogleAuthenticatorEnabled', CheckboxType::class, [
+                'label' => '2FA activado',
+                'required' => false,
+                'attr' => ['class' => 'form-check-input'],
+                'label_attr' => ['class' => 'form-check-label fw-bold text-success'],
+            ])
+            ->add('googleAuthenticatorSecret', TextType::class, [
+                'label' => 'Google Authenticator Secret',
+                'required' => false,
+                'disabled' => true,
+                'attr' => ['class' => 'form-control'],
+            ])
+            ->add('backupCodes', TextType::class, [
+                'label' => 'Códigos de respaldo (JSON)',
+                'required' => false,
+                'disabled' => true,
+                'attr' => ['class' => 'form-control'],
+            ]);
+            
             
     }
 

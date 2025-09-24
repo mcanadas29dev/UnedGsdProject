@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Autenticación 2FA{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <h2 class="text-success mb-3">Introduce tu código de Google Authenticator</h2>
+
+    <form method="post">
+        <div class="mb-3">
+            <label for="auth_code" class="form-label">Código de 6 dígitos</label>
+            <input type="text" name="_auth_code" id="auth_code" class="form-control" required autofocus>
+        </div>
+        <button class="btn btn-success">Validar</button>
+    </form>
+</div>
+{% endblock %}
