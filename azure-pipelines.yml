@@ -1,0 +1,61 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  phpVersion: '8.2'
+
+steps:
+  - task: UsePhpVersion@0
+    inputs:
+      versionSpec: '$(phpVersion)'
+    displayName: 'Usar PHP $(phpVersion)'
+
+  - script: |
+      php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+      php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+      php -r "unlink('composer-setup.php');"
+    displayName: 'Instalar Composer'
+
+  - script: |
+      composer install --no-dev --optimize-autoloader
+    displayName: 'Instalar dependencias Composer'
+
+  - script: |
+      php bin/console cache:clear
+    displayName: 'Limpiar caché de Symfony'
+
+  - script: |
+      php bin/console doctrine:migrations:migrate --no-interaction
+    displayName: 'Migraciones de base de datos'
+
+  - script: |
+      if [ ! -f public/.htaccess ]; then
+        echo "Generando .htaccess..."
+        echo '<IfModule mod_rewrite.c>
+          RewriteEngine On
+          RewriteCond %{REQUEST_FILENAME} !-f
+          RewriteCond %{REQUEST_FILENAME} !-d
+          RewriteRule ^(.*)$ index.php [QSA,L]
+        </IfModule>' > public/.htaccess
+      fi
+    displayName: 'Crear .htaccess si no existe'
+
+  # OPCIONAL: Si estás usando Azure App Service para desplegar
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/site.zip'
+      replaceExistingArchive: true
+    displayName: 'Comprimir archivos para despliegue'
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)'
+      artifactName: 'drop'
+      publishLocation: 'Container'
+    displayName: 'Publicar artefacto de build'
