@@ -1,50 +1,56 @@
-
 trigger:
   - main
 
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  phpVersion: '8.2'
-
 steps:
-  - task: UsePhpVersion@0
-    inputs:
-      versionSpec: '$(phpVersion)'
-    displayName: 'Usar PHP $(phpVersion)'
+  - script: |
+      echo "🔧 Estableciendo PHP 8.2"
+      sudo update-alternatives --set php /usr/bin/php8.2
+      php -v
+    displayName: 'Seleccionar PHP 8.2'
 
   - script: |
+      echo "📦 Instalando Composer"
       php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
       php composer-setup.php --install-dir=/usr/local/bin --filename=composer
       php -r "unlink('composer-setup.php');"
+      composer --version
     displayName: 'Instalar Composer'
 
   - script: |
+      echo "📂 Instalando dependencias de Composer"
       composer install --no-dev --optimize-autoloader
     displayName: 'Instalar dependencias Composer'
 
   - script: |
+      echo "🧹 Limpiando caché de Symfony"
       php bin/console cache:clear
     displayName: 'Limpiar caché de Symfony'
 
   - script: |
+      echo "🛠️ Ejecutando migraciones"
       php bin/console doctrine:migrations:migrate --no-interaction
     displayName: 'Migraciones de base de datos'
 
   - script: |
+      echo "🛡️ Verificando o creando .htaccess"
       if [ ! -f public/.htaccess ]; then
         echo "Generando .htaccess..."
-        echo '<IfModule mod_rewrite.c>
+        cat <<EOF > public/.htaccess
+        <IfModule mod_rewrite.c>
           RewriteEngine On
           RewriteCond %{REQUEST_FILENAME} !-f
           RewriteCond %{REQUEST_FILENAME} !-d
           RewriteRule ^(.*)$ index.php [QSA,L]
-        </IfModule>' > public/.htaccess
+        </IfModule>
+        EOF
+              else
+                echo ".htaccess ya existe"
       fi
     displayName: 'Crear .htaccess si no existe'
 
-  # OPCIONAL: Si estás usando Azure App Service para desplegar
   - task: ArchiveFiles@2
     inputs:
       rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
