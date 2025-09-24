@@ -1,0 +1,98 @@
+# PHP as Linux Web App on Azure
+# Build, package and deploy your PHP project to Azure Linux Web App.
+# Add steps that run tests and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/php
+
+trigger:
+- main
+
+variables:
+  # Azure Resource Manager connection created during pipeline creation
+  azureSubscription: '82df7025-35ee-4312-87eb-6ff89aeb3068'
+
+  # Web app name
+  webAppName: 'greenharvest'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+  # Environment name
+  environmentName: 'greenharvest'
+
+  # Root folder under which your composer.json file is available.
+  rootFolder: $(System.DefaultWorkingDirectory)
+
+stages:
+- stage: Build
+  displayName: Build stage
+  variables:
+    phpVersion: '8.2'
+  jobs:
+  - job: BuildJob
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - script: |
+        sudo update-alternatives --set php /usr/bin/php$(phpVersion)
+        sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
+        sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
+        sudo update-alternatives --set php-cgi /usr/bin/php-cgi$(phpVersion)
+        sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
+        php -version
+      workingDirectory: $(rootFolder)
+      displayName: 'Use PHP version $(phpVersion)'
+    - script: |
+        sudo apt-get update
+        sudo apt-get install -y unzip libicu-dev libzip-dev libpng-dev
+      displayName: 'Instalar dependencias del sistema'
+    - script: |
+        curl -sS https://getcomposer.org/installer | php
+        sudo mv composer.phar /usr/local/bin/composer
+        composer --version
+      displayName: 'Instalar Composer'
+
+    - script: composer install --no-interaction --prefer-dist --optimize-autoloader
+      workingDirectory: $(rootFolder)
+      displayName: 'Composer install'
+
+    - script: php bin/console cache:clear --env=prod
+      workingDirectory: $(rootFolder)
+      displayName: 'Limpiar Cache Symfony (prod)'
+    
+    - script: php bin/console doctrine:migrations:migrate --no-interaction --env=prod
+      workingDirectory: $(rootFolder)
+      displayName: 'Ejecutar migraciones DB'
+
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: '$(rootFolder)'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        replaceExistingArchive: true
+
+    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      displayName: 'Upload package'
+      artifact: drop
+
+- stage: Deploy
+  displayName: 'Deploy Web App'
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - deployment: DeploymentJob
+    pool:
+      vmImage: $(vmImageName)
+    environment: $(environmentName)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            displayName: 'Deploy Azure Web App : greenharvest'
+            inputs:
+              azureSubscription: $(azureSubscription)
+              appName: $(webAppName)
+              appType: webAppLinux
+              package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
