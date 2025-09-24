@@ -1,0 +1,17 @@
+# See the configuration reference at https://symfony.com/bundles/SchebTwoFactorBundle/6.x/configuration.html
+scheb_two_factor:
+    security_tokens:
+        - Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
+        - Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken
+        
+    # Configuración de Google Authenticator
+    google:
+        enabled: true
+        server_name: 'GreenHarvest' # Nombre que verá el usuario en la app Google Authenticator
+        issuer: 'GreenHarvest'
+        digits: 6
+        #window: 1
+        leeway: 2
+        template: security/2fa_form.html.twig  # Tu plantilla del formulario 2FA
+        # Código de respaldo
+   
