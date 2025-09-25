@@ -30,14 +30,15 @@
         <a href="{{ path('offer_index_admin') }}" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left"></i> Volver al listado
         </a>
-
-        <form method="post" action="{{ path('offer_delete', {id: offer.id}) }}" 
+        
+         
+        <form method="post" action="{{ path('offer_delete', {'id': offer.id} ) }}" 
               onsubmit="return confirm('¿Seguro que quieres eliminar esta oferta?');">
             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ offer.id) }}">
             <button class="btn btn-outline-danger">
                 <i class="bi bi-trash"></i> Eliminar
             </button>
-        </form>
+        </form> 
     </div>
 </div>
 {% endblock %}

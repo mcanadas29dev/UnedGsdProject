@@ -98,6 +98,7 @@ class OfferController extends AbstractController
         return $this->render('offer/edit.html.twig', [
             'form' => $form->createView(),
             'form_title' => 'Editar oferta',
+            'offer' => $offer,
         ]);
     }
 
