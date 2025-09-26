@@ -22,18 +22,7 @@ class NewsController extends AbstractController
         // usuario mcanadasdev
         
         //$apiKey = '3078b6b1045441618cddd64184a6bf73';
-        /*
-        $url = 'https://newsapi.org/v2/top-headlines?country=us&category=health&pageSize=6&apiKey=' . $this->apiKey;
-
-        $response = $httpClient->request('GET', $url);
-        $data = $response->toArray();
-
-        $articles = $data['articles'] ?? [];
-
-        return $this->render('News/index.html.twig', [
-            'articles' => $articles,
-        ]);
-        */
+  
         $category = $request->query->get('category', 'health'); // por defecto salud
 
         $url = 'https://newsapi.org/v2/top-headlines?country=us&pageSize=6&category=' . $category . '&apiKey=' . $this->apiKey;

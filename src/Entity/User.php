@@ -10,7 +10,7 @@ use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface as GoogleTwoFactorInte
 //use Scheb\TwoFactorBundle\Model\BackupCode\BackupCodeInterface;
 //use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
 
-
+##[ORM\Table(name: "app_user")]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, GoogleTwoFactorInterface //, BackupCodeInterface

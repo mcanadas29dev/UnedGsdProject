@@ -1,42 +1,17 @@
-{#}
-{% extends 'base.html.twig' %}
-
-{% block title %}{{ form_title }}{% endblock %}
-
-{% block body %}
-<h1 class="mb-4">{{ form_title }}</h1>
-
-
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-success mt-3">
-        <i class="bi bi-save"></i> Guardar
-    </button>
-{{ form_end(form) }}
-
-<a href="{{ path('product_index') }}" class="btn btn-link mt-3">
-    <i class="bi bi-arrow-left"></i> Volver al listado
-</a>
-{% endblock %}
-#}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ form_title }} - GreenHarvest{% endblock %}
 
 {% block body %}
 <div class="container py-5">
-    <!-- Encabezado -->
-    <div class="text-center mb-4">
-        <h1 class="fw-bold text-success">{{ form_title }}</h1>
-        <p class="text-muted">Gestiona los productos de tu plataforma</p>
-    </div>
+
 
     <!-- Formulario -->
     <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card shadow rounded-4 mb-4">
+        <div class="col-lg-6">
+            <div class="card shadow border-0 rounded-1">
                 <div class="card-body p-4">
+                <h1 class="h4 text-success fw-bold mb-4">➕ {{ form_title }}</h1>
                     {{ form_start(form) }}
                         <!-- Renderizar todos los campos del formulario con estilo -->
                         {% for child in form.children %}
@@ -82,21 +57,19 @@
                             {% endif %}
                         {% endfor %}
 
-                        <div class="d-flex justify-content-center">
+                        <div class="d-flex justify-content-between">
                             <button class="btn btn-outline-success rounded-1">
-                                <i class="bi bi-check-circle"></i> Guardar
+                                <i class="bi bi-check-circle"></i> Nuevo Producto
                             </button>
+                            <a href="{{ path('product_index') }}" class="btn btn-outline-secondary rounded-1">
+                                <i class="bi bi-arrow-left"></i> Volver
+                            </a>
                         </div>
                     {{ form_end(form) }}
                 </div>
             </div>
 
-            <!-- Acciones -->
-            <div class="d-flex justify-content-center">
-                <a href="{{ path('product_index') }}" class="btn btn-outline-secondary rounded-1">
-                    <i class="bi bi-arrow-left"></i> Volver al listado
-                </a>
-            </div>
+         
         </div>
     </div>
 </div>

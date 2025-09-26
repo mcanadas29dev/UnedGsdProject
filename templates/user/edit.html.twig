@@ -3,26 +3,61 @@
 {% block title %}Editar Usuario - GreenHarvest{% endblock %}
 
 {% block body %}
-<div class="container py-5">
-    <!-- Encabezado -->
+
+    <!-- Encabezado 
     <div class="text-center mb-4">
         <h1 class="fw-bold text-success">✏️ Editar Usuario</h1>
         <p class="text-muted">Modifica los datos del usuario en la plataforma</p>
-    </div>
+    </div> -->
 
-    <!-- Formulario -->
+    <!-- Formulario 
     <div class="card shadow rounded-4 mb-4">
         <div class="card-body">
-            {{ include('user/_form.html.twig', {'button_label': 'Actualizar'}) }}
+           {#  {{ include('user/_form.html.twig', {'button_label': 'Actualizar'}) }} #}
         </div>
-    </div>
+    </div> -->
 
-    <!-- Acciones -->
+    <!-- Acciones 
     <div class="d-flex gap-2">
         <a href="{{ path('app_user_index') }}" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left"></i> Volver a la lista
         </a>
-        {{ include('user/_delete_form.html.twig') }}
+        {#  {{ include('user/_delete_form.html.twig') }} #}
+    </div> -->
+
+    <!-- NUEVO FORMATO -->
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card shadow border-0 rounded-1">
+                    <div class="card-body p-4">
+                        <h1 class="h4 text-success fw-bold mb-4 text-center">Editar Usuario</h1>
+                          
+
+                        <!-- Formulario -->
+                       
+                            <div class="card-body">
+                                {{ include('user/_form.html.twig', {'button_label': 'Actualizar'} ) }}
+                                <hr/>
+                                <form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" 
+                                    onsubmit="return confirm('¿Estás seguro de que quieres eliminar este usuario?');" 
+                                    class="d-inline">
+                                    <div class="d-flex justify-content-center">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                                        <button class="btn btn-sm btn-outline-danger text-center">
+                                            <i class="bi bi-trash"></i> Eliminar
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                      
+
+  
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 {% endblock %}
