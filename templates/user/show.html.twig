@@ -4,68 +4,83 @@
 
 {% block body %}
 <div class="container py-5">
-    <!-- Encabezado -->
-    <div class="text-center mb-4">
-        <h1 class="fw-bold text-success">👤 Usuario #{{ user.id }}</h1>
-        <p class="text-muted">Detalles del usuario en la plataforma</p>
-    </div>
+    <!-- Formulario NUEVO-->
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow border-0 rounded-1">
+                <div class="card-body p-4">
+                    <h1 class="h4 text-success fw-bold mb-4 text-center">Usuario {{user.email}}</h1>
+                    <table class="table table-borderless align-middle mb-0">
+                        <tbody>
+                            <tr>
+                                <th class="text-success" style="width: 150px;"> ID</th>
+                                <td>{{ user.id }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-success">Email</th>
+                                <td>{{ user.email }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-success"> Roles</th>
+                                <td>
+                                    {% if user.roles %}
+                                        <ul class="list-inline mb-0">
+                                            {% for role in user.roles %}
+                                                <li class="list-inline-item">
+                                                    <span class="badge bg-success">{{ role }}</span>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% else %}
+                                        <span class="text-muted">Sin roles asignados</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-success"> Password</th>
+                                <td><code class="text-muted">{{ user.password|slice(0,20) ~ '...' }}</code></td>
+                            </tr>
+                            <tr>
+                                <th class="text-success"> Activo</th>
+                                <td>
+                                {% if user.isActive %}
+                                    <span class="badge bg-success">Activo</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Inactivo</span>
+                                {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-success"> 2FA</th>
+                                <td>
+                                    {% if user.isGoogleAuthenticatorEnabled %}
+                                        <span class="text-muted">Si</span>
+                                    {% else %}
+                                        <span class="text-muted">No</span> 
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr/>
+                    <div class="d-flex justify-content-between">
+                        
+                        {{ include('components/_btnEditar.html.twig', {
+                        route: 'app_user_edit',
+                        routeParams: {'id': user.id},
+                        label: 'Editar',
+                        icon: 'bi-pencil-square',
+                        
+                        }) }}
+                        <a href="{{ path('app_user_index') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Volver
+                        </a>
+                   
+                    </div>
+                </div>
 
-    <!-- Tarjeta con la información -->
-    <div class="card shadow rounded-4 mb-4">
-        <div class="card-body">
-            <table class="table table-borderless align-middle mb-0">
-                <tbody>
-                    <tr>
-                        <th class="text-success" style="width: 150px;">📌 ID</th>
-                        <td>{{ user.id }}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-success">📧 Email</th>
-                        <td>{{ user.email }}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-success">🔑 Roles</th>
-                        <td>
-                            {% if user.roles %}
-                                <ul class="list-inline mb-0">
-                                    {% for role in user.roles %}
-                                        <li class="list-inline-item">
-                                            <span class="badge bg-success">{{ role }}</span>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% else %}
-                                <span class="text-muted">Sin roles asignados</span>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="text-success">🔒 Password</th>
-                        <td><code class="text-muted">{{ user.password }}</code></td>
-                    </tr>
-                </tbody>
-            </table>
+            </div>
         </div>
-    </div>
-
-    <!-- Botones de acciones -->
-    <div class="d-flex gap-2">
-        <a href="{{ path('app_user_index') }}" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left"></i> Volver a la lista
-        </a>
-        <!--
-        <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-outline-primary">
-            <i class="bi bi-pencil-square"></i> Editar
-        </a> -->
-            {{ include('components/_btnEditar.html.twig', {
-            route: 'app_user_edit',
-            routeParams: {'id': user.id},
-            label: 'Editar',
-            icon: 'bi-pencil-square',
-            
-            }) }}
-
-        {{ include('user/_delete_form.html.twig', { button_label: 'Eliminar' }) }}
     </div>
 </div>
 {% endblock %}

@@ -13,7 +13,7 @@
     </div>
 
     <!-- Tabla -->
-    <div class="card shadow-lg border-0 rounded-4">
+    <div class="card  border-0 rounded-4">
         <div class="card-body p-0">
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-success text-success">
@@ -28,7 +28,7 @@
                 <tbody>
                 {% for product in products %}
                     <tr>
-                        <td class="fw-bold">{{ product.id }}</td>
+                        <td>{{ product.id }}</td>
                         <td>{{ product.name }}</td>
                         <td>{{ product.price|number_format(2, ',', '.') }} €</td>
                         <td>{{ product.category.name }}</td>

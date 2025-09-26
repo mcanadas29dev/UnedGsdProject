@@ -45,12 +45,16 @@
         {{ form_widget(form.backupCodes, {'attr': {'class': 'form-control', 'readonly': 'readonly'}}) }}
         {{ form_errors(form.backupCodes) }}
     </div>
+    <hr/>
     <div class="d-flex justify-content-between">
         <button class="btn btn-outline-success">
             <i class="bi bi-check-circle"></i> {{ button_label|default('Guardar') }}
         </button>
-         <a href="{{ path('app_user_index') }}" class="btn btn-outline-secondary rounded-1">
-            <i class="bi bi-arrow-left"></i> Volver a la lista
+       
+
+        {#  {{ include('user/_delete_form.html.twig', {'button_label': 'Eliminar'} ) }} #}
+        <a href="{{ path('app_user_index') }}" class="btn btn-outline-secondary rounded-1">
+            <i class="bi bi-arrow-left"></i> Volver
         </a>
     </div>
 

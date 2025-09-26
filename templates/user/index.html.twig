@@ -14,7 +14,7 @@
   </div>
 
   <!-- Tabla de usuarios -->
-  <div class="card border-0 shadow rounded-4">
+  <div class="card border-0 rounded-0">
     <div class="card-body p-0">
       <div class="table-responsive">
         <table class="table align-middle table-hover mb-0">
@@ -25,13 +25,14 @@
               <th>Roles</th>
               <th>Estado</th>
               <th>Password (hash)</th>
+              <th>2FA</th>
               <th class="text-center">Acciones</th>
             </tr>
           </thead>
           <tbody>
             {% for user in users %}
               <tr>
-                <td class="fw-bold">{{ user.id }}</td>
+                <td >{{ user.id }}</td>
                 <td>{{ user.email }}</td>
                 <td>
                   {% for role in user.roles %}
@@ -46,14 +47,20 @@
                   {% else %}
                       <span class="badge bg-danger">Inactivo</span>
                   {% endif %}
-              </td>
-
+                </td>
                 <td>
                   <code class="text-muted small">{{ user.password|slice(0,20) ~ '...' }}</code>
                 </td>
+                <td>
+                  {% if user.isGoogleAuthenticatorEnabled %}
+                    <span class="text-muted">Si</span>
+                  {% else %}
+                    No 
+                  {% endif %}
+                </td>
 
-                  <td class="text-center">
-                                    <div class="btn-group dropup" role="group">
+                <td class="text-center">
+                      <div class="btn-group dropup" role="group">
                                         <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                         +
                                         </button>
@@ -63,9 +70,9 @@
                                         <li><a class="dropdown-item text-muted" href="{{ path('app_user_edit', {'id': user.id}) }}" > <i class="bi bi-pencil-square"></i> Editar</a></li>
                                        
                                         </ul>
-                                    </div>
-                                <!-- </div> -->
-                  </td>
+                        </div>
+
+                </td>
               </tr>
             {% else %}
               <tr>
