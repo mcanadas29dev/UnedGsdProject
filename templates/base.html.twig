@@ -18,6 +18,7 @@
    
 {% block header %}{% endblock %}
 
+{#
 {% block nav %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
         <div class="container">
@@ -30,6 +31,14 @@
                 aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button> -->
+             <!-- Marca / Logo -->
+            <a class="navbar-brand text-secondary" href="{{ path('app_home') }}">Green Harvest</a>
+
+            <!-- 🔹 Botón hamburguesa visible en móviles -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" 
+                aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
             <div class="collapse navbar-collapse" id="navbarMenu"> 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0"> 
@@ -112,6 +121,95 @@
         </div>
     </nav>
 {% endblock %}
+#}
+{% block nav %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+    <div class="container">
+        <!-- Marca / Logo -->
+        <a class="navbar-brand text-secondary" href="{{ path('app_home') }}">Green Harvest</a>  
+
+        <!--  Botón hamburguesa visible en móviles -->
+        <button class="navbar-toggler border-success" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
+            aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-list text-success fs-1"></i>
+        </button>
+
+
+        <!-- Menú colapsable -->
+        <div class="collapse navbar-collapse" id="navbarMenu"> 
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0"> 
+                
+                
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-secondary" href="#" id="tiendaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Tienda
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="tiendaDropdown">
+                        <li><a class="dropdown-item" href="{{ path('secciones_index') }}">Categorías</a></li>
+                        <li><a class="dropdown-item" href="{{ path('app_best_selling') }}">Lo Más Vendido</a></li>
+                        <li><a class="dropdown-item" href="{{ path('offer_index') }}">Ofertas</a></li>
+                        <li><a class="dropdown-item" href="{{ path('app_tienda') }}">Ver productos</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_about') }}">Sobre Nosotros</a></li>
+                <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_news') }}">Noticias</a></li>
+                <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_contact') }}">Contacto</a></li>
+
+                {% if is_granted('ROLE_USER') and not is_granted('ROLE_ADMIN') and not is_granted('ROLE_PICKER') %}
+                    <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_order_user') }}">Pedidos</a></li>
+                {% endif %}
+
+                {% if is_granted('ROLE_PICKER') %}
+                    <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_order_storage') }}">Gestión Almacén</a></li>
+                {% endif %}
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-secondary" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Administración
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                            <li><a class="dropdown-item" href="{{ path('app_user_index') }}">Usuarios</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_order_index') }}">Pedidos</a></li>
+                            <li><a class="dropdown-item" href="{{ path('product_index') }}">Productos</a></li>
+                            <li><a class="dropdown-item" href="{{ path('categories_list') }}">Categorías</a></li>
+                            <li><a class="dropdown-item" href="{{ path('offer_index_admin') }}">Ofertas</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('admin') }}">Easy Admin</a></li>
+                {% endif %}
+            </ul>
+
+            <!-- Botones de login/logout y carrito -->
+            <div class="d-flex ms-auto">
+                {% if app.user %}
+                    <a href="{{ path('app_logout') }}" class="btn btn-outline-success me-3" title={{ app.user.email }}>
+                        <i class="bi bi-box-arrow-right"></i>
+                        Salir {{ app.user.email }}
+                    </a>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="btn btn-outline-success me-3" title="Entrar">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        Login
+                    </a>
+                {% endif %}
+
+                <a href="{{ path('cart_index') }}" class="btn btn-outline-success position-relative" aria-label="Carrito de compras">
+                    <i class="bi bi-cart"></i>
+                    {% if cart_quantity > 0 %}
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ cart_quantity }}
+                            <span class="visually-hidden">Productos en el carrito</span>
+                        </span>
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+{% endblock%}
 
 <!-- Sidebar lateral 
 <div id="sidebar" class="sidebar">
