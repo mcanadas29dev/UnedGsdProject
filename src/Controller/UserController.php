@@ -31,99 +31,94 @@ final class UserController extends AbstractController
 
     #[Route(name: 'app_user_index1', methods: ['GET'])]
     public function index1(UserRepository $userRepository, PaginatorInterface $paginator, Request $request): Response
-    {
-        /*
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            throw new AccessDeniedException('Acceso denegado: necesitas permisos de administrador.');
-        }
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
-        */
-        /*
-            $query = $userRepository->createQueryBuilder('u')->getQuery();
-            $users = $paginator->paginate(
-            $query,
-            $request->query->getInt('page', 1),
-            10 );
-            return $this->render('user/index.html.twig', [
-            'users' => $users,
-        ]);
-
-        return $this->render('user/index.html.twig', [
-            'users' => $users,
-        ]);
-        */
+        {
+        $users = [];
+        $hasError = false;
+        $search = $request->query->get('q'); // capturamos término de búsqueda
         try {
-        $query = $userRepository->createQueryBuilder('u')->getQuery();
+            
+            //dd($search);
+            $queryBuilder = $userRepository->createQueryBuilder('u')
+                ->orderBy('u.id', 'ASC');
 
-        $users = $paginator->paginate(
-            $query,
-            $request->query->getInt('page', 1),
-            10
-        );
+            if ($search) {
+                $queryBuilder
+                        ->andWhere('u.email LIKE :search')
+                        ->setParameter('search', '%' . $search . '%');
+            }
+
+            $users = $paginator->paginate(
+                $queryBuilder->getQuery(),
+                $request->query->getInt('page', 1),
+                10
+            );
+        
+
+        } catch (\Doctrine\DBAL\Exception\ConnectionException $e) {
+            $this->addFlash('error', '❌ No se puede conectar a la base de datos. Verifique que el servicio esté iniciado.');
+            $hasError = true;
         } catch (\Doctrine\DBAL\Exception $e) {
-            // Error típico de conexión (BD caída, credenciales, etc.)
-            $this->addFlash('error', 'No se pudo conectar a la base de datos. Verifica que el servicio esté iniciado.');
-            $users = [];
+            $this->addFlash('error', '❌ Error en la base de datos: ' . $e->getMessage());
+            $hasError = true;
         } catch (\Exception $e) {
-            // Otros errores inesperados
-            $this->addFlash('error', 'Ocurrió un error al cargar los usuarios.');
-            $users = [];
+            $this->addFlash('error', '❌ Ocurrió un problema al cargar los usuarios: ' . $e->getMessage());
+            $hasError = true;
         }
 
         return $this->render('user/index.html.twig', [
             'users' => $users,
+            'hasError' => $hasError,
+            'databaseStatus' => !$hasError,
+            'search' => $search, // pasamos valor para mantenerlo en el input
         ]);
-            /*
-            return $this->render('user/index.html.twig', [
-                'users' => $users,
-            ]);
-            */
-
     }
+
+
     #[Route(name: 'app_user_index', methods: ['GET'])]
     public function index(
         UserRepository $userRepository, 
         PaginatorInterface $paginator, 
         Request $request
-    ): Response {
-    
+    ): Response 
+    {
         $users = [];
         $hasError = false;
-        
+        $search = $request->query->get('q'); // capturamos término de búsqueda
         try {
-            // Verificar conexión a base de datos
-            $query = $userRepository->createQueryBuilder('u')
-                ->orderBy('u.id', 'ASC')
-                ->getQuery();
-                
+            
+            dd($search);
+            $queryBuilder = $userRepository->createQueryBuilder('u')
+                ->orderBy('u.id', 'ASC');
+
+            if ($search) {
+                $queryBuilder
+                        ->andWhere('u.email LIKE :search')
+                        ->setParameter('search', '%' . $search . '%');
+            }
+
             $users = $paginator->paginate(
-                $query,
+                $queryBuilder->getQuery(),
                 $request->query->getInt('page', 1),
                 10
             );
-            
+        
+
         } catch (\Doctrine\DBAL\Exception\ConnectionException $e) {
-            // Error específico de conexión a BD
             $this->addFlash('error', '❌ No se puede conectar a la base de datos. Verifique que el servicio esté iniciado.');
             $hasError = true;
-            
         } catch (\Doctrine\DBAL\Exception $e) {
-            // Otros errores de base de datos
             $this->addFlash('error', '❌ Error en la base de datos: ' . $e->getMessage());
             $hasError = true;
-            
         } catch (\Exception $e) {
-            // Error general
             $this->addFlash('error', '❌ Ocurrió un problema al cargar los usuarios: ' . $e->getMessage());
             $hasError = true;
         }
-        
+
         return $this->render('user/index.html.twig', [
             'users' => $users,
             'hasError' => $hasError,
-            'databaseStatus' => !$hasError
+            'databaseStatus' => !$hasError,
+            'search' => $search, // pasamos valor para mantenerlo en el input
         ]);
     }
 

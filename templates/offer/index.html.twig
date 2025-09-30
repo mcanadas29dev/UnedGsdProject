@@ -2,24 +2,45 @@
 
 {% block title %}Ofertas - GreenHarvest{% endblock %}
 
+
 {% block body %}
-<div class="container py-5">
+<div class="">
     <!-- Encabezado -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        
-        <h1 class="h3 fw-bold text-success mb-0">Listado de Ofertas</h1>
-        <a href="{{ path('offer_new') }}" class="btn btn-outline-success btn-sm rounded-1 shadow-sm px-3">
-            <i class="bi bi-plus-circle"></i> Añadir Oferta
-        </a>
+    <div class="d-flex justify-content-between align-items-center mb-4">  
+        <h1 class="h2 fw-bold text-success mb-0">Ofertas</h1>
+       
     </div>
 
-    <!-- Botón de nueva oferta 
-    <div class="d-flex justify-content-end mb-3">
-        <a href="{{ path('offer_new') }}" class="btn btn-outline-success rounded-1">
-            <i class="bi bi-plus-circle"></i> Nueva Oferta
-        </a>
-    </div> -->
+    <!-- Buscador -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <form method="get" action="{{ path('offer_index_admin') }}" class="mb-2">
 
+            <!-- Buscar por producto -->
+            <div class="input-group">
+            
+                <input type="text" name="q" value="{{ search|default('') }}" 
+                    class="form-control" placeholder="Buscar por producto...">
+                <button class="btn btn-outline-success " type="submit">
+                <i class="bi bi-search"></i> Buscar
+                </button>
+            </div>
+
+
+            <!-- Buscar por fecha 
+            <div class="col-md-4">
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                <input type="date" name="date" value="{{ date|default('') }}" 
+                    class="form-control">
+            </div>
+            </div> -->
+
+
+        </form>
+        <a href="{{ path('offer_new') }}" class="btn btn-outline-success rounded-1 ">
+                <i class="bi bi-plus-circle"></i> Añadir Oferta
+        </a>
+    </div>
     <!-- Tabla de ofertas -->
     <div class="card border-0 rounded-0">
         <div class="card-body p-0">
@@ -76,3 +97,5 @@
 </div>
 
 {% endblock %}
+
+

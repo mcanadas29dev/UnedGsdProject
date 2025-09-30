@@ -90,13 +90,15 @@ class OrderController extends AbstractController
     {
         $query = $request->query->get('find_order');
         $qb = $orderRepository->createQueryBuilder('o')
-            ->where('o.id IS NOT NULL')
-            ->orderBy('o.createdAt', 'DESC'); // Ordenar por fecha más reciente
-        
+            ->join('o.user', 'u')     // JOIN con User
+            ->join('o.status', 's')   // JOIN con Status si necesitas filtrar por estado
+            ->orderBy('o.createdAt', 'DESC');
+
         if ($query) {
-            $qb->andWhere('o.id LIKE :search OR o.user.email LIKE :search OR o.status LIKE :search')
+            $qb->andWhere('o.id LIKE :search OR u.email LIKE :search OR s.name LIKE :search')
                 ->setParameter('search', '%' . $query . '%');
         }
+
         
         $pagination = $paginator->paginate(
             $qb, // QueryBuilder
@@ -106,7 +108,7 @@ class OrderController extends AbstractController
         
         return $this->render('order/index.html.twig', [
             'orders' => $pagination,
-            'tituloAlmacen' => 'Listado de Pedidos',
+            'tituloAlmacen' => 'Pedidos',
             'find_order' => $query
         ]);
     }
