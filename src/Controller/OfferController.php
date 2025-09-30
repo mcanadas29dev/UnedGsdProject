@@ -28,27 +28,64 @@ class OfferController extends AbstractController
     }
 
     #[Route('/admin', name: 'offer_index_admin', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN')]
+    //#[IsGranted('ROLE_ADMIN')]
     public function index_admin(OfferRepository $offerRepository, PaginatorInterface $paginator, Request $request): Response
     {
         /*
-        return $this->render('offer/index.html.twig', [
-            // 'offers' => $offerRepository->findAll(),
-            'offers' => $offerRepository->findAll(),
-        ]);
-        */
+
          $query = $offerRepository->createQueryBuilder('o')
         ->orderBy('o.startDate', 'DESC')
         ->getQuery();
 
         $pagination = $paginator->paginate(
-            $query, /* consulta */
-            $request->query->getInt('page', 1), /* página actual */
-            10 /* nº resultados por página */
+            $query, 
+            $request->query->getInt('page', 1), 
+            10 
         );
 
         return $this->render('offer/index.html.twig', [
             'offers' => $pagination,
+        ]);
+        */
+        $search = $request->query->get('q');   // búsqueda por producto
+        $date   = $request->query->get('date'); // búsqueda por fecha
+
+        $qb = $offerRepository->createQueryBuilder('o')
+            ->join('o.product', 'p')
+            ->addSelect('p')
+            ->orderBy('o.startDate', 'DESC');
+
+        if ($search) {
+            $qb->andWhere('p.name LIKE :search')
+            ->setParameter('search', '%' . $search . '%');
+        }
+
+        if ($date) {
+            try {
+                
+                $dateObj = new \DateTime($date);
+                $startOfDay = $dateObj->setTime(0,0,0);
+                $endOfDay   = $dateObj->setTime(23,59,59);
+
+                $qb->andWhere('(o.startDate BETWEEN :start AND :end OR o.endDate BETWEEN :start AND :end)')
+                ->setParameter('start', $startOfDay)
+                ->setParameter('end', $endOfDay);
+            } catch (\Exception $e) {
+                // fecha inválida, ignorar
+            }
+        }
+
+
+        $pagination = $paginator->paginate(
+            $qb->getQuery(),
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->render('offer/index.html.twig', [
+            'offers' => $pagination,
+            'search' => $search,
+            'date'   => $date,
         ]);
     }
 

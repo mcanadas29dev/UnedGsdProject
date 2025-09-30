@@ -36,9 +36,7 @@
                             <del class="text-light opacity-75 fs-6">{{ offer.product.price|number_format(2, '.', ',') }} €</del>
                             <strong class="text-warning fs-5 ms-2">{{ offer.offerPrice|number_format(2, '.', ',') }} €</strong>
                         </p>
-                        <a href="{{ path('product_show', {'id': offer.product.id}) }}" class="btn btn-outline-light mb-2 w-75 fw-bold">
-                            Ver producto
-                        </a>
+                       
                         <form action="{{ path('cart_app_cart_add', {id: offer.product.id}) }}" method="post" class="w-75">
                             <input type="hidden" name="quantity" value="1" />
                             <button class="btn btn-warning w-100 fw-bold add-cart-btn">

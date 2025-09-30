@@ -1,4 +1,94 @@
-/* Tarjeta hover */
+
+/* ===========================
+   CSS Global GreenHarvest
+   =========================== */
+
+/* Fuente principal: Montserrat para títulos, Lato para texto */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;600;700&display=swap');
+
+/* Aplicar color y fuente global a todo el body */
+body {
+    font-family: 'Lato', sans-serif;
+    color: #333333;          /* Gris oscuro para todo el texto */
+    line-height: 1.6;
+    background-color: #ffffff; /* Fondo blanco */
+    margin: 0;
+    padding: 0;
+}
+
+/* Encabezados con Montserrat */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: #1a1a1a; /* Encabezados más oscuros */
+    margin-top: 1.2em;
+    margin-bottom: 0.5em;
+}
+
+/* Enlaces */
+a {
+    /*color: #0d6efd ;    */     /* Azul profesional */
+    text-decoration: none;  
+    /*transition: color 0.2s ease, font-size 0.2s ease !important; */
+}
+
+
+a:hover {
+    /*color: #1a1a1a !important; */
+    /*background-color: #198754 !important; 
+    color: white !important; */
+    text-decoration:underline !important;
+   
+}
+
+
+/* Párrafos */
+p {
+    margin-bottom: 1em;
+}
+
+/* Tablas: texto gris oscuro y bordes suaves */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    color: #333333;
+}
+
+th, td {
+    padding: 0.75em 1em;
+    border: 1px solid #e0e0e0;
+}
+
+th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+}
+
+/* Botones (opcional, si usas clases propias) */
+button, .btn {
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Formularios: inputs y textarea */
+input, textarea, select {
+    font-family: 'Lato', sans-serif;
+    color: #333333;
+}
+
+/* Lista */
+ul, ol {
+    margin-bottom: 1em;
+}
+
+/* Resaltar texto importante */
+strong {
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+
+
+/**************  Tarjeta hover 30/09/2025***************************/
 .offer-card {
     transition: transform 0.3s, box-shadow 0.3s;
 }
@@ -50,3 +140,4 @@
 .offer-overlay p {
     font-size: 0.95rem;
 }
+

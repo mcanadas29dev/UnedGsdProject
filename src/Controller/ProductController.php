@@ -27,7 +27,7 @@ class ProductController extends AbstractController
         return $this->render('product/index.html.twig', [
             'products' => $productRepository->findAll(),
         ]);
-        */
+        
 
         // Usamos un QueryBuilder en lugar de findAll()
         $query = $productRepository->createQueryBuilder('p')
@@ -43,8 +43,27 @@ class ProductController extends AbstractController
 
         return $this->render('product/index.html.twig', [
             'products' => $products,
-        ]);
+        ]); */
+         $search = $request->query->get('q'); // capturamos el término de búsqueda
 
+        $queryBuilder = $productRepository->createQueryBuilder('p')
+            ->orderBy('p.id', 'DESC');
+
+        if ($search) {
+            $queryBuilder->andWhere('p.name LIKE :search')
+                        ->setParameter('search', '%' . $search . '%');
+        }
+
+        $pagination = $paginator->paginate(
+            $queryBuilder->getQuery(),
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->render('product/index.html.twig', [
+            'products' => $pagination,
+            'search' => $search, // enviamos el valor para mantenerlo en la vista
+        ]);
     }
 
     #[Route('/new', name: 'product_new', methods: ['GET', 'POST'])]
