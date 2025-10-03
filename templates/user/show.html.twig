@@ -9,11 +9,11 @@
         <div class="col-lg-6">
             <div class="card shadow border-0 rounded-1">
                 <div class="card-body p-4">
-                    <h1 class="h4 text-success fw-bold mb-4 text-center">Usuario {{user.email}}</h1>
+                    <h1 class="h4 text-success fw-bold mb-4 text-center">Usuario {{ user.email }}</h1>
                     <table class="table table-borderless align-middle mb-0">
                         <tbody>
                             <tr>
-                                <th class="text-success" style="width: 150px;"> ID</th>
+                                <th class="text-success" style="width: 150px;">ID</th>
                                 <td>{{ user.id }}</td>
                             </tr>
                             <tr>
@@ -21,7 +21,7 @@
                                 <td>{{ user.email }}</td>
                             </tr>
                             <tr>
-                                <th class="text-success"> Roles</th>
+                                <th class="text-success">Roles</th>
                                 <td>
                                     {% if user.roles %}
                                         <ul class="list-inline mb-0">
@@ -37,48 +37,69 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th class="text-success"> Password</th>
-                                <td><code class="text-muted">{{ user.password|slice(0,20) ~ '...' }}</code></td>
+                                <th class="text-success">Password</th>
+                                <td><code class="text-muted">{{ user.password|slice(0, 20) ~ '...' }}</code></td>
                             </tr>
                             <tr>
-                                <th class="text-success"> Activo</th>
+                                <th class="text-success">Activo</th>
                                 <td>
-                                {% if user.isActive %}
-                                    <span class="badge bg-success">Activo</span>
-                                {% else %}
-                                    <span class="badge bg-danger">Inactivo</span>
-                                {% endif %}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="text-success"> 2FA</th>
-                                <td>
-                                    {% if user.isGoogleAuthenticatorEnabled %}
-                                        <span class="text-muted">Si</span>
+                                    {% if user.isActive %}
+                                        <span class="badge bg-success">Activo</span>
                                     {% else %}
-                                        <span class="text-muted">No</span> 
+                                        <span class="badge bg-danger">Inactivo</span>
                                     {% endif %}
                                 </td>
                             </tr>
+                            <tr>
+                                <th class="text-success">2FA</th>
+                                <td>
+                                    {% if user.isGoogleAuthenticatorEnabled %}
+                                        <span class="text-muted">Sí</span>
+                                    {% else %}
+                                        <span class="text-muted">No</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+
+                            {# Mostrar secreto y códigos solo si el usuario logueado es admin #}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                {% if user.isGoogleAuthenticatorEnabled %}
+                                    <tr>
+                                        <th class="text-success">Secreto 2FA</th>
+                                        <td><code>{{ user.googleAuthenticatorSecret }}</code></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-success">Códigos de respaldo</th>
+                                        <td>
+                                            {% if user.backupCodes is not empty %}
+                                                <ul class="list-unstyled mb-0">
+                                                    {% for code in user.backupCodes %}
+                                                        <li><code>{{ code }}</code></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% else %}
+                                                <span class="text-muted">No hay códigos de respaldo</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endif %}
                         </tbody>
                     </table>
+
                     <hr/>
                     <div class="d-flex justify-content-between">
-                        
                         {{ include('components/_btnEditar.html.twig', {
-                        route: 'app_user_edit',
-                        routeParams: {'id': user.id},
-                        label: 'Editar',
-                        icon: 'bi-pencil-square',
-                        
+                            route: 'app_user_edit',
+                            routeParams: {'id': user.id},
+                            label: 'Editar',
+                            icon: 'bi-pencil-square',
                         }) }}
                         <a href="{{ path('app_user_index') }}" class="btn btn-outline-secondary">
                             <i class="bi bi-arrow-left"></i> Volver
                         </a>
-                   
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

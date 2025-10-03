@@ -12,6 +12,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+
 
 class SecurityController extends AbstractController
 {
@@ -37,9 +40,12 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/register', name: 'app_register')]
-    public function register(Request $request, UserRepository $userRepository, 
-    UserPasswordHasherInterface $passwordHasher,
-    EntityManagerInterface $em): Response
+    public function register(
+        Request $request, 
+        UserRepository $userRepository, 
+        UserPasswordHasherInterface $passwordHasher,
+        EntityManagerInterface $em, 
+        GoogleAuthenticatorInterface $googleAuthenticator): Response
     {
 
         $user = new User();
@@ -62,6 +68,22 @@ class SecurityController extends AbstractController
                 // Guardar en la base de datos
                 //$entityManager = $this->getDoctrine()->getManager();
                 $user->setRoles(['ROLE_USER']);
+
+                // Comprobacion 2FA
+                 if ($form->get('enableTwoFactor')->getData()) {
+                $user->setGoogleAuthenticatorEnabled(true);
+
+                // Generar secreto de Google Authenticator
+                $secret = $googleAuthenticator->generateSecret();
+                $user->setGoogleAuthenticatorSecret($secret);
+
+                // Generar 10 códigos de respaldo aleatorios
+                $codes = [];
+                for ($i = 0; $i < 10; $i++) {
+                    $codes[] = bin2hex(random_bytes(4)); // 8 caracteres
+                }
+                $user->setBackupCodes($codes);
+            }
                 $em->persist($user);
                 $em->flush();
 

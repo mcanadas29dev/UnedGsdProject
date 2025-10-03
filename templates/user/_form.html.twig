@@ -12,7 +12,8 @@
     
     <div class="mb-3">
         {{ form_label(form.roles, 'Roles', {'label_attr': {'class': 'form-label fw-bold text-success'}}) }}
-        {{ form_widget(form.roles, {'attr': {'class': 'form-select'}}) }}
+        {{ form_widget(form.roles) }}
+        {# {{ form_widget(form.roles, {'attr': {'class': 'form-select'}}) }} #}
         {{ form_errors(form.roles) }}
     </div>
     
@@ -39,12 +40,14 @@
         {{ form_widget(form.googleAuthenticatorSecret, {'attr': {'class': 'form-control', 'readonly': 'readonly'}}) }}
         {{ form_errors(form.googleAuthenticatorSecret) }}
     </div>
-    
+   
+                              
     <div class="mb-3">
-        {{ form_label(form.backupCodes, 'Secreto Google Authenticator', {'label_attr': {'class': 'form-label fw-bold text-success'}}) }}
-        {{ form_widget(form.backupCodes, {'attr': {'class': 'form-control', 'readonly': 'readonly'}}) }}
+        {{ form_label(form.backupCodes, 'Backup Codes Authenticator', {'label_attr': {'class': 'form-label fw-bold text-success'}}) }}
+        {{ form_widget(form.backupCodes, {'attr': {'class': 'form-control', 'readonly': 'readonly'}}) }} 
         {{ form_errors(form.backupCodes) }}
     </div>
+    
     <hr/>
     <div class="d-flex justify-content-between">
         <button class="btn btn-outline-success">
