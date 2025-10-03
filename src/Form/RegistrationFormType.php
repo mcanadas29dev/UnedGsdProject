@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,12 +18,18 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('email', EmailType::class)
             ->add('plainPassword', PasswordType::class, [
+                    'mapped' => false,
+                    'constraints' => [
+                        new NotBlank(),
+                        new Length(['min' => 6, 'max' => 4096]),
+                    ],
+            ])
+            ->add('enableTwoFactor', CheckboxType::class, [
                 'mapped' => false,
-                'constraints' => [
-                    new NotBlank(),
-                    new Length(['min' => 6, 'max' => 4096]),
-                ],
-            ]);
+                'required' => false,
+                'label' => 'Activar verificación en dos pasos (2FA)',
+            ])
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

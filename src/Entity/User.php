@@ -143,12 +143,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, GoogleT
     // ------------------------
     // Métodos Backup Codes
     // ------------------------
+  
     public function getBackupCodes(): array
     {
         return $this->backupCodes;
     }
 
-    public function setBackupCodes(array $codes): static
+    public function setBackupCodes(array $codes): self // sttatic
     {
         $this->backupCodes = $codes;
         return $this;

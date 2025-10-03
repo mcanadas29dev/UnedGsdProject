@@ -40,6 +40,17 @@
                             {% endif %}
                         </div>
 
+                         <!-- 2FA -->
+                        <div class="mb-3">
+                            {{ form_label(registrationForm.enableTwoFactor, '2FA', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(registrationForm.enableTwoFactor, {'attr': {'class': 'form-control rounded-1'}}) }}
+                            {% if registrationForm.enableTwoFactor.vars.errors|length > 0 %}
+                                <div class="mt-2 alert alert-danger py-1 px-2 rounded-1">
+                                    {{ registrationForm.enableTwoFactor.vars.errors[0].message }}
+                                </div>
+                            {% endif %}
+                        </div>
+
                         <!-- Botón -->
                         <div class="d-grid">
                             <button class="btn btn-success btn-lg rounded-3" type="submit">
