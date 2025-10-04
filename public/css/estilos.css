@@ -35,10 +35,10 @@ a {
 
 a:hover {
     /*color: #1a1a1a !important; */
-    /*background-color: #198754 !important; 
-    color: white !important; */
-    text-decoration:underline !important;
-   
+    background-color: #C4F2B8 !important; 
+    color: grey !important; 
+    /* font-style: italic !important; */
+    
 }
 
 
