@@ -16,9 +16,9 @@
     <form method="get" action="{{ path('app_user_index') }}" class="mb-2">
       <div class="input-group">
      
-        <input type="text" name="q" value="{{ search|default('') }}" 
+        <input type="text" name="q" value="{{ search|default('') }}" id="query-user" data-cy="query-user"
               class="form-control" placeholder="Buscar por email..." aria-label="Buscar usuario">
-        <button class="btn btn-outline-success rounded-0" type="submit">
+        <button class="btn btn-outline-success rounded-0" type="submit" id="btn-query-user" data-cy="btn-query-user">
           <i class="bi bi-search"></i> Buscar
         </button>
       </div>

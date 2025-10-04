@@ -30,9 +30,34 @@ function mostrarAside(ele){
      ele.style.color = 'red';
 }
 
+function buscarUsuarios(){
+    const query = event.target.value;
+
+    if (query.length < 2) return;
+    const btninput = document.getElementById('btn-query-user');
+    console.log(query.target.value);
+    //btninput.click();
+    /*
+    fetch(`/admin/buscar-usuarios?query=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Usuarios encontrados:', data);
+            // Aquí renderizas resultados, por ejemplo en una tabla o dropdown
+        })
+        .catch(err => {
+            console.error('Error al buscar usuarios:', err);
+        });
+    */
+}
+
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("Empezamos");
+    console.log("Empezamos con Javascript");
+    const input = document.getElementById('query-user');
     
+    if (input) {
+        input.addEventListener('keyup', buscarUsuarios); // o 'keyup'
+    }
+    /*
     let elementosDiv = document.querySelectorAll('.abc');
 
     // Recorre todos los elementos
@@ -48,6 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
             
         });
     });
+    */
 });
 
 
