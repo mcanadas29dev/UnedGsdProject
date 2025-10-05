@@ -2,6 +2,14 @@
 
 {% block title %}Contacto - Mi Tienda{% endblock %}
 
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Contacto', 'url': path('app_contact')}
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
 {% block body %}
 <div class="row justify-content-center">
   <div class="col-md-8 col-lg-6">

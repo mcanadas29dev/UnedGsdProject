@@ -35,8 +35,8 @@ a {
 
 a:hover {
     /*color: #1a1a1a !important; */
-    background-color: #C4F2B8 !important; 
-    color: grey !important; 
+    /*b ackground-color: #C4F2B8 !important;  */
+    color: rgb(10, 9, 9) !important; 
     /* font-style: italic !important; */
     
 }
@@ -141,3 +141,35 @@ strong {
     font-size: 0.95rem;
 }
 
+
+
+/* BreadCrum */
+
+.breadcrumb-modern {
+    font-size: 0.80rem;         /* Más pequeño que 'small' */
+    background-color: transparent; /* Fondo limpio */
+    padding: 0;                 /* Sin padding para un look minimalista */
+    margin-bottom: 0;           /* Ajusta margen para que no se vea muy separado */
+}
+
+.breadcrumb-modern .breadcrumb-item + .breadcrumb-item::before {
+    content: "›";               /* Usa un separador moderno (flecha) */
+    color: #6c757d;             /* Gris suave */
+    padding: 0 0.2rem;          /* Espacio entre items */
+}
+
+.breadcrumb-modern .breadcrumb-item a {
+    color: #0d6efd;             /* Azul moderno para enlaces */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb-modern .breadcrumb-item a:hover {
+    color: #0a58ca;             /* Azul más oscuro al pasar el mouse */
+    text-decoration: underline ;
+}
+
+.breadcrumb-modern .breadcrumb-item.active {
+    color: #6c757d;             /* Color gris para el item activo */
+    font-weight: 500;
+}

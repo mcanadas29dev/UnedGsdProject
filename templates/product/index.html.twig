@@ -2,6 +2,15 @@
 
 {% block title %}Productos - GreenHarvest{% endblock %}
 
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Productos', 'url': path('product_index')}
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
+
 {% block body %}
 <div class="">
 
@@ -15,7 +24,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <form method="get" action="{{ path('product_index') }}" class="mb-1">
             <div class="input-group">
-                <input type="text" name="q" value="{{ search }}" class="form-control"
+                <input type="text" name="q" value="{{ search }}" class="form-control" id="productSearch"
                     placeholder="Buscar por nombre..." aria-label="Buscar producto">
                 <button class="btn btn-outline-success rounded-0" type="submit">
                     <i class="bi bi-search"></i> Buscar
@@ -27,64 +36,12 @@
         </a>
     </div>
  
-    <!-- Tabla -->
-    <div class="card  border-0 rounded-4">
-        <div class="card-body p-0">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-success text-success">
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Precio (IVA incl.)</th>
-                        <th scope="col">Categoría</th>
-                        <th scope="col" class="text-center">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for product in products %}
-                    <tr>
-                        <td>{{ product.id }}</td>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.price|number_format(2, ',', '.') }} €</td>
-                        <td>{{ product.category.name }}</td>
-                      
-  
-                        <td class="text-center">
-    
-                                    <div class="btn-group dropup" role="group">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        +
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                      
-                                        <li><a class="dropdown-item text-muted" href="{{ path('product_show', {'id': product.id}) }}" ><i class="bi bi-eye"></i> Ver</a></li>
-                                        <li><a class="dropdown-item text-muted" href="{{ path('product_edit', {'id': product.id}) }}"> <i class="bi bi-pencil-square"></i> Editar</a></li>
-                                        {{ include('product/_delete_form.html.twig', {'product': product}) }}
-                                        </ul>
-                                    </div>
-                        </td>
-
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="5" class="text-center text-muted py-4">
-                            No hay productos disponibles.
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+     <div id="searchResults">
+        {% include 'product/_table.html.twig' with {'products': products} %}
     </div>
 
-    <!-- Paginación -->
-    {% if products is not empty %}
-        <nav aria-label="Page navigation" class="mt-4">
-            <div class="d-flex justify-content-center">
-                
-                {{ knp_pagination_render(products, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig' )}}
-            </div>
-        </nav>
-    {% endif %}
 </div>
 {% endblock %}
+
+
+

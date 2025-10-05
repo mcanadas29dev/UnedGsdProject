@@ -2,11 +2,22 @@
 
 {% block title %}Editar Categoría - GreenHarvest{% endblock %}
 
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Categorías', 'url': path('categories_list')},
+        {'label': 'Editar Categoría'},
+        
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
+
 {% block body %}
-<div class="container py-5">
+
     <!-- Encabezado -->
     <div class="text-center mb-5">
-        <h1 class="fw-bold text-success">✏️ Editar Categoría: "{{ category.name }}"</h1>
+        <h1 class="fw-bold text-success">Editar Categoría: "{{ category.name }}"</h1>
         <p class="text-muted">Modifica los datos de la categoría en el sistema</p>
     </div>
 
@@ -38,6 +49,6 @@
             </div>
         {{ form_end(form) }}
     </div>
-</div>
+
 {% endblock %}
 

@@ -2,11 +2,21 @@
 
 {% block title %}Detalles de Categoría - GreenHarvest{% endblock %}
 
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Categorías', 'url': path('categories_list')},
+        {'label': 'Ver Categoría'},
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
+
 {% block body %}
-<div class="container py-5">
+
     <!-- Encabezado -->
     <div class="text-center mb-5">
-        <h1 class="fw-bold text-success">📂 Detalles de la Categoría: "{{ category.name }}"</h1>
+        <h1 class="fw-bold text-success">Detalles de la Categoría: "{{ category.name }}"</h1>
         <p class="text-muted">Información detallada de la categoría en el sistema</p>
     </div>
 
@@ -35,5 +45,5 @@
             </div>
         </div>
     </div>
-</div>
+
 {% endblock %}

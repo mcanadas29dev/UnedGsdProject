@@ -3,6 +3,14 @@
 
 {% block title %}Categorias{% endblock %}
 
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Categorias'}
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
 {% block body %}
 <div class="container mt-4">
      <h1 class="mb-5 text-center fw-bold text-success">Categorias</h1>

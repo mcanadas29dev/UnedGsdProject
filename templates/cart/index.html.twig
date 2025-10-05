@@ -2,6 +2,14 @@
 
 {% block title %}Tu carrito - GreenHarvest{% endblock %}
 
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Carrito'}
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
 {% block body %}
 <div class="container py-5">
     <h1 class="fw-bold text-success mb-4">🛒 Carrito de compra</h1>

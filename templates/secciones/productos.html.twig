@@ -3,26 +3,33 @@
 
 {% block title %}Productos - {{ category.name }}{% endblock %}
 
+{% block breadcrumb %}
+    {# Array base #}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Tienda', 'url': path('secciones_index')}
+    ] %}
+
+    {# Si la categoría tiene padre, lo añadimos dinámicamente #}
+    {% if category.parent %}
+        {% set breadcrumb = breadcrumb|merge([
+            {'label': category.parent.name, 'url': path('secciones_index')}
+        ]) %}
+    {% endif %}
+
+    {# Añadimos la categoría actual al final #}
+    {% set breadcrumb = breadcrumb|merge([
+        {'label': category.name}
+    ]) %}
+
+    {# Renderizamos el componente #}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
+
 {% block body %}
 <div class="container mt-4">
-    <!-- Breadcrumb -->
-    <nav aria-label="breadcrumb" class="mb-4">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="{{ path('secciones_index') }}">Secciones</a>
-            </li>
-            {% if category.parent %}
-                <li class="breadcrumb-item">
-                    <a href="{{ path('secciones_show', {'slug': category.parent.slug}) }}">
-                        {{ category.parent.name }}
-                    </a>
-                </li>
-            {% endif %}
-            <li class="breadcrumb-item active" aria-current="page">
-                {{ category.name }}
-            </li>
-        </ol>
-    </nav>
+
 
     <div class="row">
         <div class="col-12">

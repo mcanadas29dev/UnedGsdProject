@@ -2,10 +2,20 @@
 
 {% block title %}Crear Nueva Categoría - GreenHarvest{% endblock %}
 
-{% block body %}
-<div class="container py-5">
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Categorías', 'url': path('categories_list')},
+        {'label': 'Nueva Categoría'},
+        
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
 
-<!-- Formulario OK -->
+
+{% block body %}
+
+    <!-- Formulario OK -->
        <div class="row justify-content-center">
         <div class="col-lg-6">
             <div class="card shadow border-0 rounded-1">
@@ -41,6 +51,6 @@
             </div>
         </div>
         </div>
-</div>
+
 {% endblock %}
 

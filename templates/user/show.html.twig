@@ -2,6 +2,15 @@
 
 {% block title %}Usuario #{{ user.id }} - GreenHarvest{% endblock %}
 
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Usuarios', 'url': path('app_user_index')},
+        {'label': 'Ver Usuario'}
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
 {% block body %}
 <div class="container py-5">
     <!-- Formulario NUEVO-->
