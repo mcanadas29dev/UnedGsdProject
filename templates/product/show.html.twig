@@ -2,8 +2,17 @@
 
 {% block title %}Detalle del producto - GreenHarvest{% endblock %}
 
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Productos', 'url': path('product_index')},
+        {'label': 'Ver Producto'}
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
 {% block body %}
-<div class="container my-4">
+
     <h1 class="mb-4 text-success fw-bold">Detalles del producto</h1>
 
     <div class="card shadow-sm border-0 rounded-1">
@@ -65,5 +74,5 @@
             </div>
         </div>
     </div>
-</div>
+
 {% endblock %}

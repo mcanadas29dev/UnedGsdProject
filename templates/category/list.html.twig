@@ -2,8 +2,17 @@
 
 {% block title %}Listado de Categorías - GreenHarvest{% endblock %}
 
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Categorías'}
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
+
 {% block body %}
-<div class="">
+
     <!-- Encabezado -->
     <div class="d-flex justify-content-between align-items-center mb-4 ">
         <h1 class="h2 fw-bold text-success mb-0">Categorías</h1>
@@ -105,5 +114,5 @@
             </div>
         </nav>
     {% endif %}
-</div>
+
 {% endblock %}

@@ -3,19 +3,17 @@
 
 {% block title %}{{ category.name }} - Secciones{% endblock %}
 
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Tienda', 'url': path('secciones_index')},
+        {'label': category.name } 
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
 {% block body %}
 <div class="container mt-4">
-    <!-- Breadcrumb -->
-    <nav aria-label="breadcrumb" class="mb-4">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="{{ path('secciones_index') }}">Secciones</a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">
-                {{ category.name }}
-            </li>
-        </ol>
-    </nav>
 
     <div class="row">
         <div class="col-12">

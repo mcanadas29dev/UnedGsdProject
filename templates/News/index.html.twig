@@ -2,8 +2,16 @@
 
 {% block title %}Noticias - Green Harvest{% endblock %}
 
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Noticias', 'url': path('app_news')}
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
 {% block body %}
-<div class="container py-5">
+
 
   <!-- Hero -->
   <div class="text-center mb-5">
@@ -71,5 +79,5 @@
     {% endfor %}
   </div>
 
-</div>
+
 {% endblock %}

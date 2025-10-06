@@ -2,8 +2,18 @@
 
 {% block title %}Pedido #{{ order.id }} - GreenHarvest{% endblock %}
 
+ {# Revisar este bloque para ROLE_USER, ROLE_PICKER, ROLE_ADMIN #}
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Pedidos', 'url': path('app_order_index')}, 
+        {'label': 'Ver Pedido'}
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
 {% block body %}
-<div class="container py-5">
+
 
   <!-- Encabezado -->
   <div class="text-center mb-5">
@@ -91,5 +101,5 @@
     {% endif %}
   </div>
 
-</div>
+
 {% endblock %}

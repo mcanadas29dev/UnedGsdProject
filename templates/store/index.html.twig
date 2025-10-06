@@ -2,8 +2,16 @@
 
 {% block title %}Tienda{% endblock %}
 
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Tienda'}
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
 {% block body %}
-<div class="container">
+
     <h1 class="mb-5 text-center fw-bold text-success">Nuestra Tienda</h1>
 
     <div class="row row-cols-1 row-cols-md-4 g-4">
@@ -37,5 +45,5 @@
             </div>
         {% endfor %}
     </div>
-</div>
+
 {% endblock %}

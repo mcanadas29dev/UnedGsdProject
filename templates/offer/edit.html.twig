@@ -2,8 +2,17 @@
 
 {% block title %}Editar Oferta - GreenHarvest{% endblock %}
 
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Ofertas', 'url': path('offer_index_admin')},
+        {'label': 'Editar Oferta'}
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
 {% block body %}
-<div class="container py-5">
+
     <!-- Encabezado -->
     <div class="text-center mb-4">
         <h1 class="fw-bold text-success">Editar Oferta</h1>
@@ -40,5 +49,5 @@
             </button>
         </form> 
     </div>
-</div>
+
 {% endblock %}

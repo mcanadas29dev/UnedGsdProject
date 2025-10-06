@@ -2,8 +2,18 @@
 
 {% block title %}{{ form_title }} - GreenHarvest{% endblock %}
 
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Productos', 'url': path('product_index')},
+        {'label': 'Nuevo Producto'}
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
+
 {% block body %}
-<div class="container py-5">
+
 
 
     <!-- Formulario -->
@@ -72,5 +82,5 @@
          
         </div>
     </div>
-</div>
+
 {% endblock %}

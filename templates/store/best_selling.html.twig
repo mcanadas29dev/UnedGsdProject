@@ -2,6 +2,15 @@
 
 {% block title %}Lo más vendido{% endblock %}
 
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Lo Mas Vendido'}
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
+
 {% block body %}
 
   <!-- Encabezado -->

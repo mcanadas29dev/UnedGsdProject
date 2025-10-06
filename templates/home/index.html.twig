@@ -3,7 +3,7 @@
 {% block title %}{{ 'home.title'|trans }}{% endblock %}
 
 {% block body %}
-<div class="container py-5">
+
 
   <!-- Hero -->
   <div class="text-center mb-5">
@@ -11,7 +11,7 @@
     <p class="lead text-muted">
       {{ 'home.hero.subtitle'|trans }}
     </p>
-    <a href="{{ path('app_tienda') }}" class="btn btn-success btn-lg mt-3">
+    <a href="{{ path('app_tienda') }}" class="btn btn-success btn-lg mt-3 rounded-0">
       <i class="bi bi-cart"></i> {{ 'home.hero.button'|trans }}
     </a>
   </div>
@@ -19,7 +19,7 @@
   <!-- Banner con imagen -->
   <div class="row align-items-center mb-5">
     <div class="col-md-6">
-      <img src="{{ asset('images/cover.png') }}" class="img-fluid rounded-4 shadow" alt="Productos Ecológicos"/>
+      <img src="{{ asset('images/cover.png') }}" class="img-fluid rounded-0 shadow" alt="Productos Ecológicos"/>
     </div>
     <div class="col-md-6">
       <h3 class="text-success">{{ 'home.promise.title'|trans }}</h3>
@@ -34,7 +34,7 @@
   </div>
   <div class="row text-center mb-5">
     <div class="col-md-4 mb-4">
-      <div class="card border-0 shadow h-100 rounded-4">
+      <div class="card border-0 shadow h-100 rounded-0">
         <div class="card-body p-4">
           <i class="bi bi-basket text-success display-5 mb-3"></i>
           <h4 class="fw-bold text-muted">
@@ -45,7 +45,7 @@
       </div>
     </div>
     <div class="col-md-4 mb-4">
-      <div class="card border-0 shadow h-100 rounded-4">
+      <div class="card border-0 shadow h-100 rounded-0">
         <div class="card-body p-4">
           <i class="bi bi-egg-fried text-success display-5 mb-3"></i>
           <h4 class="fw-bold">
@@ -56,7 +56,7 @@
       </div>
     </div>
     <div class="col-md-4 mb-4">
-      <div class="card border-0 shadow h-100 rounded-4">
+      <div class="card border-0 shadow h-100 rounded-0">
         <div class="card-body p-4">
           <i class="bi bi-flower1 text-success display-5 mb-3"></i>
           <h4 class="fw-bold">
@@ -77,12 +77,12 @@
 <div class="row text-center">
   {% for product in products|slice(0,3) %}
     <div class="col-md-4 mb-4 d-flex">
-      <div class="card border-0 shadow h-100 rounded-4 w-100 d-flex flex-column">
+      <div class="card border-0 shadow h-100 rounded-0 w-100 d-flex flex-column">
         
         <!-- Imagen con tamaño uniforme -->
         <div class="ratio ratio-4x3">
           <img src="{{ asset('images/productos/' ~ product.imageName) }}" 
-               class="card-img-top rounded-top-4" 
+               class="card-img-top rounded-top-0" 
                alt="{{ product.imageName }}"
                style="object-fit: cover; height: 100%; width: 100%;">
         </div>
@@ -96,8 +96,8 @@
 
           <!-- Precio y botón alineados -->
           <div class="d-flex justify-content-between align-items-center mt-3">
-            <strong class="h5 text-primary mb-0">{{ product.price }} €</strong>
-            <a href="{{ path('cart_add', {id: product.id}) }}" class="btn btn-outline-success rounded-1">
+            <strong class="h4 text-primary mb-1">{{ product.price }} €</strong>
+            <a href="{{ path('cart_add', {id: product.id}) }}" class="btn btn-outline-success rounded-0">
               <i class="bi bi-cart-plus"></i> {{ 'home.featured.add_to_cart'|trans }}
             </a>
           </div>
@@ -109,5 +109,5 @@
   {% endfor %}
 </div>
 
-</div>
+
 {% endblock %}

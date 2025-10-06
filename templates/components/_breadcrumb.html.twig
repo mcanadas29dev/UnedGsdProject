@@ -1,0 +1,12 @@
+{# templates/components/_breadcrumb.html.twig #}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb fs-7">
+        {% for item in items %}
+            {% if loop.last %}
+                <li class="breadcrumb-item active" aria-current="page">{{ item.label }}</li>
+            {% else %}
+                <li class="breadcrumb-item"><a href="{{ item.url }}">{{ item.label }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ol>
+</nav>

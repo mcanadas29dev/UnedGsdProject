@@ -2,9 +2,17 @@
 
 {% block title %}Sobre Nosotros - Mi Tienda{% endblock %}
 
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Sobre Nosotros', 'url': path('app_about')}
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
 {% block body %}
 
-<div class="container py-5">
+
 
   <!-- Encabezado -->
   <div class="text-center mb-5">
@@ -92,5 +100,5 @@
       <p class="text-muted">Atención al Cliente</p>
     </div>
   </div>
-</div>
+
 {% endblock %}

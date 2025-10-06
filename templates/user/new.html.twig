@@ -2,6 +2,15 @@
 
 {% block title %}Nuevo Usuario - GreenHarvest{% endblock %}
 
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Usuarios', 'url': path('app_user_index')},
+        {'label': 'Nuevo Usuario'}
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
 {% block body %}
 <div class="container py-5">
     <div class="row justify-content-center">
