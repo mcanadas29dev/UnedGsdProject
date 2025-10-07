@@ -87,16 +87,16 @@
   <!-- Botón volver -->
   <div class="text-center mt-4">
     {% if is_granted('ROLE_ADMIN') %}
-      <a href="{{ path('app_order_index') }}" class="btn btn-outline-success px-4">
-        <i class="bi bi-arrow-left"></i> Volver a Pedidos
+      <a href="{{ path('app_order_index') }}" class="btn btn-outline-secondary px-4">
+        <i class="bi bi-arrow-left"></i> Volver
       </a>
     {% elseif is_granted('ROLE_PICKER') %}
-      <a href="{{ path('app_order_storage') }}" class="btn btn-outline-success px-4">
-        <i class="bi bi-arrow-left"></i> Volver a Gestión
+      <a href="{{ path('app_order_storage') }}" class="btn btn-outline-secondary px-4">
+        <i class="bi bi-arrow-left"></i> Volver
       </a>
     {% else %}
-      <a href="{{ path('app_order_user') }}" class="btn btn-outline-success px-4">
-        <i class="bi bi-arrow-left"></i> Volver a Mis Pedidos
+      <a href="{{ path('app_order_user') }}" class="btn btn-outline-secondary px-4">
+        <i class="bi bi-arrow-left"></i> Volver
       </a>
     {% endif %}
   </div>

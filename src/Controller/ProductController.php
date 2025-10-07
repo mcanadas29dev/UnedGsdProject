@@ -24,7 +24,7 @@ class ProductController extends AbstractController
         PaginatorInterface $paginator,
         Request $request ): Response {
 
-         $search = $request->query->get('q'); // capturamos el término de búsqueda
+        $search = $request->query->get('q'); // capturamos el término de búsqueda
 
         $queryBuilder = $productRepository->createQueryBuilder('p')
             ->orderBy('p.id', 'DESC');

@@ -34,6 +34,7 @@ final class UserController extends AbstractController
         $this->logger = $logger;
     }
 
+    /*
     #[Route(name: 'app_user_index', methods: ['GET'])]
     public function index(
         UserRepository $userRepository, 
@@ -102,6 +103,88 @@ final class UserController extends AbstractController
             'search' => htmlspecialchars($search, ENT_QUOTES, 'UTF-8'), // XSS protection
         ]);
     }
+    */
+    #[Route(name: 'app_user_index', methods: ['GET'])]
+    public function index(
+        UserRepository $userRepository, 
+        PaginatorInterface $paginator, 
+        Request $request
+    ): Response 
+    {
+        $users = [];
+        $hasError = false;
+        $search = $this->sanitizeSearchInput($request->query->get('q', ''));
+        // 👇 También aceptamos el parámetro 'find_user' (usado por tu JS)
+        $findUser = $this->sanitizeSearchInput($request->query->get('find_user', ''));
+
+        // Usamos uno u otro
+        $searchTerm = $findUser ?: $search;
+
+        try {
+            $queryBuilder = $userRepository->createQueryBuilder('u')
+                ->orderBy('u.id', 'ASC');
+
+            if ($searchTerm) {
+                // Escapar caracteres especiales de LIKE
+                $escapedSearch = $this->escapeLikeParameter($searchTerm);
+                $queryBuilder
+                    ->andWhere('u.email LIKE :search')
+                    ->setParameter('search', '%' . $escapedSearch . '%');
+            }
+
+            $users = $paginator->paginate(
+                $queryBuilder->getQuery(),
+                $request->query->getInt('page', 1),
+                10
+            );
+
+            if ($searchTerm) {
+                $this->logger->info('User search performed', [
+                    'admin_id' => $this->getUser()?->getId(),
+                    'search_term' => $searchTerm,
+                    'ip' => $request->getClientIp()
+                ]);
+            }
+
+        } catch (\Doctrine\DBAL\Exception\ConnectionException $e) {
+            $this->addFlash('error', 'No se puede conectar a la base de datos. Por favor, inténtelo más tarde.');
+            $hasError = true;
+            $this->logger->error('Database connection error', [
+                'exception' => $e->getMessage(),
+                'admin_id' => $this->getUser()?->getId()
+            ]);
+        } catch (\Doctrine\DBAL\Exception $e) {
+            $this->addFlash('error', 'Error al acceder a la base de datos. Por favor, contacte al administrador.');
+            $hasError = true;
+            $this->logger->error('Database error in user index', [
+                'exception' => $e->getMessage(),
+                'admin_id' => $this->getUser()?->getId()
+            ]);
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Ocurrió un problema al cargar los usuarios. Por favor, inténtelo más tarde.');
+            $hasError = true;
+            $this->logger->error('Unexpected error in user index', [
+                'exception' => $e->getMessage(),
+                'admin_id' => $this->getUser()?->getId()
+            ]);
+        }
+
+        // 👇 NUEVO BLOQUE: si es una petición AJAX, devolvemos solo la tabla
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('user/_table.html.twig', [
+                'users' => $users,
+            ]);
+        }
+
+        // Renderizado normal (no AJAX)
+        return $this->render('user/index.html.twig', [
+            'users' => $users,
+            'hasError' => $hasError,
+            'databaseStatus' => !$hasError,
+            'search' => htmlspecialchars($searchTerm, ENT_QUOTES, 'UTF-8'),
+        ]);
+    }
+
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(

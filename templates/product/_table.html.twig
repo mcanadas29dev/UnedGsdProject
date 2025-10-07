@@ -1,6 +1,6 @@
 <div class="card border-0 rounded-4">
     <div class="card-body p-0">
-        <table class="table table-hover align-middle mb-0">
+        <table class="table table-hover align-middle mb-0 ">
             <thead class="table-success text-success">
                 <tr>
                     <th>ID</th>
@@ -43,7 +43,9 @@
 {% if products is not empty %}
     <nav aria-label="Page navigation" class="mt-4">
         <div class="d-flex justify-content-center">
+            <ul class="pagination pagination-sm">
             {{ knp_pagination_render(products, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
+            </ul>
         </div>
     </nav>
 {% endif %}
