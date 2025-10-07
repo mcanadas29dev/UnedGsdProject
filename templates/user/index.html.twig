@@ -1,3 +1,4 @@
+{#
 {% extends 'base.html.twig' %}
 
 {% block title %}Usuarios - GreenHarvest{% endblock %}
@@ -120,4 +121,74 @@
   {% endif %}
 
 </div>
+{% endblock %}
+#}
+
+{# ==========================================================
+   PLANTILLA: templates/user/index.html.twig
+   DESCRIPCIÓN:
+     Vista principal del módulo de gestión de usuarios.
+     Permite listar usuarios registrados en GreenHarvest 
+     y buscar dinámicamente por dirección de correo electrónico.
+
+   ARQUITECTURA:
+     - Basada en el patrón MVC de Symfony 6.4
+     - Se apoya en un controlador "UserController"
+       y una ruta "/admin/users"
+     - Integra paginación (KnpPaginatorBundle)
+     - Búsqueda dinámica AJAX (userSearch.js)
+   ========================================================== #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestión de Usuarios - GreenHarvest{% endblock %}
+
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Usuarios'}
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
+{% block body %}
+<div class="">
+
+  <!-- Encabezado -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2 fw-bold text-success mb-0">Usuarios</h1>
+  </div>
+
+  <!-- Buscador por Email -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <form method="get"
+          action="{{ path('app_user_index') }}"
+          class="mb-1">
+      <div class="input-group">
+        <input type="text" 
+               name="find_user"
+               id="userSearch"
+               value="{{ find_user|default('') }}" 
+               class="form-control" 
+               placeholder="Buscar usuario por email...">
+        <button  class="btn btn-outline-secondary disabled rounded-0">
+          <i class="bi bi-search"></i> 
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Contenedor dinámico para los resultados -->
+  <div id="userResults">
+      {# Incluimos la subvista con la tabla de resultados #}
+      {% include 'user/_table.html.twig' with {'users': users} %}
+  </div>
+
+</div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  {# Archivo JS específico para la búsqueda dinámica de usuarios #}
+  <script src="{{ asset('js/modules/user_search.js') }}"></script>
 {% endblock %}

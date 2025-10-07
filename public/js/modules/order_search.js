@@ -1,6 +1,6 @@
-export function initProductSearch() {
-    const searchInput = document.getElementById('productSearch');
-    const resultsContainer = document.getElementById('searchResults');
+export function initOrderSearch() {
+    const searchInput = document.getElementById('orderSearch');
+    const resultsContainer = document.getElementById('orderResults');
 
     if (!searchInput || !resultsContainer) return;
 
@@ -11,22 +11,13 @@ export function initProductSearch() {
         clearTimeout(timeout);
 
         timeout = setTimeout(async () => {
-            // Generamos la URL del endpoint
-            const url = new URL(window.location.origin + '/product/');
+            const url = new URL(window.location.origin + '/admin/orders');
             if (query.length > 0) {
-                url.searchParams.set('q', query);
+                url.searchParams.set('find_order', query);
             }
 
-            // Mostramos spinner mientras se busca
-            /*
-            resultsContainer.innerHTML = `
-                <div class="text-center py-3 text-muted">
-                    <div class="spinner-border text-success" role="status"></div>
-                </div>
-            `; */
-
             try {
-                const response = await fetch(url.toString(), {
+                const response = await fetch(url, {
                     headers: { 'X-Requested-With': 'XMLHttpRequest' }
                 });
 
@@ -39,13 +30,16 @@ export function initProductSearch() {
 
                 resultsContainer.innerHTML = safeContent;
             } catch (error) {
-                console.error("Error al buscar productos:", error);
+                console.error("Error al buscar pedidos:", error);
                 resultsContainer.innerHTML = `
                     <div class="alert alert-warning mt-3 text-center">
-                        No se pudieron cargar los productos. Intenta de nuevo.
+                        No se pudieron cargar los pedidos. Intenta de nuevo.
                     </div>
                 `;
             }
-        }, 300); // debounce
+        }, 300);
     });
 }
+
+// Auto inicializa si se importa directamente
+document.addEventListener('DOMContentLoaded', initOrderSearch);

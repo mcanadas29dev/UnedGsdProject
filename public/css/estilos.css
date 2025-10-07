@@ -173,3 +173,32 @@ strong {
     color: #6c757d;             /* Color gris para el item activo */
     font-weight: 500;
 }
+
+
+/* Paginación * /
+
+/* Cambiar color de fondo y tamaño */
+.pagination .page-link {
+    /* background-color: #28a745; /* Verde para tema ecológico */
+    background-color: white;
+    color: grey;
+    /*border-color: #28a745;
+    /* padding: 0.75rem 1rem; /* Aumentar tamaño */
+     font-size: 0.70rem; /* Aumentar texto */
+}
+
+.pagination .page-link:hover {
+    /* background-color: #218838;
+    border-color: #1e7e34; */
+    color: black;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #e9ecef; 
+    color: green;
+}
+
+.pagination .page-item.disabled .page-link {
+    background-color: #e9ecef;
+    color: #6c757d;
+}

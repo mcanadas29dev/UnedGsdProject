@@ -1,3 +1,4 @@
+{# 
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ tituloAlmacen }} - GreenHarvest{% endblock %}
@@ -28,7 +29,7 @@
                {% endif %}"
 
         class="mb-2">
-      {# <form method="get" action="{{ path('app_order_index') }}" class="mb-2"> #}
+       <!-- <form method="get" action="{{ path('app_order_index') }}" class="mb-2"> -->
         <div class="input-group">
          
           <input type="text" name="find_order" 
@@ -57,7 +58,7 @@
                {% else %}
                    {{ path('app_order_user') }}
                {% endif %}" class="alert-link">Volver </a>
-        {# <a href="{{ path('app_order_index') }}" class="alert-link">Ver todos los pedidos</a> #}
+        <!-- <a href="{{ path('app_order_index') }}" class="alert-link">Ver todos los pedidos</a> -->
       {% else %}
         No hay pedidos realizados todavía.
       {% endif %}
@@ -130,3 +131,59 @@
   {% endif %}
 
 {% endblock %}
+
+#}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ tituloAlmacen }} - GreenHarvest{% endblock %}
+
+{% block breadcrumb %}
+    {% set breadcrumb = [
+        {'label': 'Inicio', 'url': path('app_home')},
+        {'label': 'Pedidos'}
+    ] %}
+    {% include 'components/_breadcrumb.html.twig' with {'items': breadcrumb} %}
+{% endblock %}
+
+
+{% block body %}
+<div class="">
+
+  <!-- Encabezado -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2 fw-bold text-success mb-0">{{ tituloAlmacen }}</h1> 
+  </div>
+
+  <!-- Buscador -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <form method="get"
+          action="{{ path('app_order_index') }}"
+          class="mb-1">
+      <div class="input-group">
+        <input type="text" name="find_order" 
+               id="orderSearch"
+               value="{{ find_order|default('') }}" 
+               class="form-control" 
+               placeholder="Buscar por usuario, ID o estado...">
+        <button class="btn btn-outline-secondary disabled rounded-0">
+          <i class="bi bi-search"></i> 
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Resultados -->
+  <div id="orderResults">
+      {% include 'order/_table.html.twig' with {'orders': orders} %}
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/orderSearch.js') }}"></script>
+{% endblock %}
+

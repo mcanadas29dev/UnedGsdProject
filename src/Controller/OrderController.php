@@ -102,6 +102,7 @@ class OrderController extends AbstractController
 
     // Pedidos con paginación 
 
+    /* FUNCIONANDO OK
     #[Route('/admin/orders', name: 'app_order_index')]
     #[IsGranted('ROLE_ADMIN')]
     public function adminOrders(OrderRepository $orderRepository, PaginatorInterface $paginator, Request $request): Response
@@ -133,6 +134,47 @@ class OrderController extends AbstractController
             'find_order' => $query
         ]);
     }
+*/
+
+    #[Route('/admin/orders', name: 'app_order_index')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function adminOrders(
+        OrderRepository $orderRepository,
+        PaginatorInterface $paginator,
+        Request $request
+    ): Response {
+        $query = $request->query->get('find_order', '');
+        
+        $qb = $orderRepository->createQueryBuilder('o')
+            ->join('o.user', 'u')
+            ->join('o.status', 's')
+            ->orderBy('o.createdAt', 'DESC');
+
+        if (!empty($query)) {
+            $qb->andWhere('o.id LIKE :search OR u.email LIKE :search OR s.name LIKE :search')
+            ->setParameter('search', '%' . $query . '%');
+        }
+
+        $pagination = $paginator->paginate(
+            $qb,
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        // Si es una petición AJAX, solo devolvemos la tabla
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('order/_table.html.twig', [
+                'orders' => $pagination,
+            ]);
+        }
+
+        return $this->render('order/index.html.twig', [
+            'orders' => $pagination,
+            'tituloAlmacen' => 'Pedidos',
+            'find_order' => $query
+        ]);
+    }
+
 
     // Acceso para Personal de almacén Pickers para ver los pedidos pagados que tienen que preparar.
     #[Route('/almacen/orders', name: 'app_order_storage')]

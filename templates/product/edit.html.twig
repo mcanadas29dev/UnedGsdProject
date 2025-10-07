@@ -46,12 +46,13 @@
             </div>
 
             <div class="mt-4 d-flex justify-content-between">
-                <a href="{{ path('product_index') }}" class="btn btn-outline-secondary rounded-1">
-                    <i class="bi bi-arrow-left"></i> Volver al listado
-                </a>
+                
                 <button class="btn btn-outline-success rounded-1">
                     <i class="bi bi-save"></i> Guardar
                 </button>
+                <a href="{{ path('product_index') }}" class="btn btn-outline-secondary rounded-0">
+                    <i class="bi bi-arrow-left"></i> Volver
+                </a>
             </div>
         {{ form_end(form) }}
     </div>
