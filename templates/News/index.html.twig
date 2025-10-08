@@ -47,9 +47,9 @@
   <div class="row">
     {% for article in articles %}
       <div class="col-md-4 mb-4">
-        <div class="card border-0 shadow h-100 rounded-4">
+        <div class="card border-0 shadow h-100 rounded-0">
           {% if article.urlToImage %}
-            <img src="{{ article.urlToImage }}" class="card-img-top rounded-top-4" alt="{{ article.title }}">
+            <img src="{{ article.urlToImage }}" class="card-img-top rounded-top-0" alt="{{ article.title }}">
           {% else %}
             <img src="https://source.unsplash.com/600x400/?nature,eco" class="card-img-top rounded-top-4" alt="Imagen por defecto">
           {% endif %}

@@ -6,7 +6,7 @@
    ========================================================== #}
 
 {% if users is empty %}
-  <div class="alert alert-info shadow-sm rounded-4 text-center">
+  <div class="alert alert-info shadow-sm rounded-0 text-center">
       No hay usuarios que coincidan con tu búsqueda.
   </div>
 {% else %}
@@ -75,47 +75,12 @@
               </tr>
             {% else %}
               <tr>
-                <td colspan="5" class="text-center text-muted py-4">
+                <td colspan="5" class="text-center text-muted py-0 rounded-0">
                   No hay usuarios registrados.
                 </td>
               </tr>
             {% endfor %}
-            {#
-            {% for user in users %}
-              <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.email }}</td>
-                <td>
-                  {% for role in user.roles %}
-                    <span class="badge bg-secondary me-1">{{ role }}</span>
-                  {% endfor %}
-                </td>
-                <td>{{ user.createdAt|date('d/m/Y H:i') }}</td>
-                <td class="text-center">
-                  <div class="btn-group dropstart" role="group">
-                    <button type="button" 
-                            class="btn btn-sm btn-outline-secondary dropdown-toggle" 
-                            data-bs-toggle="dropdown" 
-                            aria-expanded="false">
-                      +
-                    </button>
-                    <ul class="dropdown-menu">
-                      <li>
-                        <a class="dropdown-item text-muted" href="{{ path('app_user_show', {id: user.id}) }}">
-                          <i class="bi bi-eye"></i> Ver
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item text-danger" href="{{ path('app_user_delete', {id: user.id}) }}">
-                          <i class="bi bi-trash"></i> Eliminar
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-              </tr>
-            {% endfor %}
-            #}
+
           </tbody>
         </table>
       </div>

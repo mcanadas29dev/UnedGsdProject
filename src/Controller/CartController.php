@@ -96,19 +96,7 @@ class CartController extends AbstractController
         $cartItems = $cartService->getCart();
         $lineItems = [];
         $now = new \DateTimeImmutable(); 
-        /*
-        foreach ($cartItems as $item) {
-            $lineItems[] = [
-                'price_data' => [
-                    'currency' => 'eur',
-                    'unit_amount' => $item['product']->getPrice() * 100, // en centavos
-                    'product_data' => [
-                        'name' => $item['product']->getName(),
-                    ],
-                ],
-                'quantity' => $item['quantity'],
-            ];
-        } */
+
         foreach ($cartItems as $item) {
             $product = $item['product'];
             $quantity = $item['quantity'];
@@ -217,14 +205,15 @@ class CartController extends AbstractController
         {
             return $this->render('cart/cancel.html.twig');
         }
+
     #[Route('/increment/{id}', name: 'increment')]
     public function increment(int $id, CartService $cartService): Response
         {
             $cartService->add($id, 1);
             return $this->redirectToRoute('cart_index');
         }
-
-    #[Route('/decrement/{id}', name: 'decrement')]
+ 
+        #[Route('/decrement/{id}', name: 'decrement')]
     public function decrement(int $id, CartService $cartService): Response
         {
             $cartService->add($id, -1);
@@ -241,25 +230,25 @@ class CartController extends AbstractController
     
     #[Route('/update/{id}', name: 'update_ajax', methods: ['POST'])]
     public function updateAjax(int $id, Request $request, CartService $cartService, OfferRepository $offerRepository): Response
-    {
-        $quantity = max(1, $request->request->getInt('quantity', 1));
-        $cartService->set($id, $quantity);
+        {
+            $quantity = max(1, $request->request->getInt('quantity', 1));
+            $cartService->set($id, $quantity);
 
-        $cartItems = $cartService->getCart();
-        $now = new \DateTimeImmutable();
-        foreach ($cartItems as &$item) {
-            $product = $item['product'];
-            $offer = $offerRepository->findActiveForProduct($product, $now);
-            $item['price'] = $offer ? $offer->getOfferPrice() : $product->getPrice();
+            $cartItems = $cartService->getCart();
+            $now = new \DateTimeImmutable();
+            foreach ($cartItems as &$item) {
+                $product = $item['product'];
+                $offer = $offerRepository->findActiveForProduct($product, $now);
+                $item['price'] = $offer ? $offer->getOfferPrice() : $product->getPrice();
+            }
+
+            $total = array_reduce($cartItems, fn($t, $item) => $t + ($item['price'] * $item['quantity']), 0);
+
+            return $this->json([
+                'subtotal' => number_format($cartItems[$id]['price'] * $cartItems[$id]['quantity'], 2, ',', '.') . ' €',
+                'total' => number_format($total, 2, ',', '.') . ' €'
+            ]);
         }
-
-        $total = array_reduce($cartItems, fn($t, $item) => $t + ($item['price'] * $item['quantity']), 0);
-
-        return $this->json([
-            'subtotal' => number_format($cartItems[$id]['price'] * $cartItems[$id]['quantity'], 2, ',', '.') . ' €',
-            'total' => number_format($total, 2, ',', '.') . ' €'
-        ]);
-    }
 
         
 }

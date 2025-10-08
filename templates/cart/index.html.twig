@@ -63,7 +63,7 @@
                                     
                                     <form method="post" action="{{ path('cart_update', {id: item.product.id}) }} " class="d-inline">
                                         <input type="number" name="quantity" value="{{ item.quantity }}" 
-                                               min="1" class="form-control form-control-sm text-center d-inline-block" style="width: 70px;">
+                                               min="1" class="form-control form-control-sm text-center d-inline-block" style="width: 70px;" readonly>
                                         
                                     </form>
                                     

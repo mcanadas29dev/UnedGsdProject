@@ -11,24 +11,23 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/offer')]
+
 class OfferController extends AbstractController
 {
     #[Route('/', name: 'offer_index', methods: ['GET'])]
     public function index(OfferRepository $offerRepository): Response
     {
-        
         return $this->render('offer/offer.html.twig', [
             'offers' => $offerRepository->findActive(),
             // 'offers' => $offerRepository->findActive(), para ofertas activas
         ]);
-        
-
     }
 
     #[Route('/admin', name: 'offer_index_admin', methods: ['GET'])]
-    //#[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_ADMIN')]
     public function index_admin(OfferRepository $offerRepository, PaginatorInterface $paginator, Request $request): Response
     {
         /*
@@ -46,7 +45,7 @@ class OfferController extends AbstractController
         return $this->render('offer/index.html.twig', [
             'offers' => $pagination,
         ]);
-        */
+        
         $search = $request->query->get('q');   // búsqueda por producto
         $date   = $request->query->get('date'); // búsqueda por fecha
 
@@ -87,10 +86,58 @@ class OfferController extends AbstractController
             'search' => $search,
             'date'   => $date,
         ]);
+        */
+            $search = $request->query->get('q');   // búsqueda por producto
+            $date   = $request->query->get('date'); // búsqueda por fecha
+
+            $qb = $offerRepository->createQueryBuilder('o')
+                ->join('o.product', 'p')
+                ->addSelect('p')
+                ->orderBy('o.startDate', 'DESC');
+
+            if ($search) {
+                $qb->andWhere('p.name LIKE :search')
+                ->setParameter('search', '%' . $search . '%');
+            }
+
+            if ($date) {
+                try {
+                    $dateObj = new \DateTime($date);
+                    $startOfDay = (clone $dateObj)->setTime(0, 0, 0);
+                    $endOfDay = (clone $dateObj)->setTime(23, 59, 59);
+
+                    $qb->andWhere('(o.startDate BETWEEN :start AND :end OR o.endDate BETWEEN :start AND :end)')
+                    ->setParameter('start', $startOfDay)
+                    ->setParameter('end', $endOfDay);
+                } catch (\Exception $e) {
+                    // fecha inválida
+                }
+            }
+
+            $pagination = $paginator->paginate(
+                $qb->getQuery(),
+                $request->query->getInt('page', 1),
+                10
+            );
+
+            // ⚡️ Si es una petición AJAX, devolvemos solo la tabla
+            if ($request->isXmlHttpRequest()) {
+                return $this->render('offer/_table.html.twig', [
+                    'offers' => $pagination,
+                ]);
+            }
+
+            // Vista completa
+            return $this->render('offer/index.html.twig', [
+                'offers' => $pagination,
+                'search' => $search,
+                'date'   => $date,
+            ]);
     }
 
 
     #[Route('/new', name: 'offer_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
         $offer = new Offer();
@@ -112,6 +159,7 @@ class OfferController extends AbstractController
     }
 
     #[Route('/{id}', name: 'offer_show', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function show(Offer $offer): Response
     {
         return $this->render('offer/show.html.twig', [
@@ -120,6 +168,7 @@ class OfferController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'offer_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Offer $offer, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(OfferType::class, $offer);
@@ -140,6 +189,7 @@ class OfferController extends AbstractController
     }
 
     #[Route('/{id}', name: 'offer_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Offer $offer, EntityManagerInterface $em): Response
     {
         if ($this->isCsrfTokenValid('delete' . $offer->getId(), $request->request->get('_token'))) {

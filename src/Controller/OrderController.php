@@ -17,7 +17,7 @@ class OrderController extends AbstractController
 {
     // Acceso para usuarios normales (NO admins)
     #[Route('/orders', name: 'app_order_user')]
-    //#[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_USER')]
     public function userOrders(OrderRepository $orderRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $user = $this->getUser();
@@ -36,7 +36,7 @@ class OrderController extends AbstractController
         }
         */ 
         // Tiene que mostrar solo sus pedidos
-        $query = $request->query->get('find_order');
+            $query = $request->query->get('find_order');
             $qb = $orderRepository->createQueryBuilder('o')
             ->join('o.user', 'u')     // JOIN con User
             ->join('o.status', 's')   // JOIN con Status si necesitas filtrar por estado
@@ -55,6 +55,12 @@ class OrderController extends AbstractController
             10 // Elementos por página
         );
         
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('order/_table.html.twig', [
+                'orders' => $pagination,
+            ]);
+        }
+
         return $this->render('order/index.html.twig', [
             'orders' => $pagination,
             'tituloAlmacen' => 'Listado de Pedidos de ' . $user->getUserIdentifier(),
@@ -209,9 +215,15 @@ class OrderController extends AbstractController
             10 // Elementos por página
         );
         
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('order/_table.html.twig', [
+                'orders' => $pagination,
+            ]);
+        }
+
         return $this->render('order/index.html.twig', [
             'orders' => $pagination,
-            'tituloAlmacen' => 'Storage - Listado de Pedidos',
+            'tituloAlmacen' => 'Centro de Pedidos',
             'find_order' => $query
         ]);
     }
