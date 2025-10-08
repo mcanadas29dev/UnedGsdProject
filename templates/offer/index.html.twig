@@ -26,10 +26,10 @@
             <!-- Buscar por producto -->
             <div class="input-group">
             
-                <input type="text" name="q" value="{{ search|default('') }}" 
+                <input type="text" name="q" value="{{ search|default('') }}" id="offerSearch"
                     class="form-control" placeholder="Buscar por producto...">
-                <button class="btn btn-outline-success " type="submit">
-                <i class="bi bi-search"></i> Buscar
+                <button class="btn btn-outline-secondary disabled " type="submit">
+                <i class="bi bi-search"></i> 
                 </button>
             </div>
 
@@ -49,7 +49,12 @@
                 <i class="bi bi-plus-circle"></i> Añadir Oferta
         </a>
     </div>
-    <!-- Tabla de ofertas -->
+    <div id="searchResults">
+        {% include 'offer/_table.html.twig' with {'offers': offers} %}
+    </div>
+
+
+    <!-- Tabla de ofertas 
     <div class="card border-0 rounded-0">
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -106,6 +111,7 @@
 <div class="d-flex justify-content-center mt-4">
     {{ knp_pagination_render(offers, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
 </div>
+-->
 
 {% endblock %}
 

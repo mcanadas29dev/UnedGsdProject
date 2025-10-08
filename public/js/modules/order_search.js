@@ -11,7 +11,22 @@ export function initOrderSearch() {
         clearTimeout(timeout);
 
         timeout = setTimeout(async () => {
-            const url = new URL(window.location.origin + '/admin/orders');
+              // Detecta el contexto según la URL actual
+            let basePath = '/orders';
+            const path = window.location.pathname;
+
+            if (path.includes('/admin')) {
+                basePath = '/admin/orders';
+            } else if (path.includes('/almacen')) {
+                basePath = '/almacen/orders';
+            }
+            /*
+            const basePath = window.location.pathname.includes('/admin') 
+                ? '/admin/orders' 
+                : '/orders';
+            */
+            const url = new URL(window.location.origin + basePath);
+            //const url = new URL(window.location.origin + '/admin/orders');
             if (query.length > 0) {
                 url.searchParams.set('find_order', query);
             }

@@ -3,6 +3,7 @@
 
 namespace App\Controller;
 
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Category;
 use App\Form\CategoryType;
@@ -14,11 +15,43 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/categories', name: 'categories_')]
+#[IsGranted('ROLE_ADMIN')]
 class CategoryController extends AbstractController
 {
     #[Route('/', name: 'list', methods: ['GET'])]
     public function list(CategoryRepository $repo , PaginatorInterface $paginator, Request $request): Response
     {
+        $query = $request->query->get('find_categorie');
+
+        $qb = $repo->createQueryBuilder('c')
+            ->where('c.id IS NOT NULL')
+            ->orderBy('c.id', 'DESC');
+
+        if ($query) {
+            $qb->andWhere('c.name LIKE :search')
+            ->setParameter('search', '%' . $query . '%');
+        }
+
+        $pagination = $paginator->paginate(
+            $qb,
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        // Si es AJAX, devuelve solo la tabla parcial
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('category/_table.html.twig', [
+                'categories' => $pagination,
+            ]);
+        }
+
+        // Render completo (vista principal)
+        return $this->render('category/list.html.twig', [
+            'categories' => $pagination,
+            'find_categorie' => $query,
+        ]);
+
+        /*
         $query = $request->query->get('find_categorie');
     
         $qb = $repo->createQueryBuilder('c')
@@ -39,7 +72,7 @@ class CategoryController extends AbstractController
             'categories' => $pagination,
             'find_categorie' => $query
         ]);
-
+        */
         //////////////////////////////////
         //$categories = $repo->findAll();
 

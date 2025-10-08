@@ -1,5 +1,5 @@
 {% if orders is empty %}
-    <div class="alert alert-info shadow-sm rounded-4 text-center">
+    <div class="alert alert-info shadow-sm rounded-0 text-center">
         No hay pedidos que coincidan con tu búsqueda.
     </div>
 {% else %}
@@ -22,14 +22,36 @@
             <tr>
               <td>{{ order.id }}</td>
               <td>{{ order.user.email }}</td>
-              <td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
+              <td>{{ order.createdAt|date('d/m/Y H:i' , 'Europe/Madrid') }}</td>
               <td><span class="badge bg-secondary px-3 py-2">{{ order.status.name }}</span></td>
               <td class="text-center">{{ order.items|length }}</td>
-              <td class="text-center">
-                <a href="{{ path('app_order_show_store', {id: order.id}) }}" class="btn btn-sm btn-link-secondary">
-                    <i class="bi bi-eye"></i> Ver
-                </a>
-              </td>
+ 
+               <td class="text-center">
+                        <div class="btn-group dropup">
+                            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">+</button>
+                            <ul class="dropdown-menu">
+
+                                {% if is_granted('ROLE_USER') and not is_granted('ROLE_ADMIN') and not is_granted('ROLE_PICKER') %}
+                                    <li><a href="{{ path('app_order_show_store', {id: order.id}) }}" class="btn btn-sm btn-link-secondary">
+                                    <i class="bi bi-eye"></i> Ver
+                                    </a></li>
+                                {% else %}
+                                      <li><a href="{{ path('app_order_show_store', {id: order.id}) }}" class="btn btn-sm btn-link-secondary">
+                                          <i class="bi bi-eye"></i> Ver
+                                          </a></li>
+                                     <li> <a href="{{ path('app_order_show_store', {id: order.id}) }}" class="btn btn-sm btn-link-secondary">
+                                      <i class="bi bi-box-seam"></i> Preparar
+                                      </a></li>
+                                    <li> <a href="{{ path('app_order_show_store', {id: order.id}) }}" class="btn btn-sm btn-link-secondary">
+                                      <i class="bi bi-truck"></i> Enviar
+                                    </a></li>
+                                {% endif %}
+                                
+                             
+                                
+                            </ul>
+                        </div>
+                    </td>
             </tr>
           {% endfor %}
         </tbody>

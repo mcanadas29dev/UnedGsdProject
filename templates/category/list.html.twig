@@ -22,9 +22,9 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <form method="get" class="mb-2">
             <div class="input-group">
-                <input type="text" name="find_categorie" class="form-control rounded-1 " placeholder="Buscar categoría" value="{{ find_categorie }}"> 
-                <button class="btn btn-outline-success rounded-1" type="submit">
-                    <i class="bi bi-search"></i> Buscar
+                <input type="text" id="categorySearch" name="find_categorie" class="form-control rounded-0 " placeholder="Buscar nombre categoría" value="{{ find_categorie }}"> 
+                <button class="btn btn-outline-secondary rounded-0 disabled" type="submit">
+                    <i class="bi bi-search"></i> 
                 </button>
             </div>
         </form>
@@ -35,84 +35,10 @@
 
 
 
-
-    <!-- Tabla de categorias -->
-    <div class="card border-0  rounded-0">
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="table table-hover mb-0 align-middle">
-                <thead class="table-success">
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Slug</th>
-                        <th>Padre</th>
-                        <th class="text-center">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for category in categories %}
-                        <tr>
-                            <td>{{ category.id }}</td>
-                            <td>{{ category.name }}</td>
-                            <td>{{ category.slug }}</td>
-                            <td>{{ category.parent ? category.parent.name : '-' }}</td>
-                            <td class="text-center">
-                                <!-- <div class="btn-group" role="group"> -->
-                                    <!--
-                                    <a href="{{ path('categories_show', {id: category.id}) }}" 
-                                    class="btn btn-outline-secondary btn-sm rounded-1">
-                                    <i class="bi bi-eye"></i> Ver
-                                    </a>
-
-                                    <a href="{{ path('categories_edit', {id: category.id}) }}" 
-                                    class="btn btn-outline-secondary btn-sm rounded-1">
-                                    <i class="bi bi-pencil-square"></i> Editar
-                                    </a>
-
-                                    <form method="post" action="{{ path('categories_delete', {id: category.id}) }}" style="display:inline-block;" onsubmit="return confirm('¿Seguro que quieres eliminar esta categoría?');">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
-                                        <button class="btn btn-outline-danger btn-sm rounded-1">
-                                            <i class="bi bi-trash"></i> Borrar
-                                        </button>
-                                    </form>
-                                    -->
-                                    <div class="btn-group dropup" role="group">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        +
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                      
-                                        <li><a class="dropdown-item text-muted" href="{{ path('categories_show', {id: category.id}) }}" ><i class="bi bi-eye"></i> Ver</a></li>
-                                        <li><a class="dropdown-item text-muted" href="{{ path('categories_edit', {id: category.id}) }}"> <i class="bi bi-pencil-square"></i> Editar</a></li>
-                                        <form method="post" action="{{ path('categories_delete', {id: category.id}) }}" style="display:inline-block;" onsubmit="return confirm('¿Seguro que quieres eliminar esta categoría?');">
-                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
-                                            <li><button class="dropdown-item text-muted">
-                                            <i class="bi bi-trash"></i> Borrar
-                                        </button></li>
-                                        </form>
-                                        </ul>
-                                    </div>
-                                <!-- </div> -->
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="5" class="text-center">No hay categorías.</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+    <!-- Tabla de categorías -->
+    <div id="searchResults">
+        {% include 'category/_table.html.twig' with {'categories': categories} %}
     </div>
-    </div>
-    {# Paginación centrada con Bootstrap #}
-    {% if categories is not empty %}
-        <nav aria-label="Page navigation" class="mt-4">
-            <div class="d-flex justify-content-center">
-                {{ knp_pagination_render(categories, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig' )}}
-            </div>
-        </nav>
-    {% endif %}
+
 
 {% endblock %}

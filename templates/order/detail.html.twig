@@ -22,9 +22,9 @@
   </div>
 
   <!-- Información general -->
-  <div class="card border-0 shadow rounded-4 mb-4">
+  <div class="card border-0 shadow rounded-0 mb-4">
     <div class="card-body">
-      <p><strong>Fecha:</strong> {{ order.createdAt|date('d/m/Y H:i') }}</p>
+      <p><strong>Fecha:</strong> {{ order.createdAt|date('d/m/Y H:i' , 'Europe/Madrid') }}</p>
       <p>
         <strong>Estado:</strong> 
         <span class="badge bg-primary px-3 py-2">
@@ -35,9 +35,9 @@
   </div>
 
   <!-- Productos -->
-  <div class="card border-0 shadow rounded-4 mb-4">
+  <div class="card border-0 shadow rounded-0 mb-4">
     <div class="card-body">
-      <h3 class="text-success mb-4">🛒 Productos</h3>
+      <h3 class="text-success mb-4">Productos</h3>
       <div class="table-responsive">
         <table class="table align-middle table-hover mb-0">
           <thead class="table-success">
@@ -87,15 +87,15 @@
   <!-- Botón volver -->
   <div class="text-center mt-4">
     {% if is_granted('ROLE_ADMIN') %}
-      <a href="{{ path('app_order_index') }}" class="btn btn-outline-secondary px-4">
+      <a href="{{ path('app_order_index') }}" class="btn btn-outline-secondary px-4 rounded-0">
         <i class="bi bi-arrow-left"></i> Volver
       </a>
     {% elseif is_granted('ROLE_PICKER') %}
-      <a href="{{ path('app_order_storage') }}" class="btn btn-outline-secondary px-4">
+      <a href="{{ path('app_order_storage') }}" class="btn btn-outline-secondary px-4 rounded-0">
         <i class="bi bi-arrow-left"></i> Volver
       </a>
     {% else %}
-      <a href="{{ path('app_order_user') }}" class="btn btn-outline-secondary px-4">
+      <a href="{{ path('app_order_user') }}" class="btn btn-outline-secondary px-4 rounded-0">
         <i class="bi bi-arrow-left"></i> Volver
       </a>
     {% endif %}
