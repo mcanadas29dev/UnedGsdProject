@@ -1,27 +1,27 @@
-{# offer/_delete_modal.html.twig #}
+{# category/_delete_modal.html.twig #}
 
 
-<div class="modal fade" id="deleteOfferModal{{ id }}" tabindex="-1" aria-labelledby="deleteOfferModalLabel{{ id }}" aria-hidden="true">
+<div class="modal fade" id="deleteCategorieModal{{ id }}" tabindex="-1" aria-labelledby="deleteCategorieModalLabel{{ id }}" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 rounded-0">
             <div class="modal-header bg-danger-subtle text-danger-emphasis justify-content-center border-0">
-                <h5 class="modal-title" id="deleteOfferModalLabel{{ id }}">
+                <h5 class="modal-title" id="deleteCategorieModalLabel{{ id }}">
                     Confirmar eliminación
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
 
             <div class="modal-body">
-                <p>¿Estás seguro de que deseas eliminar la oferta <strong>#{{ id }}</strong>?</p>
-                {% if offer.product.name is defined %}
-                    <p>Producto: <strong>{{ offer.product.name }}</strong></p>
+                <p>¿Estás seguro de que deseas eliminar la Categoría <strong>ID: {{ id }}</strong>?</p>
+                {% if category.name is defined %}
+                    <p>NOMBRE CATEGORIA: <strong>{{ category.name }}</strong></p>
                 {% endif %}
                 <p class="text-muted small mb-0">Esta acción no se puede deshacer.</p>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <form method="post" action="{{ path('offer_delete', {'id': id}) }}">
+                <form method="post" action="{{ path('categories_delete', {'id': id}) }}">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ id) }}">
                     <button class="btn btn-outline-danger">
                         <i class="bi bi-trash"></i> Eliminar definitivamente

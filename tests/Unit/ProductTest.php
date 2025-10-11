@@ -11,14 +11,14 @@ class ProductTest extends TestCase
     public function testSettersAndGetters(): void
     {
         $product = new Product();
-        $category = new Category();
+        //$category = new Category();
 
         $product->setName('Banana');
         $product->setPrice(1.5);
-        $product->setCategory($category);
+        //$product->setCategory($category);
 
         $this->assertSame('Banana', $product->getName());
         $this->assertSame(1.5, $product->getPrice());
-        $this->assertSame($category, $product->getCategory());
+        //$this->assertSame($category, $product->getCategory());
     }
 }

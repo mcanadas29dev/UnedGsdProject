@@ -12,10 +12,11 @@
 
 
 {% block body %}
+
 <div class="">
     <!-- Encabezado -->
     <div class="d-flex justify-content-between align-items-center mb-4">  
-        <h1 class="h2 fw-bold text-success mb-0">Ofertas</h1>
+        <h4 class="h4 fw-bold text-secondary mb-0">Ofertas</h4>
        
     </div>
 
@@ -45,12 +46,14 @@
 
 
         </form>
-        <a href="{{ path('offer_new') }}" class="btn btn-outline-success rounded-1 ">
+        <a href="{{ path('offer_new') }}" class="btn btn-outline-secondary rounded-0 ">
                 <i class="bi bi-plus-circle"></i> Añadir Oferta
         </a>
     </div>
     <div id="searchResults">
         {% include 'offer/_table.html.twig' with {'offers': offers} %}
+       
+
     </div>
 
 
@@ -112,6 +115,8 @@
     {{ knp_pagination_render(offers, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
 </div>
 -->
+
+<!-- 🔽 BLOQUE DE MODALES (fuera de la tabla) -->
 
 {% endblock %}
 

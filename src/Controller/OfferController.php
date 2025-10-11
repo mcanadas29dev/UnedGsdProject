@@ -149,7 +149,7 @@ class OfferController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Oferta creada correctamente');
-            return $this->redirectToRoute('offer_index');
+            return $this->redirectToRoute('offer_index_admin');
         }
 
         return $this->render('offer/new.html.twig', [
@@ -178,7 +178,7 @@ class OfferController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Oferta actualizada correctamente');
-            return $this->redirectToRoute('offer_index');
+            return $this->redirectToRoute('offer_index_admin');
         }
 
         return $this->render('offer/edit.html.twig', [
@@ -199,6 +199,6 @@ class OfferController extends AbstractController
             $this->addFlash('danger', 'Oferta eliminada');
         }
 
-        return $this->redirectToRoute('offer_index');
+        return $this->redirectToRoute('offer_index_admin');
     }
 }

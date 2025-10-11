@@ -1,6 +1,9 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\Offer;
+use App\Entity\Order;
+use App\Entity\OrderItem;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
@@ -144,12 +147,24 @@ class ProductController extends AbstractController
     public function delete(Request $request, Product $product, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($product);
-            $entityManager->flush();
-
-            $this->addFlash('danger', 'Producto eliminado.');
+              // Si se cumple alguna de estas condiciones NO se puede borrar 
+              // Contar cuántos productos han tenido o tiene oferta
+              $offerCount = $entityManager->getRepository(Offer::class)->count (['product' => $product]);
+              if ($offerCount > 0){
+                $this->addFlash('danger', 'No se puede eliminar el producto porque está en alguna oferta');
+                return $this->redirectToRoute('product_index');
+              }
+            // Contar cuántos productos están en pedidos
+              $orderCount = $entityManager->getRepository(OrderItem::class)->count(['product' => $product]);
+              if ($orderCount > 0){
+                $this->addFlash('danger', 'No se puede eliminar el producto porque está en algún pedido');
+                return $this->redirectToRoute('product_index');
+              }
+             
         }
-
+        $entityManager->remove($product);
+        $entityManager->flush();
+        $this->addFlash('danger', 'Producto eliminado.');
         return $this->redirectToRoute('product_index');
     }
 }

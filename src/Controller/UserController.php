@@ -340,7 +340,7 @@ final class UserController extends AbstractController
 
             $entityManager->flush();
 
-            $this->addFlash('success', 'Usuario actualizado exitosamente.');
+            $this->addFlash('success', 'Usuario actualizado correctamente.');
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -367,18 +367,36 @@ final class UserController extends AbstractController
 
         // Verificar que no sea el último admin
         if (in_array('ROLE_ADMIN', $user->getRoles())) {
+            $activeAdmins = $userRepository->createQueryBuilder('u')
+                ->select('count(u.id)')
+                ->where('u.roles LIKE :role')
+                ->andWhere('u.isActive = true')
+                ->setParameter('role', '%"ROLE_ADMIN"%')
+                ->getQuery()
+                ->getSingleScalarResult();
+
+            if ($activeAdmins <= 1) {
+                $this->addFlash('danger', 'No se puede desactivar el último administrador del sistema.');
+                return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            }
+        }
+
+        /*
+        if (in_array('ROLE_ADMIN', $user->getRoles())) {
             $activeAdmins = $userRepository->count([
                 'isActive' => true,
                 // Aquí deberías implementar una consulta que cuente admins activos
             ]);
             
             if ($activeAdmins <= 1) {
-                $this->addFlash('error', 'No se puede desactivar el último administrador del sistema.');
+                $this->addFlash('danger', 'No se puede desactivar el último administrador del sistema.');
                 return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
             }
         }
+            */
 
         // Soft delete
+        $this->addFlash('success', 'Se ha desactivado el Usuario en el sistema.');
         $user->setIsActive(false);
         $entityManager->flush();
 
@@ -390,7 +408,7 @@ final class UserController extends AbstractController
             'ip' => $request->getClientIp()
         ]);
 
-        $this->addFlash('success', 'Usuario desactivado exitosamente.');
+        //$this->addFlash('success', 'Usuario desactivado exitosamente.');
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
 

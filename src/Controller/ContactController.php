@@ -139,7 +139,7 @@ class ContactController extends AbstractController
             // Honeypot
             if ($request->request->get('website') !== '') {
                 $this->logger->info('Honeypot activado', ['ip' => $ip]);
-                $this->addFlash('success', 'Tu mensaje se ha enviado correctamente.');
+                $this->addFlash('succes', 'Tu mensaje se ha enviado correctamente.');
                 return $this->redirectToRoute('app_contact');
             }
 
@@ -162,7 +162,7 @@ class ContactController extends AbstractController
 
             if ($this->isSpam($name, $email, $subject, $message)) {
                 $this->logger->warning('Posible spam', ['email' => $email, 'ip' => $ip]);
-                $this->addFlash('success', 'Tu mensaje se ha enviado correctamente.');
+                $this->addFlash('danger', 'Tu mensaje se ha enviado correctamente.');
                 return $this->redirectToRoute('app_contact');
             }
 

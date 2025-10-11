@@ -7,13 +7,14 @@
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
-                <thead class="table-success text-success">
+            
+                <thead class="">
                     <tr>
                         <th>ID</th>
-                        <th>Producto</th>
-                        <th>Precio Oferta</th>
-                        <th>Inicio</th>
-                        <th>Fin</th>
+                        <th>PRODUCTO</th>
+                        <th>PRECIO OFERTA</th>
+                        <th>INICIO</th>
+                        <th>FIN</th>
                         <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
@@ -34,7 +35,15 @@
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item text-muted" href="{{ path('offer_show', {id: offer.id}) }}"><i class="bi bi-eye"></i> Ver</a></li>
                                         <li><a class="dropdown-item text-muted" href="{{ path('offer_edit', {id: offer.id}) }}"><i class="bi bi-pencil-square"></i> Editar</a></li>
-                                        {{ include('offer/_delete_form.html.twig', {'id': offer.id}) }}
+                                        {# {{ include('offer/_delete_ori_form.html.twig', {'id': offer.id}) }} #}
+                                        <li>
+                                                <button type="button" 
+                                                        class="dropdown-item text-danger" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#deleteOfferModal{{ offer.id }}">
+                                                    <i class="bi bi-trash"></i> Eliminar
+                                                </button>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -49,13 +58,21 @@
                 {% endfor %}
                 </tbody>
             </table>
+            
         </div>
     </div>
 </div>
-
+ 
 <nav aria-label="Page navigation" class="mt-4">
     <div class="d-flex justify-content-center">
         {{ knp_pagination_render(offers, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
     </div>
 </nav>
+<!-- 🔽 BLOQUE DE MODALES (fuera de la tabla) -->
+{% for offer in offers %}
+    {{ include('offer/_delete_form.html.twig', {'offer': offer, 'id': offer.id}) }}
+{% endfor %}
+
+
+
 {% endif %}

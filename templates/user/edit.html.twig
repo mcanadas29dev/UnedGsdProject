@@ -48,16 +48,7 @@
                             <div class="card-body">
                                 {{ include('user/_form.html.twig', {'button_label': 'Actualizar'} ) }}
                                 <hr/>
-                                <form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" 
-                                    onsubmit="return confirm('¿Estás seguro de que quieres eliminar este usuario?');" 
-                                    class="d-inline">
-                                    <div class="d-flex justify-content-center">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-                                        <button class="btn btn-sm btn-outline-danger text-center">
-                                            <i class="bi bi-trash"></i> Eliminar
-                                        </button>
-                                    </div>
-                                </form>
+
                             </div>
                       
 

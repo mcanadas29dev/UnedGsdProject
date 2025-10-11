@@ -17,7 +17,7 @@ class ProductFixtures extends Fixture
         for ($i = 1; $i <= 5; $i++) {
             $product = new Product();
             $product->setName("TestProduct $i");
-            $product->setPrice(mt_rand(1, 100)/10);
+            $product->setPrice(mt_rand(1, 100)*200);
             $product->setCategory($category);
             $manager->persist($product);
         }
