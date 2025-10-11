@@ -1,0 +1,10 @@
+<form method="post" 
+    action="{{ path('offer_delete', {'id': offer.id}) }}" 
+    onsubmit="return confirm('¿Seguro que quieres eliminar esta oferta?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ offer.id) }}">
+
+    <button class="dropdown-item text-muted" title="Eliminar">
+        <i class="bi bi-trash"></i> Eliminar
+    </button>
+
+</form>

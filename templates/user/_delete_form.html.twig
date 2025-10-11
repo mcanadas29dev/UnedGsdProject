@@ -1,3 +1,4 @@
+<!--
 <form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" 
       onsubmit="return confirm('¿Estás seguro de que quieres eliminar este usuario?');" 
       class="d-inline">
@@ -5,4 +6,41 @@
     <button class="btn btn-outline-danger">
         <i class="bi bi-trash"></i> Eliminar
     </button>
-</form>
+</form> -->
+
+
+{# user/_delete_modal.html.twig #}
+
+
+<div class="modal fade" id="deleteUserModal{{ id }}" tabindex="-1" aria-labelledby="deleteUserModalLabel{{ id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-0">
+            <div class="modal-header bg-danger-subtle text-danger-emphasis justify-content-center border-0">
+                <h5 class="modal-title" id="deleteUserModalLabel{{ id }}">
+                    Confirmar eliminación
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+
+            <div class="modal-body">
+                <p>¿Estás seguro de que deseas dar de baja el Usuario  <strong>ID: {{ id }}</strong>?</p>
+                {% if user.email is defined %}
+                    <p>NOMBRE USUARIO: <strong>{{ user.email }}</strong></p>
+                {% endif %}
+                <p class="text-muted small mb-0">Esta acción no se puede deshacer.</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form method="post" action="{{ path('app_user_delete', {'id': id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ id) }}">
+                    <button class="btn btn-outline-danger">
+                        <i class="bi bi-trash"></i> Dar de baja definitivamente
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+

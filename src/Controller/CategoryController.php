@@ -6,6 +6,7 @@ namespace App\Controller;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Category;
+use App\Entity\Product;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -135,11 +136,19 @@ class CategoryController extends AbstractController
     public function delete(Request $request, Category $category, EntityManagerInterface $em): Response
     {
         if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
-            $em->remove($category);
-            $em->flush();
-            $this->addFlash('success', 'Categoría eliminada correctamente.');
-        }
 
+             // Contar cuántos productos usan esta categoría
+            $productCount = $em->getRepository(Product::class)
+                ->count(['category' => $category]);
+
+            if ($productCount > 0) {
+                $this->addFlash('danger', 'No se puede eliminar la categoría porque tiene productos asociados.');
+                return $this->redirectToRoute('categories_list');
+            }
+        }
+        $em->remove($category);
+        $em->flush();
+        $this->addFlash('danger', 'Categoría eliminada correctamente.');
         return $this->redirectToRoute('categories_list');
     }
 

@@ -7,12 +7,12 @@
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
-                <thead class="table-success text-success">
+                <thead class="">
                     <tr>
                         <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Slug</th>
-                        <th>Padre</th>
+                        <th>NOMBRE CATEGORIA</th>
+                        <th>SLUG - (URL SEO)</th>
+                        <th>CATEGORIA PADRE</th>
                         <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
@@ -31,10 +31,20 @@
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item text-muted" href="{{ path('categories_show', {id: category.id}) }}"><i class="bi bi-eye"></i> Ver</a></li>
                                     <li><a class="dropdown-item text-muted" href="{{ path('categories_edit', {id: category.id}) }}"><i class="bi bi-pencil-square"></i> Editar</a></li>
+                                    {#
                                     <form method="post" action="{{ path('categories_delete', {id: category.id}) }}" onsubmit="return confirm('¿Seguro que quieres eliminar esta categoría?');">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
                                         <li><button class="dropdown-item text-muted"><i class="bi bi-trash"></i> Borrar</button></li>
                                     </form>
+                                    #}
+                                     <li>
+                                                <button type="button" 
+                                                        class="dropdown-item text-danger" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#deleteCategorieModal{{ category.id }}">
+                                                    <i class="bi bi-trash"></i> Eliminar
+                                                </button>
+                                    </li>
                                 </ul>
                             </div>
                         </td>
@@ -57,4 +67,9 @@
         {{ knp_pagination_render(categories, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
     </div>
 </nav>
+
+<!-- 🔽 BLOQUE DE MODALES (fuera de la tabla) -->
+{% for category in categories %}
+    {{ include('category/_delete_form.html.twig', {'category': category, 'id': category.id}) }}
+{% endfor %}
 {% endif %}

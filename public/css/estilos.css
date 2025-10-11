@@ -36,8 +36,9 @@ a {
 a:hover {
     /*color: #1a1a1a !important; */
     /*b ackground-color: #C4F2B8 !important;  */
-    color: rgb(10, 9, 9) !important; 
+    /* color: rgb(10, 9, 9) !important;  */
     /* font-style: italic !important; */
+    font-style:italic !important;
     
 }
 
