@@ -28,6 +28,9 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 'label' => 'Activar verificación en dos pasos (2FA)',
+                 'label_attr' => [
+                    'class' => 'ms-2', 
+                ],
             ])
             ;
     }

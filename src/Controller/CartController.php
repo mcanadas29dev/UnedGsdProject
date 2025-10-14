@@ -91,6 +91,7 @@ class CartController extends AbstractController
     #[Route('/checkout', name: 'checkout')]
     public function checkout(Request $request, CartService $cartService, OfferRepository $offerRepository): Response
     {
+        try {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
         $cartItems = $cartService->getCart();
@@ -128,6 +129,18 @@ class CartController extends AbstractController
         ]);
         $stripeSessionIdFromStripe = $session->id;
         return $this->redirect($session->url, 303);
+        }
+     catch (\Stripe\Exception\ApiErrorException $e) {
+            // Error específico de Stripe
+            $this->addFlash('danger', 'Error en el proceso de pago: ' . $e->getMessage());
+        }
+        catch (\Exception $e) {
+            // Cualquier otro error
+            $this->addFlash('danger', 'Ocurrió un error inesperado: Revise Configuración y conexión con Stripe');
+        }
+
+    // En caso de error, redirigimos al carrito
+    return $this->redirectToRoute('cart_index');
     }
 
     #[Route('/success', name: 'success')]

@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Códigos de respaldo 2FA | GreenHarvest{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg border-0 rounded-0">
+                <div class="card-header bg-secondary text-white text-center rounded-top-0">
+                    <h4 class="text-white mb-0">Autenticación 2FA en Dos Pasos Activada</h4>
+                </div>
+
+                <div class="card-body p-4">
+                    <p class="text-secondary mb-3">
+                        <strong>Has activado correctamente la verificación en dos pasos.</strong><br>
+                        A continuación se muestra tu clave secreta y tus códigos de respaldo. 
+                        Guarda esta información en un lugar seguro, no volverá a mostrarse.
+                    </p>
+
+                    <div class="mb-4">
+                        <h6 class="fw-semibold text-success">Secreto de Google Authenticator:</h6>
+                        <div class="p-2 bg-light border rounded-0 text-center">
+                            <code class="text-dark fs-6">{{ secret }}</code>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <h6 class="fw-semibold text-success">Códigos de respaldo ({{ countCodes }}):</h6>
+                        <div class="bg-light border rounded-0 p-3">
+                            <ul class="list-unstyled mb-0">
+                                {% for code in backupCodes %}
+                                    <li><code class="text-dark">{{ code }}</code></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <p class="text-danger small mt-2">
+                            ⚠️ Guarda estos códigos en un lugar seguro. Si pierdes tu dispositivo, podrás usar uno de ellos para iniciar sesión.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card-footer text-center bg-light rounded-bottom-4">
+                    <a href="{{ path('app_home') }}" class="btn btn-sm btn-outline-secondary fw-semibold">
+                        <i class="bi bi-check-circle"></i> Cerrar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
