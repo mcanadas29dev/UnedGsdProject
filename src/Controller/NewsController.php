@@ -18,23 +18,33 @@ class NewsController extends AbstractController
     #[Route('/news', name: 'app_news')]
     public function index(HttpClientInterface $httpClient, Request $request): Response
     {
-        // Usando NewsAPI.org como ejemplo
-        // usuario mcanadasdev
-        
-        //$apiKey = '3078b6b1045441618cddd64184a6bf73';
-  
+        try
+        {
         $category = $request->query->get('category', 'health'); // por defecto salud
-
-        $url = 'https://newsapi.org/v2/top-headlines?country=us&pageSize=6&category=' . $category . '&apiKey=' . $this->apiKey;
-
+        // Validar categoría para evitar peticiones no deseadas
+        $allowedCategories = ['business', 'entertainment', 'general', 'health', 'science', 'sports', 'technology'];
+        if (!in_array($category, $allowedCategories, true)) {
+            $category = 'health';
+        }
+        $url = 'https://newsapi.org/v2/top-headlines?country=us&pageSize=3&category=' . $category . '&apiKey=' . $this->apiKey;
         $response = $httpClient->request('GET', $url);
+
         $data = $response->toArray();
-
         $articles = $data['articles'] ?? [];
-
-        return $this->render('News/index.html.twig', [
+         return $this->render('News/index.html.twig', [
             'articles' => $articles,
         ]);
+        }
+        catch (\Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface $e) {
+        // Error de conexión (API caída, red no disponible, etc.)
+            $this->addFlash('danger', 'No se pudo conectar con el servicio de noticias.');
+        } 
+        catch (\Exception $e) {
+            // Cualquier otro error general
+            $this->addFlash('danger', 'En estos momentos no se pueden cargar las noticias.');
+        }
+       // En caso de error, redirigimos al carrito
+        return $this->redirectToRoute('app_home');
         
     }
 }

@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Activar autenticación 2FA | GreenHarvest{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-success text-white text-center rounded-top-4">
+                    <h4 class="mb-0"><i class="bi bi-shield-lock-fill me-1"></i> Activar autenticación en dos factores</h4>
+                </div>
+
+                <div class="card-body p-4 text-center">
+                    <p class="text-muted mb-3">
+                        Escanea este código QR con tu aplicación de autenticación (Google Authenticator, Authy, etc.)
+                    </p>
+
+                    <img src="{{ qrCode }}" alt="Código QR 2FA" class="img-fluid border border-success-subtle rounded-3 shadow-sm p-2 mb-3">
+
+                    <p class="text-muted small mb-1">O introduce manualmente este código secreto:</p>
+                    <div class="alert alert-success text-monospace fw-bold px-3 py-2">{{ secret }}</div>
+
+                    <form action="{{ path('app_user_2fa_confirm') }}" method="POST" class="mt-4">
+                        <div class="mb-3">
+                            <label for="code" class="form-label fw-semibold text-success">Introduce el código generado</label>
+                            <input type="text" name="code" id="code" maxlength="6" pattern="[0-9]{6}" required
+                                   class="form-control text-center rounded-3 border-success-subtle shadow-sm"
+                                   placeholder="Ej: 123456">
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100 rounded-pill shadow-sm">
+                            <i class="bi bi-check-circle me-1"></i> Confirmar activación
+                        </button>
+                    </form>
+                </div>
+
+                <div class="card-footer text-center bg-light rounded-bottom-4">
+                    <a href="{{ path('app_user_profile') }}" class="text-success text-decoration-none fw-semibold">
+                        <i class="bi bi-arrow-left"></i> Volver al perfil
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+body {
+    background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+    font-family: 'Inter', sans-serif;
+}
+.card {
+    border: 1px solid #c8e6c9;
+}
+.form-control:focus {
+    border-color: #66bb6a;
+    box-shadow: 0 0 0 0.2rem rgba(102, 187, 106, 0.25);
+}
+.btn-success {
+    background-color: #43a047;
+    border: none;
+}
+.btn-success:hover {
+    background-color: #388e3c;
+}
+</style>
+{% endblock %}
