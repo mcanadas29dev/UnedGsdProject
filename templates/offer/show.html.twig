@@ -34,15 +34,15 @@
                     </tr>
                     <tr>
                         <th class="text-success"> Precio Descuento</th>
-                        <td>{{ offer.offerPrice }} €</td>
+                        <td>{{ offer.offerPrice|number_format(2, ',', '.') }} €</td>
                     </tr>
                     <tr>
                         <th class="text-success">Inicio</th>
-                        <td>{{ offer.startDate|date('d/m/Y') }}</td>
+                        <td>{{ offer.startDate|date('d/m/Y H:i') }}</td>
                     </tr>
                     <tr>
                         <th class="text-success">Fin</th>
-                        <td>{{ offer.endDate|date('d/m/Y') }}</td>
+                        <td>{{ offer.endDate|date('d/m/Y H:i') }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -60,14 +60,6 @@
             icon: 'bi-pencil-square' 
         }) }}
 
-        <!--
-        <form method="post" action="{{ path('offer_delete', {id: offer.id}) }}" 
-              onsubmit="return confirm('¿Seguro que quieres eliminar esta oferta?');">
-            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ offer.id) }}">
-            <button class="btn btn-outline-danger">
-                <i class="bi bi-trash"></i> Eliminar
-            </button>
-        </form> -->
         <a href="{{ path('offer_index_admin') }}" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left"></i> Volver
             </a>
