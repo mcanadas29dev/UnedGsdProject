@@ -175,10 +175,20 @@ class OfferController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush();
-
-            $this->addFlash('success', 'Oferta actualizada correctamente');
-            return $this->redirectToRoute('offer_index_admin');
+            if(($offer->getStartDate() < $offer->getEndDate()) && ($offer->getOfferPrice() > 0)){ 
+                $em->flush();
+                $this->addFlash('success', sprintf('Oferta %d actualizada correctamente', $offer->getId()));
+                return $this->redirectToRoute('offer_index_admin');
+            }
+            else 
+                {
+                    if($offer->getOfferPrice() <= 0){
+                        $this->addFlash('danger', 'El precio de oferta no puede ser 0 o menor'); // Que el precio <=0
+                    }
+                    else{
+                         $this->addFlash('danger', 'La fecha inicio oferta no puede ser menor que la fecha fin'); // Que la fecha inicio < fecha fin
+                    }    
+                }
         }
 
         return $this->render('offer/edit.html.twig', [

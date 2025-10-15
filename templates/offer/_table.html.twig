@@ -23,9 +23,9 @@
                     <tr>
                         <td>{{ offer.id }}</td>
                         <td>{{ offer.product.name }}</td>
-                        <td>{{ offer.offerPrice }} €</td>
-                        <td>{{ offer.startDate|date('d/m/Y') }}</td>
-                        <td>{{ offer.endDate|date('d/m/Y') }}</td>
+                        <td>{{ offer.offerPrice|number_format(2, ',', '.') }} €</td>
+                        <td>{{ offer.startDate|date('d/m/Y H:i') }}</td>
+                        <td>{{ offer.endDate|date('d/m/Y H:i') }}</td>
                         <td class="text-center">
                             <div class="btn-group dropup" role="group">
                                 <div class="dropdown dropstart">
