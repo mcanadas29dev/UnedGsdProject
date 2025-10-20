@@ -40,4 +40,18 @@ class OrderStatusRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    /*
+        public function searchByName(?string $query): Query
+        {
+            $qb = $this->createQueryBuilder('os');
+            if ($query) {
+                $qb->andWhere('os.name LIKE :query')
+                ->setParameter('query', '%'.$query.'%');
+            }
+            return $qb->orderBy('os.name', 'ASC')
+                    ->getQuery();
+        }
+
+    */
 }

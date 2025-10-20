@@ -5,13 +5,14 @@ namespace App\Tests\Functional;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
-/*
+
 use App\DataFixtures\CategoryFixtures;
 use App\DataFixtures\ProductFixtures;
-*/
+/*
 use App\Tests\Fixtures\CategoryFixtures;
 use App\Tests\Fixtures\ProductFixtures;
 use App\Tests\Fixtures\OfferFixtures;
+*/
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;

@@ -1,5 +1,6 @@
-export function initOfferSearch() {
-    const searchInput = document.getElementById('offerSearch');
+export function initEstadoOrderSearch() {
+    const searchInput = document.getElementById('estadoSearch');
+    //console.log(searchInput);
     const resultsContainer = document.getElementById('searchResults');
 
     if (!searchInput || !resultsContainer) return;
@@ -11,10 +12,19 @@ export function initOfferSearch() {
         clearTimeout(timeout);
 
         timeout = setTimeout(async () => {
-            const url = new URL(window.location.origin + '/offer/admin');
+            // Generamos la URL del endpoint
+            const url = new URL(window.location.origin + '/order/status');
             if (query.length > 0) {
-                url.searchParams.set('q', query);
+                url.searchParams.set('find_orderStatus', query);
             }
+
+            // Mostramos spinner mientras se busca
+            /*
+            resultsContainer.innerHTML = `
+                <div class="text-center py-3 text-muted">
+                    <div class="spinner-border text-success" role="status"></div>
+                </div>
+            `; */
 
             try {
                 const response = await fetch(url.toString(), {
@@ -30,15 +40,15 @@ export function initOfferSearch() {
 
                 resultsContainer.innerHTML = safeContent;
             } catch (error) {
-                console.error("Error al buscar ofertas:", error);
+                console.error("Error al buscar estados:", error);
                 resultsContainer.innerHTML = `
                     <div class="alert alert-warning mt-3 text-center">
-                        No se pudieron cargar las ofertas. Intenta de nuevo.
+                        No se pudieron cargar los estados. Intenta de nuevo.
                     </div>
                 `;
             }
-        }, 300); // debounce 300ms
+        }, 300); // debounce
     });
 }
 
-document.addEventListener('DOMContentLoaded', initOfferSearch);
+document.addEventListener('DOMContentLoaded', initEstadoOrderSearch);

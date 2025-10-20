@@ -1,14 +1,3 @@
-/**
- * userSearch.js
- * ----------------------------------------------------------
- * Búsqueda dinámica (AJAX) de usuarios por email.
- * Inspirado en orderSearch.js del módulo de pedidos.
- * 
- * Permite filtrar usuarios sin recargar la página.
- * Evita peticiones innecesarias mediante "debounce" (300ms).
- * ----------------------------------------------------------
- */
-
 export function initUserSearch() {
     const searchInput = document.getElementById('userSearch');
     const resultsContainer = document.getElementById('userResults');

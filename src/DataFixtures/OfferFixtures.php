@@ -56,3 +56,4 @@ class OfferFixtures extends Fixture implements DependentFixtureInterface
         ];
     }
 }
+

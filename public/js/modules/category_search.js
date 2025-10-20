@@ -1,6 +1,8 @@
 export function initCategorySearch() {
-    const searchInput = document.getElementById('categorySearch');
+    const searchInput = document.getElementById('categorySearch'); 
+    console.log(searchInput);
     const resultsContainer = document.getElementById('searchResults');
+    /*const resultsContainer = document.getElementById('orderStatusResults');*/
 
     if (!searchInput || !resultsContainer) return;
 
@@ -40,3 +42,5 @@ export function initCategorySearch() {
         }, 300);
     });
 }
+
+document.addEventListener('DOMContentLoaded', initCategorySearch);
