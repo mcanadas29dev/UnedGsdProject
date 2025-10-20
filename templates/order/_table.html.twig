@@ -39,8 +39,11 @@
                                       <li><a href="{{ path('app_order_show_store', {id: order.id}) }}" class="btn btn-sm btn-link-secondary">
                                           <i class="bi bi-eye"></i> Ver
                                           </a></li>
-                                     <li> <a href="{{ path('app_order_show_store', {id: order.id}) }}" class="btn btn-sm btn-link-secondary">
+                                     <li> <a href="{{ path('app_order_prep_store', {id: order.id}) }}" class="btn btn-sm btn-link-secondary">
                                       <i class="bi bi-box-seam"></i> Preparar
+                                      </a></li>
+                                       <li> <a href="{{ path('app_order_pdteEnvio_store', {id: order.id}) }}" class="btn btn-sm btn-link-secondary">
+                                      <i class="bi bi-box-seam"></i> Preparado 
                                       </a></li>
                                     <li> <a href="{{ path('app_order_show_store', {id: order.id}) }}" class="btn btn-sm btn-link-secondary">
                                       <i class="bi bi-truck"></i> Enviar

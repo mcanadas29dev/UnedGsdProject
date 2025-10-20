@@ -49,3 +49,5 @@ export function initProductSearch() {
         }, 300); // debounce
     });
 }
+
+document.addEventListener('DOMContentLoaded', initProductSearch);

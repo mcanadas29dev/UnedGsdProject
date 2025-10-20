@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Offer;
 use App\Form\OfferType;
 use App\Repository\OfferRepository;
+use App\Service\OfferService;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -138,18 +140,24 @@ class OfferController extends AbstractController
 
     #[Route('/new', name: 'offer_new', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function new(Request $request, EntityManagerInterface $em): Response
+    public function new(Request $request, EntityManagerInterface $em, OfferService $offerService): Response
     {
         $offer = new Offer();
         $form = $this->createForm(OfferType::class, $offer);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($offer);
-            $em->flush();
-
-            $this->addFlash('success', 'Oferta creada correctamente');
-            return $this->redirectToRoute('offer_index_admin');
+            if($offerService->offerActive($offer)){
+                 $this->addFlash('danger', 'Este producto ya tiene una oferta activa, revise');
+            }
+            else{
+                $em->persist($offer);
+                $em->flush();
+                $this->addFlash('success', 'Oferta creada correctamente');
+                return $this->redirectToRoute('offer_index_admin');
+            }
+            
+           
         }
 
         return $this->render('offer/new.html.twig', [
@@ -169,26 +177,30 @@ class OfferController extends AbstractController
 
     #[Route('/{id}/edit', name: 'offer_edit', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function edit(Request $request, Offer $offer, EntityManagerInterface $em): Response
+    public function edit(Request $request, OfferService $offerService,Offer $offer, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(OfferType::class, $offer);
         $form->handleRequest($request);
-
+        // Revisar para refactorizar en Servicios (Fechas, Precios)
         if ($form->isSubmitted() && $form->isValid()) {
-            if(($offer->getStartDate() < $offer->getEndDate()) && ($offer->getOfferPrice() > 0)){ 
-                $em->flush();
-                $this->addFlash('success', sprintf('Oferta %d actualizada correctamente', $offer->getId()));
-                return $this->redirectToRoute('offer_index_admin');
-            }
-            else 
-                {
-                    if($offer->getOfferPrice() <= 0){
-                        $this->addFlash('danger', 'El precio de oferta no puede ser 0 o menor'); // Que el precio <=0
+            if($offerService->datesOk($offer)){
+                if($offerService->priceOK($offer)){
+                    try{
+                        $em->flush();
+                        $this->addFlash('success', sprintf('Oferta %d actualizada correctamente', $offer->getId()));
+                    }catch(Exception $e){
+                        $this->addFlash('danger', sprintf('Ha ocurrido un error ', $e->getMessage()));
                     }
-                    else{
-                         $this->addFlash('danger', 'La fecha inicio oferta no puede ser menor que la fecha fin'); // Que la fecha inicio < fecha fin
-                    }    
+                    finally{
+                        return $this->redirectToRoute('offer_index_admin');
+                    }
+                   
+                }else{
+                    $this->addFlash('danger', 'El precio de oferta no puede ser 0 o negativo'); // Que el precio <=0
                 }
+            }else{
+                    $this->addFlash('danger', 'Revise fechas inicio y fin ');
+            }
         }
 
         return $this->render('offer/edit.html.twig', [

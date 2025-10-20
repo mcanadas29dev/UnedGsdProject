@@ -44,3 +44,9 @@
 
 
 {% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/modules/category_search.js') }}"></script>
+{% endblock %}
+

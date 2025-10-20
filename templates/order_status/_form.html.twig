@@ -1,0 +1,22 @@
+{{ form_start(form) }}
+    <div class="mb-3">
+        {{ form_label(form.name, 'Nombre del estado', {'label_attr': {'class': 'form-label fw-bold text-success'}}) }}
+        {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+        {% if form_errors(form.name) %}
+            <div class="text-danger small mt-1 alert alert-danger" role="alert">
+                {{ form_errors(form.name) }}
+            </div>
+        {% endif %}
+    </div>
+
+    <hr/>
+    <div class="d-flex justify-content-between">
+        <button class="btn btn-outline-success rounded-0">
+            <i class="bi bi-check-circle"></i> {{ button_label|default('Guardar') }}
+        </button>
+
+        <a href="{{ path('app_order_status_index') }}" class="btn btn-outline-secondary rounded-0">
+            <i class="bi bi-arrow-left"></i> Volver
+        </a>
+    </div>
+{{ form_end(form) }}

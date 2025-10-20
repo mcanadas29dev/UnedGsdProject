@@ -1,0 +1,18 @@
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-secondary" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Control Center
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                <li><h6 class="dropdown-header">Configuración</h6></li>
+                                <li><a class="dropdown-item ps-4 text-muted" href="{{ path('app_user_index') }}">Usuarios</a></li>
+                                <li><a class="dropdown-item ps-4 text-muted" href="{{ path('app_order_status_index') }}">Estado Pedidos</a></li>
+                                <li><h6 class="dropdown-header">Ops Center</h6></li>
+                                <li><a class="dropdown-item ps-4 text-muted" href="{{ path('app_order_index') }}">Pedidos</a></li>
+                                <li><h6 class="dropdown-header">Procurement</h6></li>
+                                <li><a class="dropdown-item ps-4 text-muted" href="{{ path('product_index') }}">Productos</a></li>
+                                <li><a class="dropdown-item ps-4 text-muted" href="{{ path('categories_list') }}">Categorías</a></li>
+                                <li><a class="dropdown-item ps-4 text-muted" href="{{ path('offer_index_admin') }}">Ofertas</a></li>
+                                {#<li><a class="dropdown-item" href="{{ path('offer_index_admin') }}">Marketplace</a></li> #}
+                            </ul>
+                        </li>
+                        <!-- <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('admin') }}">Easy Admin</a></li> -->

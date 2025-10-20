@@ -15,110 +15,6 @@
    
 {% block header %}{% endblock %}
 
-{#
-{% block nav %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
-        <div class="container">
-            <!-- Botón para abrir sidebar 
-            <button class="btn btn-outline-success me-3" id="sidebarToggle" aria-label="Abrir menú lateral">
-                <i class="bi bi-list"></i>
-            </button>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" 
-                aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button> -->
-             <!-- Marca / Logo -->
-            <a class="navbar-brand text-secondary" href="{{ path('app_home') }}">Green Harvest</a>
-
-            <!-- 🔹 Botón hamburguesa visible en móviles -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" 
-                aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarMenu"> 
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0"> 
-                    <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_home') }}">Green Harvest</a></li>
-                    <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-secondary" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Tienda
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                                <li><a class="dropdown-item" href="{{ path('secciones_index') }}">Categorías</a></li>
-                                <li><a class="dropdown-item" href="{{ path('app_best_selling') }}">Lo Mas Vendido</a></li>
-                                <li><a class="dropdown-item" href="{{ path('offer_index') }}">Ofertas</a></li>
-                                <li><a class="dropdown-item" href="{{ path('app_tienda') }}">Ver productos</a></li>
-                               
-                                <!-- Agrega más enlaces según necesites -->
-                            </ul>
-                    </li>
-                    <!-- 
-                    <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_tienda') }}">Tienda</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('secciones_index') }}">Secciones</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_best_selling') }}">Lo Más Vendido</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('offer_index') }}">Ofertas</a></li>
-                    -->
-                    <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_about') }}">Sobre Nosotros</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_news') }}">Noticias</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_contact') }}">Contacto</a></li>
-                    
-                    {% if is_granted('ROLE_USER') and not is_granted('ROLE_ADMIN') and not is_granted('ROLE_PICKER') %}
-                        <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_order_user') }}">Pedidos</a></li>
-                    {% endif %}
-
-                    {% if is_granted('ROLE_PICKER') %}
-                        <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_order_storage') }}">Gestión Almacén</a></li>
-                    {% endif %}
-
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-secondary" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Administración
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                                <li><a class="dropdown-item" href="{{ path('app_user_index') }}">Usuarios</a></li>
-                                <li><a class="dropdown-item" href="{{ path('app_order_index') }}">Pedidos</a></li>
-                                <li><a class="dropdown-item" href="{{ path('product_index') }}">Productos</a></li>
-                                <li><a class="dropdown-item" href="{{ path('categories_list') }}">Categorías</a></li>
-                                <li><a class="dropdown-item" href="{{ path('offer_index_admin') }}">Ofertas</a></li>
-                                <!-- Agrega más enlaces según necesites -->
-                            </ul>
-                        </li>
-                         <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('admin') }}">Easy Admin</a></li>
-                    {% endif %}
-
-                </ul>
-            </div>
-
-            <div class="d-flex ms-auto">
-                {% if app.user %}
-                    
-                    <a href="{{ path('app_logout') }}" class="btn btn-outline-success me-3" title={{ app.user.email }}>
-                        <i class="bi bi-box-arrow-right"></i>
-                        Salir {{ app.user.email }}
-                    </a>
-                {% else %}
-                    <a href="{{ path('app_login') }}" class="btn btn-outline-success me-3" title="Entrar">
-                        <i class="bi bi-box-arrow-in-right"></i>
-                        Login
-                    </a>
-                {% endif %}
-
-                <a href="{{ path('cart_index') }}" class="btn btn-outline-success position-relative" aria-label="Carrito de compras">
-                    <i class="bi bi-cart"></i>
-                    {% if cart_quantity > 0 %}
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            {{ cart_quantity }}
-                            <span class="visually-hidden">Productos en el carrito</span>
-                        </span>
-                    {% endif %}
-                </a>
-            </div>
-        </div>
-    </nav>
-{% endblock %}
-#}
 {% block nav %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
         <div class="container">
@@ -160,40 +56,44 @@
                     <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_contact') }}">Contacto</a></li>
 
                     {% if is_granted('ROLE_USER') and not is_granted('ROLE_ADMIN') and not is_granted('ROLE_PICKER') %}
-                        <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_order_user') }}">Pedidos</a></li>
+                        {# {% include 'rolMenu/_rolUser.html.twig' %}  #}
+                         <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_order_user') }}">Pedidos</a></li>    
                     {% endif %}
-
-
-
                     {% if is_granted('ROLE_PICKER') %}
-                        <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('app_order_storage') }}">Ops Center</a></li>
-                    {% endif %}
-
-                    {% if is_granted('ROLE_ADMIN') %}
+                        {# {% include 'rolMenu/_rolPicker.html.twig' %} #}
                         <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-secondary" href="#" id="pickerOpsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Ops Center
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="pickerOpsDropdown">
+                                    <li><a class="dropdown-item" href="{{ path('app_order_storage') }}">Pedidos</a></li>
+                                    <!-- <li><a class="dropdown-item" href="{{ path('app_order_status_index') }}">Estado Pedidos</a></li> -->
+                                </ul>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                         {# {% include 'rolMenu/_rolAdmin.html.twig' %} #}
+                                                 <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-secondary" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Control Center
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                                <li><a class="dropdown-item" href="{{ path('app_user_index') }}">Usuarios</a></li>
-                                <li><a class="dropdown-item" href="{{ path('app_order_index') }}">Ops Center</a></li>
-                                <li><a class="dropdown-item" href="{{ path('product_index') }}">Productos</a></li>
-                                <li><a class="dropdown-item" href="{{ path('categories_list') }}">Categorías</a></li>
-                                <li><a class="dropdown-item" href="{{ path('offer_index_admin') }}">Ofertas</a></li>
+                                <li><h6 class="dropdown-header">Configuración</h6></li>
+                                <li><a class="dropdown-item ps-4 text-muted" href="{{ path('app_user_index') }}">Usuarios</a></li>
+                                <li><a class="dropdown-item ps-4 text-muted" href="{{ path('app_order_status_index') }}">Estado Pedidos</a></li>
+                                <li><h6 class="dropdown-header">Ops Center</h6></li>
+                                <li><a class="dropdown-item ps-4 text-muted" href="{{ path('app_order_index') }}">Pedidos</a></li>
+                                <li><h6 class="dropdown-header">Procurement</h6></li>
+                                <li><a class="dropdown-item ps-4 text-muted" href="{{ path('product_index') }}">Productos</a></li>
+                                <li><a class="dropdown-item ps-4 text-muted" href="{{ path('categories_list') }}">Categorías</a></li>
+                                <li><a class="dropdown-item ps-4 text-muted" href="{{ path('offer_index_admin') }}">Ofertas</a></li>
                                 {#<li><a class="dropdown-item" href="{{ path('offer_index_admin') }}">Marketplace</a></li> #}
                             </ul>
                         </li>
                         <!-- <li class="nav-item"><a class="nav-link text-secondary" href="{{ path('admin') }}">Easy Admin</a></li> -->
-                     {% endif %}
-
-
-
-
+                    {% endif %}
 
                 </ul>
-
-                   
-           
 
                 <!-- Botones de login/logout y carrito -->
                 <div class="d-flex ms-auto">
@@ -211,10 +111,19 @@
                                     <a class="dropdown-item text-secondary" href="{{ path('app_user_change_password') }}">
                                        <i class="bi bi-person-plus-fill">&nbsp</i> Cambiar Contraseña </a>                                   
                                 </li>
-                                <li>                                  
+                                {% if app.user.isGoogleAuthenticatorEnabled() %}
+                                 <li>                                  
                                     <a class="dropdown-item text-secondary" href="{{ path('app_user_2fa_entry') }}">
-                                       <i class="bi bi-people-fill">&nbsp</i> Activar/Desactivar 2FA </a>                                   
+                                       <i class="bi bi-people-fill">&nbsp</i> Desactivar 2FA </a>                                   
                                 </li>
+                                {% else %}
+                                 <li>                                  
+                                    <a class="dropdown-item text-secondary" href="{{ path('app_user_2fa_entry') }}">
+                                       <i class="bi bi-people-fill">&nbsp</i> Activar 2FA </a>                                   
+                                </li>
+                                {% endif %}
+
+                               
                                
                                 <li>
                                     <a class="dropdown-item text-secondary" href="{{ path('app_logout') }}">                                      
@@ -254,9 +163,10 @@
                     </a>
                 </div>
             </div>
+        
         </div>
     </nav>
-{% endblock%}
+{% endblock %}
 
 <div class="container mt-2">
     <nav aria-label="breadcrumb">

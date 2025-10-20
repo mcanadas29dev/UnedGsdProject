@@ -1,0 +1,33 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Chrome",
+            "request": "launch",
+            "type": "chrome",
+            "url": "http://127.0.0.1:8000",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "name": "Listen for Xdebug (Symfony)",
+            "type": "php",
+            "request": "launch",
+            "port": 9003,
+            "pathMappings": {
+                "/home/marcelo/source/UnedGsdProject": "${workspaceFolder}"
+            }
+        },
+        {
+            "name": "PHPUnit (Xdebug)",
+            "type": "php",
+            "request": "launch",
+            "program": "${workspaceFolder}/vendor/bin/phpunit",
+            "cwd": "${workspaceFolder}",
+            "port": 9003,
+            "env": {
+            "XDEBUG_MODE": "debug",
+            "XDEBUG_START_WITH_REQUEST": "yes"
+            }
+        }
+    ]
+}

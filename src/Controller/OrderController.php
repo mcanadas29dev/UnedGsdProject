@@ -5,6 +5,9 @@ namespace App\Controller;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Repository\OrderRepository;
 use App\Entity\Order;
+use App\Entity\OrderStatus;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -91,56 +94,6 @@ class OrderController extends AbstractController
             'tituloAlmacen' => 'Mis Pedidos',
         ]);
     }
-
-    // Acceso para admins para ver todos los pedidos
-    /*
-    #[Route('/admin/orders', name: 'app_order_index')]
-    #[IsGranted('ROLE_ADMIN')]
-    public function adminOrders(OrderRepository $orderRepository): Response
-    {
-        $orders = $orderRepository->findAll();
-
-        return $this->render('order/index.html.twig', [
-            'orders' => $orders,
-            'tituloAlmacen' => 'Listado de Pedidos',
-        ]);
-    } */
-
-    // Pedidos con paginación 
-
-    /* FUNCIONANDO OK
-    #[Route('/admin/orders', name: 'app_order_index')]
-    #[IsGranted('ROLE_ADMIN')]
-    public function adminOrders(OrderRepository $orderRepository, PaginatorInterface $paginator, Request $request): Response
-    {
-       
-            $query = $request->query->get('find_order');
-            $qb = $orderRepository->createQueryBuilder('o')
-            ->join('o.user', 'u')     // JOIN con User
-            ->join('o.status', 's')   // JOIN con Status si necesitas filtrar por estado
-            ->orderBy('o.createdAt', 'DESC');
-
-            if ($query) {
-                $qb->andWhere('o.id LIKE :search OR u.email LIKE :search OR s.name LIKE :search')
-                    ->setParameter('search', '%' . $query . '%');
-            }
-
-        
-        $pagination = $paginator->paginate(
-            $qb, // QueryBuilder
-            $request->query->getInt('page', 1), // Página actual, por defecto 1
-            10 // Elementos por página
-        );
-        
-      
-        
-        return $this->render('order/index.html.twig', [
-            'orders' => $pagination,
-            'tituloAlmacen' => 'Pedidos',
-            'find_order' => $query
-        ]);
-    }
-*/
 
     #[Route('/admin/orders', name: 'app_order_index')]
     #[IsGranted('ROLE_ADMIN')]
@@ -261,5 +214,55 @@ class OrderController extends AbstractController
         return $this->render('order/detail.html.twig', [
             'order' => $order,
         ]);
+    }
+
+    // Acceso para Personal de almacén Pickers para ver los detalles de lospedidos pagados que tienen que preparar.
+    #[Route('/almacen/orders/{id}/prepare', name: 'app_order_prep_store')]
+    //#[IsGranted('ROLE_PICKER')]
+    public function pickerOrdersPrepare(Order $order, EntityManagerInterface $em): Response
+    {
+
+        $user = $this->getUser();
+       
+        // Solo puede acceder el dueño del pedido o un admin
+        if ($order->getUser() !== $user && !$this->isGranted('ROLE_PICKER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('No puedes ver este pedido.');
+        }
+
+           // Cambiar el estado
+        $order->setStatus($em->getReference(OrderStatus::class, 2)); // Usar referencia para no cargar la entidad completa
+
+        $em->persist($order);
+        $em->flush(); // Aquí se actualiza la BD
+        $this->addFlash('success', sprintf('Pedido %d en preparación', $order->getId()));
+        return $this->render('order/detail.html.twig', [
+            'order' => $order,
+        ]);
+       
+    }
+
+    // Acceso para Personal de almacén Pickers poner estado Pendiente Envio (ya está preparado).
+    #[Route('/almacen/orders/{id}/pdtEnvio', name: 'app_order_pdteEnvio_store')]
+    //#[IsGranted('ROLE_PICKER')]
+    public function pickerOrdersPdteEnvio(Order $order, EntityManagerInterface $em): Response
+    {
+
+        $user = $this->getUser();
+       
+        // Solo puede acceder el dueño del pedido o un admin
+        if ($order->getUser() !== $user && !$this->isGranted('ROLE_PICKER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('No puedes ver este pedido.');
+        }
+
+           // Cambiar el estado
+        $order->setStatus($em->getReference(OrderStatus::class, 3)); // Usar referencia para no cargar la entidad completa
+
+        $em->persist($order);
+        $em->flush(); // Aquí se actualiza la BD
+        $this->addFlash('success', sprintf('Pedido %d Pendiente Envio', $order->getId()));
+        return $this->render('order/detail.html.twig', [
+            'order' => $order,
+        ]);
+       
     }
 }

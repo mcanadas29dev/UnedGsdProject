@@ -1,0 +1,72 @@
+{% if order_statuses is empty %}
+    <div class="alert alert-info shadow-sm rounded-0 text-center">
+        No hay estados que coincidan con tu búsqueda.
+    </div>
+{% else %}
+<div class="card border-0 rounded-4">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NOMBRE</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for order_status in order_statuses %}
+                <tr>
+                    <td>{{ order_status.id }}</td>
+                    <td>{{ order_status.name }}</td>
+                    <td class="text-center">
+                        <div class="btn-group dropup">
+                            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">+</button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item text-muted" href="{{ path('app_order_status_show', {'id': order_status.id}) }}"><i class="bi bi-eye"></i> Ver</a></li>
+                                <li><a class="dropdown-item text-muted" href="{{ path('app_order_status_edit', {'id': order_status.id}) }}"><i class="bi bi-pencil-square"></i> Editar</a></li>
+                                {#<li>
+                                    <button type="button" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </button>
+                                </li> #}
+                                <li>
+                                    <button type="button" 
+                                        class="dropdown-item text-danger" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#deleteStatusOrderModal{{ order_status.id }}">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <div class="alert alert-info shadow-sm rounded-0 text-center">
+                        <td colspan="3" class=" alert alert-info text-muted">No se encontraron registros</td>
+                    </div>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+  </div>
+</div>   
+    <!-- Paginación -->
+
+
+    <nav aria-label="Page navigation" class="mt-4">
+        <div class="d-flex justify-content-center">
+            <ul class="pagination pagination-sm">
+            {{ knp_pagination_render(order_statuses, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
+            </ul>
+        </div>
+    </nav>
+
+    {% for order_status in order_statuses %}
+        {{ include('order_status/_delete_form.html.twig', {'order_status': order_status, 'id': order_status.id}) }}
+    {% endfor %}
+
+{% endif %}
