@@ -13,6 +13,7 @@ class BestSellingController extends AbstractController
     #[Route('/lo-mas-vendido', name: 'app_best_selling')]
     public function index(EntityManagerInterface $em): Response
         {
+            try{
             $query = $em->createQuery(
                 'SELECT p.id,p.name, SUM(oi.quantity) AS totalSold
                 FROM App\Entity\OrderItem oi
@@ -33,6 +34,11 @@ class BestSellingController extends AbstractController
                 'data' => $data,
                 'total' => $total,
             ]);
+            }       
+            catch(\Exception $e){
+                $this->addFlash('danger', 'Ha ocurrido un error al generar el informe de productos más vendidos.');
+                return $this->redirectToRoute('app_home');
+            }
         }
 
 

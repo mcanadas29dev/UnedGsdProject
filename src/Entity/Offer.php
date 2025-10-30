@@ -14,7 +14,9 @@ class Offer
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne]
+    // #[ORM\ManyToOne] #}
+    // #[ORM\JoinColumn(nullable: false)] #}
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'offers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Product $product = null;
 

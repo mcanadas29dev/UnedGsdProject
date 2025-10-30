@@ -91,8 +91,9 @@ class CartController extends AbstractController
     #[Route('/checkout', name: 'checkout')]
     public function checkout(Request $request, CartService $cartService, OfferRepository $offerRepository): Response
     {
-        try {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        try {
+        
         Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
         $cartItems = $cartService->getCart();
         $lineItems = [];

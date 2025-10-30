@@ -50,7 +50,7 @@ class ProductType extends AbstractType
                 'constraints' => [
                     new File([
                         'maxSize' => '2M',
-                        'mimeTypes' => ['image/jpeg', 'image/png'],
+                        'mimeTypes' => ['image/jpeg', 'image/png' , 'image/webp'],
                         'mimeTypesMessage' => 'Sube una imagen válida (JPG/PNG)',
                     ])
                     ]

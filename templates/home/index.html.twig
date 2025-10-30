@@ -19,7 +19,7 @@
   <!-- Banner con imagen -->
   <div class="row align-items-center mb-5">
     <div class="col-md-6">
-      <img src="{{ asset('images/cover.png') }}" class="img-fluid rounded-0 shadow" alt="Productos Ecológicos"/>
+      <img src="{{ asset('images/fotoHome.png') }}" class="img-fluid rounded-0 shadow" alt="Productos Ecológicos"/>
     </div>
     <div class="col-md-6">
       <h3 class="text-success">{{ 'home.promise.title'|trans }}</h3>
@@ -38,7 +38,9 @@
         <div class="card-body p-4">
           <i class="bi bi-basket text-success display-5 mb-3"></i>
           <h4 class="fw-bold text-muted">
-          <a href="{{ path('secciones_index') }}" class="text-muted"> {{ 'home.categories.fruits'|trans }}</a>
+          <a href="{{ path('secciones_show', { slug: 'frutas' }) }}" class="text-muted">
+            {{ 'home.categories.fruits'|trans }}
+          </a>
          </h4>
           <p class="text-muted">{{ 'home.categories.fruits_text'|trans }}</p>
         </div>
@@ -49,7 +51,10 @@
         <div class="card-body p-4">
           <i class="bi bi-egg-fried text-success display-5 mb-3"></i>
           <h4 class="fw-bold">
-           <a href="{{ path('secciones_index') }}" class="text-muted"> {{ 'home.categories.vegetables'|trans }}</a>
+          <a href="{{ path('secciones_show', { slug: 'verduras-y-hortalizas' }) }}" class="text-muted">
+            {{ 'home.categories.vegetables'|trans }}
+          </a>
+ 
           </h4>
           <p class="text-muted">{{ 'home.categories.vegetables_text'|trans }}</p>
         </div>
@@ -60,7 +65,8 @@
         <div class="card-body p-4">
           <i class="bi bi-flower1 text-success display-5 mb-3"></i>
           <h4 class="fw-bold">
-          <a href="{{ path('secciones_index') }}" class="text-muted"> {{ 'home.categories.others'|trans }}</a>
+          <a href="{{ path('secciones_show', { slug: 'ofertas-y-novedades' }) }}" class="text-muted"> 
+          {{ 'home.categories.others'|trans }}</a>
           </h4>
           <p class="text-muted">{{ 'home.categories.others_text'|trans }}</p>
         </div>

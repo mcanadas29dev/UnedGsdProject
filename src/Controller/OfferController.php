@@ -23,7 +23,7 @@ class OfferController extends AbstractController
     public function index(OfferRepository $offerRepository): Response
     {
         return $this->render('offer/offer.html.twig', [
-            'offers' => $offerRepository->findActive(),
+            'offers' => $offerRepository->findActive(new \DateTimeImmutable()),
             // 'offers' => $offerRepository->findActive(), para ofertas activas
         ]);
     }

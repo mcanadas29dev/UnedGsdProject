@@ -84,8 +84,8 @@ class CartService
                 if ($product) {
                     $cartWithData[] = [
                         'product' => $product,
-                        'quantity' => $quantity,
-                        'total' => $product->getPrice() * $quantity,
+                        'quantity' => $quantity, 
+                        'total' => $product->getCurrentPrice() * $quantity,
                     ];
                 }
             }

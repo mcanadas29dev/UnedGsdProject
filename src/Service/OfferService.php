@@ -39,7 +39,7 @@ class OfferService
     public function offerActive(Offer $offer): bool
     {
 
-        if ($this->offerRepository->findActiveForProduct($offer->getProduct())){
+        if ($this->offerRepository->findActiveForProduct($offer->getProduct(), new \DateTimeImmutable())){
             return true;
         }
         return false;
