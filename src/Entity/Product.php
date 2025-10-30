@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,6 +31,15 @@ class Product
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageName = null;
+
+    // Nuevo 23/10/2025
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Offer::class)]
+    private Collection $offers;
+
+    public function __construct()
+    {
+        $this->offers = new ArrayCollection();
+    }
 
     // Getters y Setters ********************************
     public function getId(): ?int
@@ -93,5 +104,24 @@ class Product
     {
         $this->imageName = $imageName;
         return $this;
+    }
+
+     public function getOffers(): Collection
+    {
+        return $this->offers;
+    }
+
+    // Método para obtener el precio actual (considerando ofertas activas)
+    public function getCurrentPrice(?\DateTimeInterface $now = null): float
+    {
+        $now = $now ?? new \DateTimeImmutable();
+
+        foreach ($this->offers as $offer) {
+            if ($offer->getStartDate() <= $now && $offer->getEndDate() >= $now) {
+                return $offer->getOfferPrice();
+            }
+        }
+
+        return $this->price;
     }
 }

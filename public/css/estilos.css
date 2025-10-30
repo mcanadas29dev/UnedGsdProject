@@ -203,3 +203,18 @@ strong {
     background-color: #e9ecef;
     color: #6c757d;
 }
+
+
+/* Para las tarjetas de Home 
+.card-body {
+    transition: all 2.0s ease;
+    transform-style: preserve-3d;
+}
+
+.card-body:hover {
+    background-color: #FAF9F7;
+    cursor: pointer;
+    transform: rotateY(180deg);
+    transition: transform 2.0s ease;
+}
+    */

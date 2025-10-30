@@ -25,7 +25,7 @@ class OfferRepository extends ServiceEntityRepository
     /**
      * Devuelve las ofertas activas en este momento (startDate <= now <= endDate).
      */
-    public function findActive(\DateTimeInterface $now = null): array
+    public function findActive(\DateTimeInterface $now): array
     {
         $now = $now ?? new \DateTimeImmutable();
 
@@ -41,7 +41,7 @@ class OfferRepository extends ServiceEntityRepository
     /**
      * Devuelve la oferta activa (si existe) para un producto concreto.
      */
-    public function findActiveForProduct(Product $product, \DateTimeInterface $now = null): ?Offer
+    public function findActiveForProduct(Product $product, \DateTimeInterface $now ): ?Offer
     {
         $now = $now ?? new \DateTimeImmutable();
 
