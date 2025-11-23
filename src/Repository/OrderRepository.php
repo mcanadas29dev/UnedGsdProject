@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Order;
+use App\Entity\OrderStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -34,6 +35,15 @@ class OrderRepository extends ServiceEntityRepository
             ->orderBy('o.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
+    }
+    public function countByStatus(OrderStatus $status): int
+    {
+        return (int) $this->createQueryBuilder('o')
+            ->select('COUNT(o.id)')
+            ->where('o.status = :status')
+            ->setParameter('status', $status)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
     //    /**
     //     * @return Order[] Returns an array of Order objects

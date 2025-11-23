@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\OrderStatus;
+use App\Entity\Order;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -53,5 +54,6 @@ class OrderStatusRepository extends ServiceEntityRepository
                     ->getQuery();
         }
 
-    */
+        */
+    
 }
