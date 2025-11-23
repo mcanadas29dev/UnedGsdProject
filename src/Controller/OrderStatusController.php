@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Order;
 use App\Entity\OrderStatus;
-use App\Form\OrderStatusType;
 use App\Repository\OrderStatusRepository;
+use App\Form\OrderStatusType;
+use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -118,15 +120,44 @@ final class OrderStatusController extends AbstractController
             'form' => $form,
         ]);
     }
-
+/*
     #[Route('/{id}', name: 'app_order_status_delete', methods: ['POST'])]
-    public function delete(Request $request, OrderStatus $orderStatus, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, OrderStatus $orderStatus,OrderStatusRepository $orderStatusRepository, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$orderStatus->getId(), $request->getPayload()->getString('_token'))) {
+        //if ($this->isCsrfTokenValid('delete'.$orderStatus->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$orderStatus->getId(), $request->request->get('_token'))) {    
+        // Comprobar si el estado está asociado a alguna orden
+            $associatedOrdersCount = $orderStatusRepository->getOrders($orderStatus);  
+            if ($associatedOrdersCount > 0) {
+                $this->addFlash('error', 'No se puede eliminar el estado de la orden porque está asociado a una o más pedidos.');
+                //return $this->redirectToRoute('app_order_status_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('app_order_status_index', [], Response::HTTP_SEE_OTHER);
+            }
             $entityManager->remove($orderStatus);
             $entityManager->flush();
         }
 
+        return $this->redirectToRoute('app_order_status_index', [], Response::HTTP_SEE_OTHER);
+    }
+        */
+    #[Route('/{id}', name: 'app_order_status_delete', methods: ['POST'])]
+    public function delete(
+        Request $request, 
+        OrderStatus $orderStatus, 
+        OrderRepository $orderRepository,
+        EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$orderStatus->getId(), $request->getPayload()->getString('_token'))) {
+            // Comprobar si el estado está asociado a alguna orden
+            $associatedOrdersCount = $orderRepository->countByStatus($orderStatus);  ;  
+            if ($associatedOrdersCount > 0) {
+                $this->addFlash('danger', 'No se puede eliminar el estado. consulte Administrador.');
+                return $this->redirectToRoute('app_order_status_index', [], Response::HTTP_SEE_OTHER);
+            }
+            $entityManager->remove($orderStatus);
+            $entityManager->flush();
+        }
+        $this->addFlash('info', 'Estado de orden eliminado con éxito.');
         return $this->redirectToRoute('app_order_status_index', [], Response::HTTP_SEE_OTHER);
     }
 }
