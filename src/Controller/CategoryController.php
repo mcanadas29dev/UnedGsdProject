@@ -137,7 +137,16 @@ class CategoryController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
 
-             // Contar cuántos productos usan esta categoría
+            // 1) Comprobar si tiene subcategorías
+            $subcategories = $em->getRepository(Category::class)
+                ->findBy(['parent' => $category]);
+
+            if (count($subcategories) > 0) {
+                $this->addFlash('danger', 'No se puede eliminar la categoría porque tiene subcategorías asociadas.');
+                return $this->redirectToRoute('categories_list');
+            }
+
+            // 2) Comprobar si tiene productos
             $productCount = $em->getRepository(Product::class)
                 ->count(['category' => $category]);
 
