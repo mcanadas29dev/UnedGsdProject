@@ -146,10 +146,21 @@ class OfferController extends AbstractController
         $form = $this->createForm(OfferType::class, $offer);
         $form->handleRequest($request);
 
+          
+
         if ($form->isSubmitted() && $form->isValid()) {
+             // 1) Comprobar fecha inicio >= fecha actual
+            if ($offerService->datesOk($offer) == false) {
+                $this->addFlash('danger', 'La fecha de inicio debe ser anterior a la fecha de fin');
+                return $this->redirectToRoute('offer_index_admin');
+            }    
             if($offerService->offerActive($offer)){
-                 $this->addFlash('danger', 'Este producto ya tiene una oferta activa, revise');
+                $this->addFlash('danger', 'Este producto ya tiene una oferta activa, revise');
             }
+            if($offerService->priceOK($offer)== false){
+                $this->addFlash('danger', 'Revise precio de oferta < precio producto o precio oferta <= 0');
+                return $this->redirectToRoute('offer_index_admin');
+            }       
             else{
                 $em->persist($offer);
                 $em->flush();
@@ -196,7 +207,7 @@ class OfferController extends AbstractController
                     }
                    
                 }else{
-                    $this->addFlash('danger', 'El precio de oferta no puede ser 0 o negativo'); // Que el precio <=0
+                    $this->addFlash('danger', 'Revise precio de oferta < precio producto o precio oferta <= 0'); // Que el precio <=0
                 }
             }else{
                     $this->addFlash('danger', 'Revise fechas inicio y fin ');

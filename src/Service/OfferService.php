@@ -27,7 +27,7 @@ class OfferService
         }
     public function priceOK(Offer $offer): bool
         {
-            if($offer->getOfferPrice() > 0){ 
+            if($offer->getOfferPrice() > 0 && $offer->getOfferPrice() < $offer->getProduct()->getPrice()){ 
                return true;
             }
             else {
